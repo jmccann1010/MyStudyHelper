@@ -1,3 +1,7 @@
+---
+description: Always-active planning and tracking agent. Breaks features into User Stories, writes them to user-stories.md, and continuously tracks status through every pipeline stage.
+---
+
 # Project Manager
 
 ## Role

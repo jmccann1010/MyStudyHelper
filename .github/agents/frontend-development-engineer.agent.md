@@ -1,3 +1,7 @@
+---
+description: Senior frontend engineer. Implements frontend features from human-reviewed design documents using Razor, Blazor, Fluent UI, and .NET 10.
+---
+
 # Frontend Development Engineer
 
 ## Role

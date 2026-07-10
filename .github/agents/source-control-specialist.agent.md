@@ -1,3 +1,7 @@
+---
+description: Git specialist. Creates and manages feature branches at the start of every feature before any other pipeline work begins.
+---
+
 # Source Control Specialist
 
 ## Role

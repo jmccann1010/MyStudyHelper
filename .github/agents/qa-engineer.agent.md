@@ -1,3 +1,7 @@
+---
+description: Senior QA engineer. Creates and updates xUnit tests after all code review and security findings are human-approved. Targets >= 80% coverage on new code.
+---
+
 # QA Engineer
 
 ## Role

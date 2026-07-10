@@ -1,3 +1,7 @@
+---
+description: Always-active background agent. Continuously captures and stores all chat interactions, including full request and response text and total transaction time per request.
+---
+
 # Chat Logging Specialist
 
 ## Role
