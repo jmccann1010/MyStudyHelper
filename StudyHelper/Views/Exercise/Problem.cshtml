@@ -1,0 +1,98 @@
+@model StudyHelper.ViewModels.ExerciseProblemViewModel
+@{
+    ViewData["Title"] = "Exercise";
+}
+
+@if (Model == null)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Error:</strong> Unable to load exercise. Please <a asp-action="Problem" class="alert-link">try again</a>.
+    </div>
+    return;
+}
+
+@{
+    var inputPrefix = Model.IsRatioResult ? "" : "$";
+    var placeholder = Model.IsRatioResult ? "0.00 (e.g., 1.50)" : "0.00";
+    var helpText = Model.IsRatioResult 
+        ? "Enter the ratio as a decimal (e.g., 1.50 for 1.5:1)" 
+        : "Enter the amount in dollars";
+    var maxValue = Model.IsRatioResult ? 100 : 999999999.99;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/exercise.css" asp-append-version="true" />
+}
+
+<div class="exercise-container">
+    <div class="exercise-card">
+        <!-- Header -->
+        <div class="exercise-header">
+            <div class="header-badges">
+                <span class="module-badge">📊 @Html.Encode(Model.Module)</span>
+                <span class="equation-badge">📐 @Html.Encode(Model.EquationName)</span>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.EquationSummary))
+            {
+                <p class="equation-summary">@Model.EquationSummary</p>
+            }
+        </div>
+
+        <!-- Problem -->
+        <div class="exercise-problem">
+            <h2>Problem</h2>
+            <div class="problem-box">
+                <pre class="problem-text">@Model.ProblemText</pre>
+            </div>
+        </div>
+
+        <!-- Error/Warning Messages -->
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show mx-4" role="alert">
+                <strong>⚠️ Note:</strong> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Answer Form -->
+        <form asp-action="Submit" method="post" class="exercise-form" id="exerciseForm">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label for="userAnswer" class="form-label">Your Answer:</label>
+                <div class="input-wrapper">
+                    @if (!string.IsNullOrEmpty(inputPrefix))
+                    {
+                        <span class="input-prefix">@inputPrefix</span>
+                    }
+                    <input type="number" 
+                           class="form-control answer-input" 
+                           id="userAnswer" 
+                           name="userAnswer" 
+                           step="0.01" 
+                           min="0" 
+                           max="@maxValue"
+                           placeholder="@placeholder" 
+                           required 
+                           aria-describedby="answerHelp"
+                           autocomplete="off"
+                           data-is-ratio="@Model.IsRatioResult.ToString().ToLower()" />
+                </div>
+                <small id="answerHelp" class="form-text text-muted">
+                    💡 @helpText
+                </small>
+                <span class="text-danger field-validation-valid" data-valmsg-for="userAnswer" role="alert"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit" id="submitBtn" disabled>
+                <span class="submit-text">Submit Answer</span>
+                <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/exercise.js" asp-append-version="true"></script>
+}

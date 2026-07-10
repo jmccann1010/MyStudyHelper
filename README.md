@@ -1,1 +1,1 @@
-# MyStudyHelper
+# StudyHelper

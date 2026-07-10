@@ -1,0 +1,86 @@
+@model StudyHelper.ViewModels.FlashcardViewModel
+
+@{
+    ViewData["Title"] = "Flashcard";
+}
+
+<div class="flashcard-container">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card flashcard shadow-lg border-info">
+        <div class="card-body">
+            <!-- Section Badge (if available) -->
+            @if (!string.IsNullOrEmpty(Model.Section))
+            {
+                <div class="mb-3">
+                    <span class="badge bg-info text-dark">@Model.Section</span>
+                </div>
+            }
+
+            <!-- Definition Section (Always Visible) -->
+            <div class="definition-section mb-4">
+                <h5 class="text-muted mb-3">Definition:</h5>
+                <div class="definition-text">
+                    <p class="lead">@Model.Definition</p>
+                </div>
+            </div>
+
+            <!-- Timer Display -->
+            <div class="timer-section text-center mb-4" id="timer-section" role="timer" aria-live="polite" aria-atomic="true">
+                <div class="timer-display">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                         fill="currentColor" class="bi bi-hourglass-split" 
+                         viewBox="0 0 16 16">
+                        <path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+                    </svg>
+                    <span class="ms-2 fs-5" id="timer-countdown" aria-label="Seconds remaining">5</span>
+                    <span class="text-muted"> seconds</span>
+                </div>
+            </div>
+
+            <!-- Term Section (Hidden Initially) -->
+            <div class="term-section text-center mb-4" id="term-section" style="display: none;" role="region" aria-label="Answer revealed">
+                <h5 class="text-muted mb-3">Term:</h5>
+                <div class="term-reveal bg-success bg-opacity-10 border border-success rounded p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" 
+                         fill="currentColor" class="bi bi-check-circle text-success mb-2" 
+                         viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg>
+                    <h2 class="display-5 text-success mb-0">@Model.Term</h2>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons text-center">
+                <button id="show-answer-btn" class="btn btn-warning btn-lg me-2" aria-label="Show answer early">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
+                         fill="currentColor" class="bi bi-eye me-2" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                    </svg>
+                    Show Answer
+                </button>
+                <a asp-controller="Flashcard" asp-action="Card" class="btn btn-primary btn-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
+                         fill="currentColor" class="bi bi-arrow-right-circle me-2" 
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 15 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                    </svg>
+                    Next Card
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/flashcard.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,142 @@
+@model GradedExerciseProblemViewModel
+
+@{
+    ViewData["Title"] = "Graded Exercise Problem";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <!-- Header -->
+        <div class="card-header bg-secondary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Graded Exercises</h4>
+                <span>Problem @Model.ProblemNumber of @Model.TotalProblems</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="card-body bg-light pb-2">
+            <div class="progress">
+                <div class="progress-bar bg-secondary" style="width: @Model.ProgressPercentage%">
+                    @Math.Round(Model.ProgressPercentage)%
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Display -->
+        <div class="card-body">
+            <div class="row text-center mb-4">
+                <div class="col-6">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle-fill text-success me-2" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                        <div>
+                            <h2 class="mb-0 text-success">@Model.CorrectCount</h2>
+                            <small class="text-muted">Correct</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle-fill text-danger me-2" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                        </svg>
+                        <div>
+                            <h2 class="mb-0 text-danger">@Model.IncorrectCount</h2>
+                            <small class="text-muted">Incorrect</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Problem Display -->
+            <div class="mb-4">
+                @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error:</strong> @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <h5 class="mb-3">@Model.ProblemText</h5>
+
+                @if (Model.GivenValues != null && Model.GivenValues.Any())
+                {
+                    <div class="mb-3">
+                        <strong>Given Values:</strong>
+                        <ul class="mt-2">
+                            @foreach (var (variable, value) in Model.GivenValues)
+                            {
+                                <li>@variable = @value.ToString("N2")</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <strong>Solve for:</strong> @Model.SolveForVariable
+                </div>
+            </div>
+
+            <!-- Answer Input Form -->
+            <form asp-action="SubmitAnswer" method="post" class="needs-validation" novalidate>
+                <div class="mb-4">
+                    <label for="userAnswer" class="form-label h5">Your Answer:</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" 
+                               class="form-control" 
+                               id="userAnswer" 
+                               name="userAnswer" 
+                               placeholder="Enter your answer (e.g., 1.50)" 
+                               required 
+                               pattern="^-?\d+(\.\d+)?$"
+                               inputmode="decimal"
+                               autocomplete="off" />
+                        <div class="invalid-feedback">
+                            Please enter a valid number.
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">
+                        Enter numerical answer only. Do not include units, $, %, or commas.
+                    </small>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary btn-lg px-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right-circle me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                        </svg>
+                        Submit Answer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Bootstrap form validation
+        (function() {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Focus input on load
+        document.getElementById('userAnswer').focus();
+    </script>
+}

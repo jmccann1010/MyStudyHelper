@@ -1,0 +1,890 @@
+/* ============================================
+   Theme Base Styles - Applied to all themes
+   Uses CSS variables that change based on [data-theme] attribute
+   ============================================ */
+
+/* Default Theme Variables */
+:root,
+[data-theme="theme-default"] {
+    /* Primary colors */
+    --theme-primary: #667eea;
+    --theme-primary-dark: #764ba2;
+    --theme-primary-light: #7c8fff;
+
+    /* Background colors */
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #f8f9fa;
+    --theme-bg-tertiary: #e9ecef;
+
+    /* Text colors */
+    --theme-text-primary: #2d3748;
+    --theme-text-secondary: #4a5568;
+    --theme-text-muted: #718096;
+
+    /* Border colors */
+    --theme-border-color: #e2e8f0;
+    --theme-border-color-dark: #cbd5e0;
+
+    /* Interactive elements */
+    --theme-link-color: #667eea;
+    --theme-link-hover: #764ba2;
+    --theme-button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    /* Status colors */
+    --theme-success: #48bb78;
+    --theme-warning: #f6ad55;
+    --theme-danger: #fc8181;
+    --theme-info: #0dcaf0;
+
+    /* Shadows */
+    --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --theme-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+
+    /* Quiz-specific colors */
+    --quiz-answer-hover-bg: #f8f9fa;
+    --quiz-answer-selected-bg: #e7f1ff;
+
+    /* Font */
+    --theme-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Dark Mode Theme */
+[data-theme="theme-dark-mode"] {
+    --theme-primary: #667eea;
+    --theme-primary-dark: #5568d3;
+    --theme-primary-light: #7c8fff;
+
+    --theme-bg-primary: #1a202c;
+    --theme-bg-secondary: #2d3748;
+    --theme-bg-tertiary: #4a5568;
+
+    --theme-text-primary: #f7fafc;
+    --theme-text-secondary: #e2e8f0;
+    --theme-text-muted: #f7fafc;
+
+    --theme-border-color: #4a5568;
+    --theme-border-color-dark: #2d3748;
+
+    --theme-link-color: #7c8fff;
+    --theme-link-hover: #667eea;
+    --theme-button-bg: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+
+    --theme-success: #68d391;
+    --theme-warning: #f6ad55;
+    --theme-danger: #fc8181;
+    --theme-info: #4fd1c5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --theme-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    /* Quiz-specific colors - darker for dark theme */
+    --quiz-answer-hover-bg: #2d3748;
+    --quiz-answer-selected-bg: #4a5568;
+
+    /* Font */
+    --theme-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* High Contrast Theme */
+[data-theme="theme-high-contrast"] {
+    --theme-primary: #ffff00;
+    --theme-primary-dark: #ffff00;
+    --theme-primary-light: #ffff00;
+
+    --theme-bg-primary: #000000;
+    --theme-bg-secondary: #000000;
+    --theme-bg-tertiary: #1a1a1a;
+
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #ffffff;
+    --theme-text-muted: #ffffff;
+
+    --theme-border-color: #ffffff;
+    --theme-border-color-dark: #ffffff;
+
+    --theme-link-color: #ffff00;
+    --theme-link-hover: #ffff00;
+    --theme-button-bg: #ffffff;
+
+    --theme-success: #00ff00;
+    --theme-warning: #ffff00;
+    --theme-danger: #ff0000;
+    --theme-info: #00ffff;
+
+    --theme-shadow-sm: 0 2px 8px rgba(255, 255, 255, 0.3);
+    --theme-shadow-md: 0 4px 12px rgba(255, 255, 255, 0.4);
+    --theme-shadow-lg: 0 10px 40px rgba(255, 255, 255, 0.5);
+
+    /* Font */
+    --theme-font-family: Arial, sans-serif;
+}
+
+/* Ocean Blue Theme */
+[data-theme="theme-ocean-blue"] {
+    --theme-primary: #0066cc;
+    --theme-primary-dark: #004d99;
+    --theme-primary-light: #3385d6;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #e6f2ff;
+    --theme-bg-tertiary: #cce5ff;
+
+    --theme-text-primary: #002952;
+    --theme-text-secondary: #003d7a;
+    --theme-text-muted: #0066cc;
+
+    --theme-border-color: #b3d9ff;
+    --theme-border-color-dark: #80c1ff;
+
+    --theme-link-color: #0066cc;
+    --theme-link-hover: #004d99;
+    --theme-button-bg: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
+
+    --theme-success: #2eb85c;
+    --theme-warning: #f9b115;
+    --theme-danger: #e55353;
+    --theme-info: #39f;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 102, 204, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(0, 102, 204, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 102, 204, 0.2);
+
+    /* Font */
+    --theme-font-family: Georgia, serif;
+}
+
+/* Warm Sunset Theme */
+[data-theme="theme-warm-sunset"] {
+    --theme-primary: #ff6b6b;
+    --theme-primary-dark: #ee5a6f;
+    --theme-primary-light: #ff8787;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #fff5f5;
+    --theme-bg-tertiary: #ffe3e3;
+
+    --theme-text-primary: #5c0000;
+    --theme-text-secondary: #8b0000;
+    --theme-text-muted: #c92a2a;
+
+    --theme-border-color: #ffc9c9;
+    --theme-border-color-dark: #ffa8a8;
+
+    --theme-link-color: #ee5a6f;
+    --theme-link-hover: #ff6b6b;
+    --theme-button-bg: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+
+    --theme-success: #51cf66;
+    --theme-warning: #ffd43b;
+    --theme-danger: #ff6b6b;
+    --theme-info: #74c0fc;
+
+    --theme-shadow-sm: 0 2px 8px rgba(255, 107, 107, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(255, 107, 107, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(255, 107, 107, 0.2);
+
+    /* Font */
+    --theme-font-family: Verdana, sans-serif;
+}
+
+/* Forest Green Theme - Nature inspired */
+[data-theme="theme-forest-green"] {
+    --theme-primary: #2d6a4f;
+    --theme-primary-dark: #1b4332;
+    --theme-primary-light: #40916c;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #e8f5e9;
+    --theme-bg-tertiary: #c8e6c9;
+
+    --theme-text-primary: #1b4332;
+    --theme-text-secondary: #2d6a4f;
+    --theme-text-muted: #52b788;
+
+    --theme-border-color: #a7d7b8;
+    --theme-border-color-dark: #74c69d;
+
+    --theme-link-color: #2d6a4f;
+    --theme-link-hover: #1b4332;
+    --theme-button-bg: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+
+    --theme-success: #40916c;
+    --theme-warning: #ffa726;
+    --theme-danger: #e53935;
+    --theme-info: #29b6f6;
+
+    --theme-shadow-sm: 0 2px 8px rgba(45, 106, 79, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(45, 106, 79, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(45, 106, 79, 0.2);
+
+    /* Font */
+    --theme-font-family: 'Trebuchet MS', sans-serif;
+}
+
+/* Midnight Blue Theme - Deep dark blue */
+[data-theme="theme-midnight-blue"] {
+    --theme-primary: #3d5afe;
+    --theme-primary-dark: #304ffe;
+    --theme-primary-light: #5e72ff;
+
+    --theme-bg-primary: #0a1929;
+    --theme-bg-secondary: #1a2332;
+    --theme-bg-tertiary: #2a3847;
+
+    --theme-text-primary: #e3f2fd;
+    --theme-text-secondary: #bbdefb;
+    --theme-text-muted: #e3f2fd;
+
+    --theme-border-color: #2a3847;
+    --theme-border-color-dark: #3a4857;
+
+    --theme-link-color: #5e72ff;
+    --theme-link-hover: #7d90ff;
+    --theme-button-bg: linear-gradient(135deg, #3d5afe 0%, #304ffe 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --theme-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
+
+    /* Quiz-specific colors */
+    --quiz-answer-hover-bg: #1a2332;
+    --quiz-answer-selected-bg: #2a3847;
+
+    /* Font */
+    --theme-font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Royal Purple Theme - Elegant purple */
+[data-theme="theme-royal-purple"] {
+    --theme-primary: #9c27b0;
+    --theme-primary-dark: #7b1fa2;
+    --theme-primary-light: #ba68c8;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #f3e5f5;
+    --theme-bg-tertiary: #e1bee7;
+
+    --theme-text-primary: #4a148c;
+    --theme-text-secondary: #6a1b9a;
+    --theme-text-muted: #8e24aa;
+
+    --theme-border-color: #ce93d8;
+    --theme-border-color-dark: #ba68c8;
+
+    --theme-link-color: #9c27b0;
+    --theme-link-hover: #7b1fa2;
+    --theme-button-bg: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffb74d;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(156, 39, 176, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(156, 39, 176, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(156, 39, 176, 0.2);
+
+    /* Font */
+    --theme-font-family: 'Times New Roman', serif;
+}
+
+/* Amber Gold Theme - Warm golden tones */
+[data-theme="theme-amber-gold"] {
+    --theme-primary: #ff8f00;
+    --theme-primary-dark: #ef6c00;
+    --theme-primary-light: #ffa726;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #fff8e1;
+    --theme-bg-tertiary: #ffecb3;
+
+    --theme-text-primary: #e65100;
+    --theme-text-secondary: #f57c00;
+    --theme-text-muted: #fb8c00;
+
+    --theme-border-color: #ffe082;
+    --theme-border-color-dark: #ffd54f;
+
+    --theme-link-color: #ff8f00;
+    --theme-link-hover: #ef6c00;
+    --theme-button-bg: linear-gradient(135deg, #ff8f00 0%, #ef6c00 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffb74d;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(255, 143, 0, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(255, 143, 0, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(255, 143, 0, 0.2);
+
+    /* Font */
+    --theme-font-family: 'Century Gothic', sans-serif;
+}
+
+/* Cyberpunk Theme - Neon dark theme */
+[data-theme="theme-cyberpunk"] {
+    --theme-primary: #00ffff;
+    --theme-primary-dark: #00e5e5;
+    --theme-primary-light: #33ffff;
+
+    --theme-bg-primary: #0d0221;
+    --theme-bg-secondary: #1a0b2e;
+    --theme-bg-tertiary: #2d1b3d;
+
+    --theme-text-primary: #e0e0e0;
+    --theme-text-secondary: #b0b0b0;
+    --theme-text-muted: #e0e0e0;
+
+    --theme-border-color: #3d2b4d;
+    --theme-border-color-dark: #4d3b5d;
+
+    --theme-link-color: #00ffff;
+    --theme-link-hover: #ff00ff;
+    --theme-button-bg: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+
+    --theme-success: #00ff41;
+    --theme-warning: #ffff00;
+    --theme-danger: #ff0055;
+    --theme-info: #00e5e5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 255, 255, 0.3);
+    --theme-shadow-md: 0 4px 12px rgba(0, 255, 255, 0.4);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 255, 255, 0.5);
+
+    /* Quiz-specific colors */
+    --quiz-answer-hover-bg: #1a0b2e;
+    --quiz-answer-selected-bg: #2d1b3d;
+
+    /* Font */
+    --theme-font-family: 'Courier New', monospace;
+}
+
+/* Slate Gray Theme - Professional neutral */
+[data-theme="theme-slate-gray"] {
+    --theme-primary: #607d8b;
+    --theme-primary-dark: #455a64;
+    --theme-primary-light: #78909c;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #eceff1;
+    --theme-bg-tertiary: #cfd8dc;
+
+    --theme-text-primary: #263238;
+    --theme-text-secondary: #37474f;
+    --theme-text-muted: #546e7a;
+
+    --theme-border-color: #b0bec5;
+    --theme-border-color-dark: #90a4ae;
+
+    --theme-link-color: #607d8b;
+    --theme-link-hover: #455a64;
+    --theme-button-bg: linear-gradient(135deg, #607d8b 0%, #455a64 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(96, 125, 139, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(96, 125, 139, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(96, 125, 139, 0.2);
+
+    /* Font */
+    --theme-font-family: Calibri, sans-serif;
+}
+
+/* Cherry Blossom Theme - Soft pink theme */
+[data-theme="theme-cherry-blossom"] {
+    --theme-primary: #e91e63;
+    --theme-primary-dark: #c2185b;
+    --theme-primary-light: #f06292;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #fce4ec;
+    --theme-bg-tertiary: #f8bbd0;
+
+    --theme-text-primary: #880e4f;
+    --theme-text-secondary: #ad1457;
+    --theme-text-muted: #c2185b;
+
+    --theme-border-color: #f48fb1;
+    --theme-border-color-dark: #f06292;
+
+    --theme-link-color: #e91e63;
+    --theme-link-hover: #c2185b;
+    --theme-button-bg: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(233, 30, 99, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(233, 30, 99, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(233, 30, 99, 0.2);
+
+    /* Font */
+    --theme-font-family: 'Comic Sans MS', cursive;
+}
+
+/* Deep Teal Theme - Calming teal */
+[data-theme="theme-deep-teal"] {
+    --theme-primary: #00897b;
+    --theme-primary-dark: #00695c;
+    --theme-primary-light: #26a69a;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #e0f2f1;
+    --theme-bg-tertiary: #b2dfdb;
+
+    --theme-text-primary: #004d40;
+    --theme-text-secondary: #00695c;
+    --theme-text-muted: #00796b;
+
+    --theme-border-color: #80cbc4;
+    --theme-border-color-dark: #4db6ac;
+
+    --theme-link-color: #00897b;
+    --theme-link-hover: #00695c;
+    --theme-button-bg: linear-gradient(135deg, #00897b 0%, #00695c 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 137, 123, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(0, 137, 123, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 137, 123, 0.2);
+
+    /* Font */
+    --theme-font-family: Tahoma, sans-serif;
+}
+
+/* Espresso Theme - Rich brown dark theme */
+[data-theme="theme-espresso"] {
+    --theme-primary: #d4a574;
+    --theme-primary-dark: #bc9c6c;
+    --theme-primary-light: #e0b885;
+
+    --theme-bg-primary: #1e1410;
+    --theme-bg-secondary: #2d1f1a;
+    --theme-bg-tertiary: #3d2f2a;
+
+    --theme-text-primary: #f5f5dc;
+    --theme-text-secondary: #e5d5bc;
+    --theme-text-muted: #f5f5dc;
+
+    --theme-border-color: #4d3f3a;
+    --theme-border-color-dark: #5d4f4a;
+
+    --theme-link-color: #d4a574;
+    --theme-link-hover: #e0b885;
+    --theme-button-bg: linear-gradient(135deg, #d4a574 0%, #bc9c6c 100%);
+
+    --theme-success: #8bc34a;
+    --theme-warning: #ffb74d;
+    --theme-danger: #ef5350;
+    --theme-info: #4fc3f7;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+    --theme-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.7);
+
+    /* Quiz-specific colors */
+    --quiz-answer-hover-bg: #2d1f1a;
+    --quiz-answer-selected-bg: #3d2f2a;
+}
+
+/* Lavender Dream Theme - Soft purple/violet */
+[data-theme="theme-lavender-dream"] {
+    --theme-primary: #9575cd;
+    --theme-primary-dark: #7e57c2;
+    --theme-primary-light: #b39ddb;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #ede7f6;
+    --theme-bg-tertiary: #d1c4e9;
+
+    --theme-text-primary: #4a148c;
+    --theme-text-secondary: #6a1b9a;
+    --theme-text-muted: #7b1fa2;
+
+    --theme-border-color: #b39ddb;
+    --theme-border-color-dark: #9575cd;
+
+    --theme-link-color: #9575cd;
+    --theme-link-hover: #7e57c2;
+    --theme-button-bg: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(149, 117, 205, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(149, 117, 205, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(149, 117, 205, 0.2);
+
+    /* Font */
+    --theme-font-family: Palatino, serif;
+}
+
+/* Mint Fresh Theme - Cool mint green */
+[data-theme="theme-mint-fresh"] {
+    --theme-primary: #26a69a;
+    --theme-primary-dark: #00897b;
+    --theme-primary-light: #4db6ac;
+
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #e0f7f5;
+    --theme-bg-tertiary: #b2ebe5;
+
+    --theme-text-primary: #004d40;
+    --theme-text-secondary: #00695c;
+    --theme-text-muted: #00796b;
+
+    --theme-border-color: #80cbc4;
+    --theme-border-color-dark: #4db6ac;
+
+    --theme-link-color: #26a69a;
+    --theme-link-hover: #00897b;
+    --theme-button-bg: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ef5350;
+    --theme-info: #42a5f5;
+
+    --theme-shadow-sm: 0 2px 8px rgba(38, 166, 154, 0.1);
+    --theme-shadow-md: 0 4px 12px rgba(38, 166, 154, 0.15);
+    --theme-shadow-lg: 0 10px 40px rgba(38, 166, 154, 0.2);
+
+    /* Font */
+    --theme-font-family: Helvetica, sans-serif;
+}
+
+/* Crimson Night Theme - Deep red dark theme */
+[data-theme="theme-crimson-night"] {
+    --theme-primary: #ff6b9d;
+    --theme-primary-dark: #e85d8a;
+    --theme-primary-light: #ff85b0;
+
+    --theme-bg-primary: #1a0510;
+    --theme-bg-secondary: #2d0e1d;
+    --theme-bg-tertiary: #3d1e2d;
+
+    --theme-text-primary: #ffe0eb;
+    --theme-text-secondary: #ffc0d6;
+    --theme-text-muted: #ffe0eb;
+
+    --theme-border-color: #4d2e3d;
+    --theme-border-color-dark: #5d3e4d;
+
+    --theme-link-color: #ff6b9d;
+    --theme-link-hover: #ff85b0;
+    --theme-button-bg: linear-gradient(135deg, #ff6b9d 0%, #e85d8a 100%);
+
+    --theme-success: #66bb6a;
+    --theme-warning: #ffa726;
+    --theme-danger: #ff6b9d;
+    --theme-info: #4fc3f7;
+
+    --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+    --theme-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --theme-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.7);
+
+    /* Quiz-specific colors */
+    --quiz-answer-hover-bg: #2d0e1d;
+    --quiz-answer-selected-bg: #3d1e2d;
+
+    /* Font */
+    --theme-font-family: Georgia, serif;
+}
+
+/* ============================================
+   Apply Theme Variables to Elements
+   ============================================ */
+
+/* Body and Backgrounds */
+body {
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+    font-family: var(--theme-font-family);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--theme-bg-primary) !important;
+    border-bottom-color: var(--theme-border-color) !important;
+}
+
+.navbar-brand,
+.navbar .nav-link {
+    color: var(--theme-text-primary) !important;
+}
+
+.navbar .nav-link:hover {
+    color: var(--theme-primary) !important;
+}
+
+/* Cards */
+.card {
+    background-color: var(--theme-bg-primary);
+    border-color: var(--theme-border-color);
+    color: var(--theme-text-primary);
+}
+
+.card-header {
+    background-color: var(--theme-bg-secondary);
+    border-bottom-color: var(--theme-border-color);
+}
+
+.card-footer {
+    background-color: var(--theme-bg-secondary);
+    border-top-color: var(--theme-border-color);
+}
+
+.card-title {
+    color: var(--theme-text-primary) !important;
+}
+
+.card-text {
+    color: var(--theme-text-secondary);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    background-color: var(--theme-bg-primary);
+    border-color: var(--theme-border-color);
+    color: var(--theme-text-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-label {
+    color: var(--theme-text-secondary);
+}
+
+.form-text {
+    color: var(--theme-text-muted);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--theme-button-bg);
+    border: none;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.btn-outline-primary {
+    color: var(--theme-primary);
+    border-color: var(--theme-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--theme-primary);
+    border-color: var(--theme-primary);
+}
+
+/* Links */
+a {
+    color: var(--theme-link-color);
+}
+
+a:hover {
+    color: var(--theme-link-hover);
+}
+
+/* Text utilities - Bootstrap overrides */
+.text-muted {
+    color: var(--theme-text-muted) !important;
+}
+
+/* Background light should always have dark text */
+.bg-light,
+.bg-light * {
+    color: #212529 !important;
+}
+
+/* Quiz question text */
+.quiz-question-text {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Tables */
+.table {
+    color: var(--theme-text-primary);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--theme-bg-secondary);
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: var(--theme-bg-tertiary);
+}
+
+.table-bordered {
+    border-color: var(--theme-border-color);
+}
+
+.table-bordered > :not(caption) > * > * {
+    border-color: var(--theme-border-color);
+}
+
+/* Alerts */
+.alert-info {
+    background-color: var(--theme-bg-secondary);
+    border-color: var(--theme-info);
+    color: var(--theme-text-primary);
+}
+
+/* Badges */
+.badge {
+    background-color: var(--theme-primary);
+}
+
+/* Dropdowns */
+.dropdown-menu {
+    background-color: var(--theme-bg-primary);
+    border-color: var(--theme-border-color);
+}
+
+.dropdown-item {
+    color: var(--theme-text-primary);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--theme-bg-secondary);
+    color: var(--theme-primary);
+}
+
+.dropdown-divider {
+    border-top-color: var(--theme-border-color);
+}
+
+/* Modals */
+.modal-content {
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--theme-border-color);
+}
+
+/* Progress Bars */
+.progress {
+    background-color: var(--theme-bg-tertiary);
+}
+
+.progress-bar {
+    background-color: var(--theme-primary);
+}
+
+/* Pagination */
+.page-link {
+    background-color: var(--theme-bg-primary);
+    border-color: var(--theme-border-color);
+    color: var(--theme-link-color);
+}
+
+.page-link:hover {
+    background-color: var(--theme-bg-secondary);
+    border-color: var(--theme-border-color-dark);
+    color: var(--theme-link-hover);
+}
+
+.page-item.active .page-link {
+    background-color: var(--theme-primary);
+    border-color: var(--theme-primary);
+}
+
+/* List Groups */
+.list-group-item {
+    background-color: var(--theme-bg-primary);
+    border-color: var(--theme-border-color);
+    color: var(--theme-text-primary);
+}
+
+.list-group-item:hover {
+    background-color: var(--theme-bg-secondary);
+}
+
+/* Flashcard-specific styles */
+.definition-section {
+    background-color: var(--theme-bg-secondary) !important;
+    border-left-color: var(--theme-info) !important;
+}
+
+.equation-summary-section {
+    background-color: var(--theme-bg-secondary) !important;
+    border-left-color: var(--theme-primary) !important;
+}
+
+.equation-prompt {
+    background: linear-gradient(135deg, var(--theme-bg-secondary) 0%, var(--theme-bg-tertiary) 100%) !important;
+    border-color: var(--theme-border-color) !important;
+}
+
+/* Timer section */
+.timer-section {
+    background-color: var(--theme-bg-tertiary) !important;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--theme-bg-primary);
+    border-top-color: var(--theme-border-color) !important;
+    color: var(--theme-text-muted);
+}
+
+/* ============================================
+   High Contrast Theme Specific Overrides
+   ============================================ */
+
+[data-theme="theme-high-contrast"] .navbar,
+[data-theme="theme-high-contrast"] .card,
+[data-theme="theme-high-contrast"] .form-control,
+[data-theme="theme-high-contrast"] .form-select,
+[data-theme="theme-high-contrast"] .modal-content,
+[data-theme="theme-high-contrast"] .dropdown-menu {
+    border-width: 2px;
+}
+
+[data-theme="theme-high-contrast"] .btn-primary {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+    border: 2px solid var(--theme-border-color);
+}
+
+[data-theme="theme-high-contrast"] .btn-primary:hover {
+    background: var(--theme-primary);
+    color: var(--theme-bg-primary);
+}
+
+[data-theme="theme-high-contrast"] a:focus,
+[data-theme="theme-high-contrast"] .btn:focus,
+[data-theme="theme-high-contrast"] .form-control:focus {
+    outline: 3px solid var(--theme-primary);
+    outline-offset: 2px;
+}

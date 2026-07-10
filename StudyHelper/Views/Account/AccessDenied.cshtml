@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm mt-5">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-lock-fill text-danger" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                    </svg>
+                </div>
+
+                <h2 class="card-title mb-3">Access Denied</h2>
+                <p class="card-text text-muted mb-4">
+                    You do not have permission to access this resource.
+                </p>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary">
+                        Login
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                        Go to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+@model GradedQuizQuestionViewModel
+
+@{
+    ViewData["Title"] = "Graded Quiz Question";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <!-- Header -->
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Graded Quiz</h4>
+                <span>Question @Model.QuestionNumber of @Model.TotalQuestions</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="card-body bg-light pb-2">
+            <div class="progress">
+                <div class="progress-bar" style="width: @Model.ProgressPercentage%">
+                    @Math.Round(Model.ProgressPercentage)%
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Display -->
+        <div class="card-body">
+            <div class="row text-center mb-4">
+                <div class="col-6">
+                    <h5><i class="fas fa-check text-success"></i> Correct: @Model.CorrectCount</h5>
+                </div>
+                <div class="col-6">
+                    <h5><i class="fas fa-times text-danger"></i> Incorrect: @Model.IncorrectCount</h5>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Question Direction Badge -->
+            <div class="mb-3">
+                <span class="badge bg-info quiz-direction-badge" title="Question Direction">
+                    <i class="bi bi-arrow-left-right"></i> @Model.DirectionLabel
+                </span>
+            </div>
+
+            <!-- Question -->
+            <div class="mb-4">
+                <h3 class="lead">@Model.QuestionText</h3>
+            </div>
+
+            <!-- Validation Alert -->
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    @ViewBag.ErrorMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Answer Form -->
+            <form method="post" action="/GradedQuiz/SubmitAnswer" id="answerForm">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    @for (int i = 0; i < Model.AnswerOptions.Count; i++)
+                    {
+                        <div class="form-check mb-3 p-3 border rounded cursor-pointer">
+                            <input 
+                                type="radio" 
+                                class="form-check-input" 
+                                name="selectedAnswerIndex" 
+                                id="answer_@i" 
+                                value="@i"
+                                required
+                            />
+                            <label class="form-check-label ms-2 w-100" for="answer_@i">
+                                @Model.AnswerOptions[i]
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-lg"
+                    >
+                        @if (Model.QuestionNumber == Model.TotalQuestions)
+                        {
+                            <span>Finish Quiz <i class="fas fa-check"></i></span>
+                        }
+                        else
+                        {
+                            <span>Next <i class="fas fa-arrow-right"></i></span>
+                        }
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz-bidirectional.css" asp-append-version="true" />
+}
+
+<!-- Client-side validation script -->
+<script>
+document.getElementById('answerForm').addEventListener('submit', function(e) {
+    const selected = document.querySelector('input[name="selectedAnswerIndex"]:checked');
+    if (!selected) {
+        e.preventDefault();
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-warning alert-dismissible fade show';
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            Please select an answer before continuing.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        const questionDiv = document.querySelector('.mb-4 h3');
+        questionDiv.parentElement.insertBefore(alertDiv, questionDiv.nextSibling);
+    }
+});
+
+// Make form check labels clickable
+document.querySelectorAll('.form-check-label').forEach(label => {
+    label.style.cursor = 'pointer';
+});
+</script>

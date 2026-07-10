@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../StudyHelper.Tests/StudyHelper.Tests.csproj" />
+  <Project Path="StudyHelper.csproj" />
+</Solution>

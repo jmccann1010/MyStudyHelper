@@ -1,0 +1,94 @@
+@model SuperQuizCompleteViewModel
+@{
+    ViewData["Title"] = "Super Quiz Complete!";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white text-center">
+                    <h1 class="mb-0">
+                        <i class="bi bi-trophy-fill"></i> Congratulations!
+                    </h1>
+                    <p class="lead mb-0">You've mastered all @Model.Summary.TotalQuestions questions!</p>
+                </div>
+                <div class="card-body">
+                    <!-- Overall Stats -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-primary">@Model.Summary.TotalQuestions</h3>
+                                    <p class="mb-0 small">Questions Mastered</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-primary">@Model.Summary.TotalRounds</h3>
+                                    <p class="mb-0 small">Rounds Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-primary">@Model.Summary.TotalTime.ToString(@"mm\:ss")</h3>
+                                    <p class="mb-0 small">Total Time</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-primary">@Model.Summary.OverallAccuracy.ToString("F1")%</h3>
+                                    <p class="mb-0 small">Overall Accuracy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Round History -->
+                    <h4 class="mb-3"><i class="bi bi-graph-up"></i> Round-by-Round Progress</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Round</th>
+                                    <th>Questions</th>
+                                    <th>Correct</th>
+                                    <th>Missed</th>
+                                    <th>Accuracy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var round in Model.Summary.RoundHistory)
+                                {
+                                    <tr>
+                                        <td>Round @round.RoundNumber</td>
+                                        <td>@round.TotalQuestions</td>
+                                        <td class="text-success">@round.CorrectAnswers</td>
+                                        <td class="text-danger">@round.IncorrectAnswers</td>
+                                        <td>@round.AccuracyPercent.ToString("F1")%</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-grid gap-2 mt-4">
+                        <a asp-action="Start" class="btn btn-primary btn-lg">
+                            <i class="bi bi-arrow-repeat"></i> Start New Super Quiz
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                            <i class="bi bi-house-fill"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

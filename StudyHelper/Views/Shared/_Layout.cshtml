@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StudyHelper</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/themes/theme-base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/study-materials.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StudyHelper.styles.css" asp-append-version="true" />
+    <script src="~/js/theme-loader.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="@(ViewData["IsAccountPage"] as bool? == true ? "account-layout" : string.Empty)">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow @(ViewData["IsAccountPage"] as bool? == true ? "mb-0" : "mb-3")">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StudyHelper</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" 
+                               id="settingsDropdown" role="button" 
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Settings
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Settings" asp-action="Appearance">
+                                        Appearance
+                                    </a>
+                                </li>
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="StudyMaterials" asp-action="Manage">
+                                            <i class="bi bi-file-earmark-text"></i> Study Materials
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle me-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                </svg>
+                                Help
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="helpDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Help" asp-action="Index">
+                                        <i class="bi bi-house-door me-2"></i>Help Overview
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Study Features</h6></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="Quiz">Quiz Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="GradedQuiz">Graded Quiz Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="Exercise">Exercise Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="GradedExercises">Graded Exercises Help</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Flashcards</h6></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="TermFlashcards">Term Flashcards Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="EquationFlashcards">Equation Flashcards Help</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Management</h6></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="StudyMaterials">Study Materials Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="Account">Account Help</a></li>
+                                <li><a class="dropdown-item" asp-controller="Help" asp-action="Settings">Settings Help</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" 
+                                   id="userDropdown" role="button" 
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                    </svg>
+                                    @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                            <button type="submit" class="dropdown-item">
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="@(ViewData["IsAccountPage"] as bool? == true ? "container-fluid px-0" : "container")">
+        <main role="main" class="@(ViewData["IsAccountPage"] as bool? == true ? "pb-0" : "pb-3")">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - StudyHelper - Jeff McCann
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,95 @@
+@model StudyHelper.ViewModels.ExerciseResultViewModel
+@{
+    ViewData["Title"] = "Exercise Result";
+}
+
+@if (Model == null)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Error:</strong> Unable to load result. Please <a asp-controller="Exercise" asp-action="Problem" class="alert-link">try a new exercise</a>.
+    </div>
+    return;
+}
+
+@{
+    var headerClass = Model.IsCorrect ? "result-correct" : "result-incorrect";
+    var headerIcon = Model.IsCorrect ? "✓" : "✗";
+    var headerTitle = Model.IsCorrect ? "Correct!" : "Not Quite";
+    var headerSubtitle = Model.IsCorrect ? "Excellent work!" : "Let's review the solution";
+
+    Func<decimal, string> formatAnswer = Model.IsRatioResult 
+        ? (a => a.ToString("F2"))
+        : (a => a.ToString("C0"));
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/exercise.css" asp-append-version="true" />
+}
+
+<div class="exercise-container">
+    <div class="exercise-card">
+        <!-- Result Header -->
+        <div class="result-header @headerClass" role="status" aria-live="polite">
+            <div class="result-icon">@headerIcon</div>
+            <h1 class="result-title">@headerTitle</h1>
+            <p class="result-subtitle">@headerSubtitle</p>
+        </div>
+
+        <!-- Problem Recap -->
+        <div class="result-recap">
+            <h2>Problem Recap</h2>
+            <div class="problem-box">
+                <pre class="problem-text">@Model.ProblemText</pre>
+            </div>
+
+            <div class="answer-comparison">
+                <div class="answer-card @(!Model.IsCorrect ? "user-incorrect" : "")">
+                    <span class="answer-label">Your Answer</span>
+                    <span class="answer-value @(Model.IsCorrect ? "correct" : "incorrect")">
+                        @formatAnswer(Model.UserAnswer)
+                        @if (!Model.IsCorrect)
+                        {
+                            <span class="result-icon-inline">✗</span>
+                        }
+                    </span>
+                </div>
+                <div class="answer-card correct-answer-card">
+                    <span class="answer-label">Correct Answer</span>
+                    <span class="answer-value correct">
+                        @formatAnswer(Model.CorrectAnswer) 
+                        <span class="result-icon-inline">✓</span>
+                    </span>
+                </div>
+            </div>
+
+            @if (!Model.IsCorrect)
+            {
+                <div class="feedback-hint">
+                    <p>💡 Review the solution steps below to understand where the calculation differs.</p>
+                </div>
+            }
+        </div>
+
+        <!-- Solution Steps -->
+        <div class="result-solution">
+            <h2>Solution</h2>
+            <div class="solution-box">
+                <pre class="solution-text">@Model.SolutionSteps</pre>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="result-actions">
+            <a asp-action="Problem" class="btn btn-success btn-lg btn-action" role="button">
+                🔄 Try Another Exercise
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-lg btn-action" role="button">
+                🏠 Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/exercise.js" asp-append-version="true"></script>
+}

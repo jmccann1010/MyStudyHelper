@@ -1,0 +1,308 @@
+@model ManageStudyMaterialsViewModel
+@{
+    ViewData["Title"] = "Manage Study Materials";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <h1 class="mb-4">
+                <i class="bi bi-file-earmark-text"></i> Manage Study Materials
+            </h1>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Terms and Definitions Section -->
+            <div class="card mb-4 shadow-sm material-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-journal-text"></i> Terms and Definitions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.HasCustomTerms)
+                    {
+                        var material = Model.TermsMaterial!;
+                        <div class="alert alert-success mb-3">
+                            <i class="bi bi-check-circle-fill"></i> 
+                            <strong>Status:</strong> Using Custom Content
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>File Name:</strong> @material.FileName</p>
+                                <p class="mb-1"><strong>Size:</strong> @FormatFileSize(material.FileSizeBytes)</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Uploaded:</strong> @material.UploadedDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </div>
+
+                        <div class="btn-group-file-actions">
+                            <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('replaceTermsFile').click()">
+                                <i class="bi bi-arrow-repeat"></i> Replace
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteTermsModal">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+
+                        <!-- Hidden form for replace -->
+                        <form asp-action="UploadTerms" method="post" enctype="multipart/form-data" id="replaceTermsForm">
+                            @Html.AntiForgeryToken()
+                            <input type="file" id="replaceTermsFile" name="file" accept=".md" style="display: none;" 
+                                   onchange="document.getElementById('replaceTermsForm').submit();" />
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle-fill"></i> 
+                            <strong>Status:</strong> Using Default Content
+                        </div>
+
+                        <p class="text-muted">
+                            Upload a custom TermsAndDefinitions.md file to personalize your flashcard study content.
+                        </p>
+
+                        <form asp-action="UploadTerms" method="post" enctype="multipart/form-data" id="uploadTermsForm">
+                            @Html.AntiForgeryToken()
+                            <div class="mb-3">
+                                <label for="termsFile" class="form-label">Choose File</label>
+                                <input type="file" class="form-control" id="termsFile" name="file" accept=".md" required />
+                                <div class="form-text">Maximum file size: 10 MB. Only .md files accepted.</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-upload"></i> Upload Terms and Definitions
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <!-- Equations Section -->
+            <div class="card mb-4 shadow-sm material-card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calculator"></i> Equations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.HasCustomEquations)
+                    {
+                        var material = Model.EquationsMaterial!;
+                        <div class="alert alert-success mb-3">
+                            <i class="bi bi-check-circle-fill"></i> 
+                            <strong>Status:</strong> Using Custom Content
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>File Name:</strong> @material.FileName</p>
+                                <p class="mb-1"><strong>Size:</strong> @FormatFileSize(material.FileSizeBytes)</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Uploaded:</strong> @material.UploadedDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </div>
+
+                        <div class="btn-group-file-actions">
+                            <button type="button" class="btn btn-outline-success" onclick="document.getElementById('replaceEquationsFile').click()">
+                                <i class="bi bi-arrow-repeat"></i> Replace
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEquationsModal">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+
+                        <!-- Hidden form for replace -->
+                        <form asp-action="UploadEquations" method="post" enctype="multipart/form-data" id="replaceEquationsForm">
+                            @Html.AntiForgeryToken()
+                            <input type="file" id="replaceEquationsFile" name="file" accept=".md" style="display: none;" 
+                                   onchange="document.getElementById('replaceEquationsForm').submit();" />
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle-fill"></i> 
+                            <strong>Status:</strong> Using Default Content
+                        </div>
+
+                        <p class="text-muted">
+                            Upload a custom Equations.md file to personalize your quiz and exercise content.
+                        </p>
+
+                        <form asp-action="UploadEquations" method="post" enctype="multipart/form-data" id="uploadEquationsForm">
+                            @Html.AntiForgeryToken()
+                            <div class="mb-3">
+                                <label for="equationsFile" class="form-label">Choose File</label>
+                                <input type="file" class="form-control" id="equationsFile" name="file" accept=".md" required />
+                                <div class="form-text">Maximum file size: 10 MB. Only .md files accepted.</div>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-upload"></i> Upload Equations
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <!-- Study Preferences Section -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="bi bi-gear-fill text-secondary"></i> Study Preferences
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="StudyMaterials" asp-action="UpdatePreferences" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input 
+                                    class="form-check-input" 
+                                    type="checkbox" 
+                                    role="switch" 
+                                    id="equationsEnabledSwitch" 
+                                    name="equationsEnabled"
+                                    value="true"
+                                    @(Model.EquationsEnabled ? "checked" : "")
+                                />
+                                <label class="form-check-label fw-semibold" for="equationsEnabledSwitch">
+                                    Enable Equation-Based Features
+                                </label>
+                            </div>
+                            <div class="form-text mt-2">
+                                <i class="bi bi-info-circle text-info"></i>
+                                When enabled, the following study methods will appear on your home page:
+                                <ul class="mt-2 mb-0">
+                                    <li><strong>Exercise</strong> - Practice solving equation problems</li>
+                                    <li><strong>Graded Exercises</strong> - Scored equation problem sets</li>
+                                    <li><strong>Equation Flashcards</strong> - Timed equation review</li>
+                                </ul>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="bi bi-lightbulb"></i> 
+                                    Note: Disabling this option only hides these features from your home page. 
+                                    They remain accessible via direct links if you have equation files uploaded.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Save Preferences
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="card mb-4 shadow-sm border-info">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle"></i> Need Help?
+                    </h5>
+                    <p class="card-text">
+                        Your uploaded files should follow the same markdown format as the default content.
+                        <strong>Important:</strong> Files must use plain text (ASCII) encoding. Save files in Notepad or another plain text editor.
+                    </p>
+                    <p class="card-text mb-3">
+                        <small class="text-muted">
+                            Avoid special characters like é, ñ, or ©. Use only standard keyboard characters (A-Z, 0-9, and basic punctuation).
+                        </small>
+                    </p>
+                    <a href="@Url.Action("DownloadTemplate", new { type = "terms" })" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="bi bi-download"></i> Terms Template
+                    </a>
+                    <a href="@Url.Action("DownloadTemplate", new { type = "equations" })" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-download"></i> Equations Template
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Delete Terms Modal -->
+<div class="modal fade" id="deleteTermsModal" tabindex="-1" aria-labelledby="deleteTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTermsModalLabel">Delete Custom Terms?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your custom TermsAndDefinitions.md file?
+                <br /><br />
+                <strong>You will revert to using the default content.</strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="Delete" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="materialType" value="0" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Equations Modal -->
+<div class="modal fade" id="deleteEquationsModal" tabindex="-1" aria-labelledby="deleteEquationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteEquationsModalLabel">Delete Custom Equations?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your custom Equations.md file?
+                <br /><br />
+                <strong>You will revert to using the default content.</strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form asp-action="Delete" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="materialType" value="1" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string FormatFileSize(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:F2} KB";
+        return $"{bytes / (1024.0 * 1024.0):F2} MB";
+    }
+}
+
+@section Scripts {
+    <script src="~/js/study-materials.js"></script>
+}

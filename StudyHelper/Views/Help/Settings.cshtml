@@ -1,0 +1,191 @@
+@{
+    ViewData["Title"] = "Settings Help";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index">Help</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Settings</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-gear text-secondary" viewBox="0 0 16 16">
+                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Settings Help</h1>
+            <p class="text-muted mb-0">Learn how to customize your StudyHelper experience</p>
+        </div>
+    </div>
+
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            StudyHelper Settings allow you to personalize your experience with appearance themes and manage your study 
+            materials. Customize the interface to match your preferences and study environment.
+        </p>
+    </section>
+
+    <section id="appearance" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="mb-0">Appearance Settings</h3>
+            </div>
+            <div class="card-body">
+                <h5>Changing Themes</h5>
+                <ol>
+                    <li><strong>Navigate:</strong> Click "Settings" → "Appearance" in the navigation bar</li>
+                    <li><strong>Select Theme:</strong> Choose from available themes (Light, Dark, High Contrast, etc.)</li>
+                    <li><strong>Preview:</strong> The theme changes immediately as you select it</li>
+                    <li><strong>Save:</strong> Click "Save Theme" to persist your choice</li>
+                </ol>
+                <div class="alert alert-info mt-3">
+                    <strong>Available Themes:</strong>
+                    <ul class="mb-0">
+                        <li><strong>Default:</strong> Clean, light theme suitable for most environments</li>
+                        <li><strong>Dark:</strong> Dark background for low-light conditions</li>
+                        <li><strong>High Contrast:</strong> Enhanced contrast for accessibility</li>
+                        <li><strong>Solarized:</strong> Popular color-optimized theme</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="study-materials" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">Study Materials Settings</h3>
+            </div>
+            <div class="card-body">
+                <h5>Managing Study Content</h5>
+                <p>
+                    Access the Study Materials manager from Settings → Study Materials to upload, view, and manage your custom content.
+                </p>
+
+                <h5 class="mt-4">Study Preferences</h5>
+                <p>
+                    Control which study features appear on your home page. You can enable or disable equation-based features 
+                    depending on your current study focus:
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>When Equations Enabled:</h6>
+                        <ul>
+                            <li>Exercise</li>
+                            <li>Graded Exercises</li>
+                            <li>Equation Flashcards</li>
+                            <li>Quiz</li>
+                            <li>Graded Quiz</li>
+                            <li>Term Flashcards</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>When Equations Disabled:</h6>
+                        <ul>
+                            <li><del>Exercise</del> (hidden)</li>
+                            <li><del>Graded Exercises</del> (hidden)</li>
+                            <li><del>Equation Flashcards</del> (hidden)</li>
+                            <li>Quiz</li>
+                            <li>Graded Quiz</li>
+                            <li>Term Flashcards</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="alert alert-success mt-3">
+                    <strong>Tip:</strong> If you're preparing for a terms-and-definitions exam, disable equations to 
+                    focus your home page on Quiz and Term Flashcards only.
+                </div>
+                <p class="mt-3">
+                    <a asp-controller="Help" asp-action="StudyMaterials" class="btn btn-outline-primary">
+                        Learn more about Study Materials and Preferences →
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="alert alert-success">
+            <strong>Choose the Right Theme:</strong> Use a dark theme in low-light environments to reduce eye strain.
+        </div>
+        <div class="alert alert-success">
+            <strong>High Contrast for Accessibility:</strong> If you have visual impairments, the High Contrast theme improves readability.
+        </div>
+        <div class="alert alert-success">
+            <strong>Browser Compatibility:</strong> Themes work best in modern browsers (Chrome, Firefox, Edge, Safari).
+        </div>
+    </section>
+
+    <section id="troubleshooting" class="mb-5">
+        <h2>Common Issues</h2>
+        <div class="accordion" id="settingsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue1">
+                        Problem: Theme not saving
+                    </button>
+                </h2>
+                <div id="issue1" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong></p>
+                        <ul>
+                            <li>Ensure you clicked "Save Theme" after selecting a theme</li>
+                            <li>Check that cookies are enabled in your browser</li>
+                            <li>Try clearing browser cache and reapplying the theme</li>
+                            <li>If logged in, your theme preference is saved to your account</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue2">
+                        Problem: Colors look wrong
+                    </button>
+                </h2>
+                <div id="issue2" class="accordion-collapse collapse" data-bs-parent="#settingsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong></p>
+                        <ul>
+                            <li>Refresh the page (F5 or Ctrl+R)</li>
+                            <li>Clear browser cache and reload</li>
+                            <li>Try switching to a different theme and back</li>
+                            <li>Ensure your browser is up to date</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header"><h3 class="mb-0">Related Topics</h3></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5>Account</h5>
+                        <p>Learn how to create and manage your StudyHelper account.</p>
+                        <a asp-controller="Help" asp-action="Account" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h5>Study Materials</h5>
+                        <p>Upload and manage custom study content for all features.</p>
+                        <a asp-controller="Help" asp-action="StudyMaterials" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">← Back to Help Overview</a>
+    </div>
+</div>

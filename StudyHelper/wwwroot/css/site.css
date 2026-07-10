@@ -1,0 +1,180 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Flashcard Page Styles */
+
+.flashcard-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.flashcard {
+    border-width: 2px;
+}
+
+.definition-section {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0dcaf0;
+    padding: 1.5rem;
+    border-radius: 0.25rem;
+}
+
+.definition-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+.timer-section {
+    padding: 1rem;
+    background-color: #fff3cd;
+    border-radius: 0.25rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.timer-display {
+    font-weight: 500;
+}
+
+.term-reveal {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.action-buttons {
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .flashcard-container {
+        margin: 1rem auto;
+        padding: 0.5rem;
+    }
+
+    .definition-text {
+        font-size: 1rem;
+    }
+
+    .action-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .action-buttons .btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* ============================================
+   Equation Flashcard Styles
+   ============================================ */
+
+/* Equation Name Section */
+.equation-name-section h3 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Equation Summary Section */
+.equation-summary-section {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+}
+
+.equation-summary-section p {
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+/* Equation Prompt Section (Left Side + "= ?") */
+.equation-prompt-section {
+    margin-top: 2rem;
+}
+
+.equation-prompt {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px solid #dee2e6;
+    font-family: 'Courier New', monospace;
+}
+
+.equation-prompt .fs-4 {
+    font-size: 1.75rem;
+}
+
+/* Equation Answer Section (Right Side Revealed) */
+.equation-answer-section {
+    animation: slideIn 0.5s ease-out;
+}
+
+.equation-answer {
+    font-family: 'Courier New', monospace;
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Responsive Design for Equations */
+@media (max-width: 768px) {
+    .equation-name-section h3 {
+        font-size: 1.5rem;
+    }
+
+    .equation-prompt .fs-4 {
+        font-size: 1.25rem;
+    }
+
+    .equation-answer .fs-4 {
+        font-size: 1.25rem;
+    }
+}

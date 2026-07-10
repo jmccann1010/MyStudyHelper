@@ -1,0 +1,89 @@
+/* 
+ * Bidirectional Quiz Questions Styling
+ * Styles for displaying quiz direction badges and related UI elements
+ */
+
+/* Direction Badge Styling */
+.quiz-direction-badge {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.65rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.quiz-direction-badge i {
+    font-size: 0.9rem;
+    margin-right: 0.25rem;
+}
+
+/* Badge Spacing in Metadata Section */
+.quiz-metadata .badge {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Direction Badge in Question Cards */
+.card-header .quiz-direction-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .quiz-direction-badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .quiz-metadata .badge {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-header .quiz-direction-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+/* Bootstrap Icon Fallback - if bi icons not available */
+.quiz-direction-badge .bi-arrow-left-right::before {
+    content: "↔";
+    font-style: normal;
+}
+
+/* Accessibility - Ensure Good Contrast */
+.quiz-direction-badge.bg-info {
+    background-color: #0dcaf0 !important;
+    color: #000 !important;
+}
+
+/* Dark Mode Support (if applicable) */
+@media (prefers-color-scheme: dark) {
+    .quiz-direction-badge.bg-info {
+        background-color: #087990 !important;
+        color: #fff !important;
+    }
+}
+
+/* Animation for Direction Badge (subtle fade-in) */
+.quiz-direction-badge {
+    animation: fadeInBadge 0.3s ease-in;
+}
+
+@keyframes fadeInBadge {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover Effect for Direction Badge (informational tooltip-like) */
+.quiz-direction-badge:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}

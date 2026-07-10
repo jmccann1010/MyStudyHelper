@@ -1,0 +1,547 @@
+@{
+    ViewData["Title"] = "Super Quiz Help";
+}
+
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Help" asp-action="Index">Help</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Super Quiz</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header with Icon -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-trophy text-warning" viewBox="0 0 16 16">
+                <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935zM3.504 1c.007.517.026 1.006.056 1.469.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7.5 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-1.138-.854a.5.5 0 0 0-.179-.085l-1.426-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 8.5 10c1.016 0 2.206-.52 3.07-2.864.413-1.12.74-2.64.87-4.667.03-.463.049-.952.056-1.469H3.504z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Super Quiz Help</h1>
+            <p class="text-muted mb-0">Master your study materials with spaced repetition and retries</p>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="card bg-light mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+                Table of Contents
+            </h5>
+        </div>
+        <div class="card-body">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="#overview">Overview</a>
+                <a class="nav-link" href="#how-it-works">How It Works</a>
+                <a class="nav-link" href="#getting-started">Getting Started</a>
+                <a class="nav-link" href="#selecting-questions">Selecting Number of Questions</a>
+                <a class="nav-link" href="#mastery-system">Mastery System</a>
+                <a class="nav-link" href="#progress-tracking">Progress Tracking</a>
+                <a class="nav-link" href="#tips">Tips & Best Practices</a>
+                <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+                <a class="nav-link" href="#related">Related Topics</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            The <strong>Super Quiz</strong> is a mastery-based study mode that ensures you learn every term and definition 
+            in your study materials. Unlike the regular Quiz or Graded Quiz, Super Quiz won't let you move on until you've 
+            correctly answered every question at least once. Questions you miss are asked again in subsequent rounds until 
+            you achieve 100% mastery.
+        </p>
+        <div class="alert alert-warning" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill me-2" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                Key Difference
+            </h5>
+            <p class="mb-0">
+                Super Quiz focuses on <strong>mastery through repetition</strong>. You can't skip past questions you miss—they 
+                come back until you get them right. This makes it ideal for comprehensive exam preparation or learning new material thoroughly.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">How It Works</h3>
+            </div>
+            <div class="card-body">
+                <h4>The Super Quiz Process:</h4>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                        <strong>All Questions Randomized:</strong> Every term and definition from your study materials is turned into a question. 
+                        The order is shuffled so you can't predict what's next.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Bidirectional Questions:</strong> Questions can ask for the definition of a term, or ask which term matches a definition. 
+                        This ensures you understand the material both ways.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Track Missed Questions:</strong> When you answer incorrectly, the question is marked for retry.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Round Summary:</strong> After answering all questions in a round, you see how many you got right and how many you missed.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Retry Rounds:</strong> If you missed any questions, a new round begins with <em>only</em> the questions you missed (re-shuffled).
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Mastery:</strong> Once you've answered every question correctly at least once, the Super Quiz is complete!
+                    </li>
+                </ol>
+                <div class="alert alert-info mt-3" role="alert">
+                    <h5 class="alert-heading">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle me-2" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        Note
+                    </h5>
+                    <p class="mb-0">
+                        Questions are generated from the <strong>Terms and Definitions</strong> section of your study materials. 
+                        You need at least 4 terms to start a Super Quiz.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="mb-5">
+        <h2>Getting Started</h2>
+        <div class="card">
+            <div class="card-body">
+                <h4>Starting Your First Super Quiz:</h4>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                        <strong>Navigate to Super Quiz:</strong> From the home page, click the "Super Quiz" card.
+                        <p class="mb-0 text-muted">You'll see the Super Quiz start page with question count options.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Select Question Count:</strong> Choose how many questions you want to practice:
+                        <ul class="mt-2">
+                            <li><strong>10 Questions</strong> - Quick practice session (recommended for daily review)</li>
+                            <li><strong>Half</strong> - Moderate practice (50% of available terms)</li>
+                            <li><strong>All</strong> - Complete mastery (all available terms)</li>
+                        </ul>
+                        <p class="mb-0 text-muted">The preview cards update automatically to show question count and estimated time.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Review the Preview:</strong> Check the updated question count and estimated time based on your selection.
+                        <p class="mb-0 text-muted">Estimated time is based on 15 seconds per question.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Click Start:</strong> Click the "Start Super Quiz" button to begin Round 1.
+                        <p class="mb-0 text-muted">The first question appears immediately.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Answer Questions:</strong> Select your answer from the four choices (A, B, C, D).
+                        <p class="mb-0 text-muted">Submit to see if you were correct.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Continue Until Mastery:</strong> Keep going through rounds until you've mastered all selected questions.
+                        <p class="mb-0 text-muted">The quiz ends when you answer every question correctly at least once.</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selecting Number of Questions Section -->
+    <section id="selecting-questions" class="mb-5">
+        <h2>Selecting Number of Questions</h2>
+        <p>
+            Super Quiz allows you to choose how many questions you want to practice based on your available study time 
+            and learning goals. The number of questions is based on the total number of terms and definitions in your study materials.
+        </p>
+
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightning-charge me-2" viewBox="0 0 16 16">
+                                <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                            </svg>
+                            10 Questions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Best for:</strong></p>
+                        <ul>
+                            <li>Daily quick review</li>
+                            <li>Short study sessions</li>
+                            <li>Testing new material</li>
+                            <li>5-10 minute practice</li>
+                        </ul>
+                        <div class="alert alert-info mb-0">
+                            <small>
+                                <strong>How it works:</strong> Randomly selects 10 questions from your study materials. 
+                                Great for consistent daily practice!
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card border-warning h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart me-2" viewBox="0 0 16 16">
+                                <path d="M7.5 1.018a7 7 0 0 0-4.79 11.566L7.5 7.793V1.018z"/>
+                                <path d="M8.5 1.018V7.5h6.482A7.001 7.001 0 0 0 8.5 1.018z"/>
+                                <path d="M14.982 8.5H8.207l-4.79 4.79A7 7 0 0 0 14.982 8.5z"/>
+                            </svg>
+                            Half
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Best for:</strong></p>
+                        <ul>
+                            <li>Moderate study sessions</li>
+                            <li>Weekly review</li>
+                            <li>Balancing breadth and depth</li>
+                            <li>15-30 minute practice</li>
+                        </ul>
+                        <div class="alert alert-info mb-0">
+                            <small>
+                                <strong>How it works:</strong> Randomly selects half of your available terms (rounded down). 
+                                Minimum of 4 questions.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card border-success h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trophy me-2" viewBox="0 0 16 16">
+                                <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5z"/>
+                            </svg>
+                            All
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Best for:</strong></p>
+                        <ul>
+                            <li>Comprehensive exam prep</li>
+                            <li>Final review before tests</li>
+                            <li>Complete mastery</li>
+                            <li>30+ minute sessions</li>
+                        </ul>
+                        <div class="alert alert-info mb-0">
+                            <small>
+                                <strong>How it works:</strong> Includes all available terms from your study materials. 
+                                Ensures complete coverage!
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-question-circle me-2" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                    </svg>
+                    Frequently Asked Questions
+                </h5>
+                <hr />
+                <p><strong>Q: How are questions selected when I choose "10" or "Half"?</strong></p>
+                <p>A: Questions are randomly selected from all available terms and definitions in your study materials. Each time you start a new Super Quiz with the same option, you'll likely see different questions, ensuring varied practice.</p>
+
+                <p><strong>Q: What happens if I have fewer than 10 terms?</strong></p>
+                <p>A: If you have fewer than 10 terms total, the "10 Questions" option will show an error when you try to start. You can still use "Half" or "All" as long as you have at least 4 terms.</p>
+
+                <p><strong>Q: Can I change the number of questions mid-quiz?</strong></p>
+                <p>A: No, the question count is set when you start the Super Quiz. You must complete or abandon the current session to start a new one with a different count.</p>
+
+                <p><strong>Q: Do I need to finish all questions in one sitting?</strong></p>
+                <p>A: Your Super Quiz session stays active for 60 minutes of inactivity. If you need to take a break, you can return within that time and continue where you left off. However, for best learning results, we recommend completing the quiz in one sitting.</p>
+
+                <p><strong>Q: How is the estimated time calculated?</strong></p>
+                <p>A: Estimated time is based on 15 seconds per question. Actual time may vary depending on question difficulty and your familiarity with the material. The estimate does not include retry rounds.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mastery System Section -->
+    <section id="mastery-system" class="mb-5">
+        <h2>Mastery System</h2>
+        <p>
+            The Super Quiz uses a <strong>mastery-based approach</strong> to ensure you truly learn the material. 
+            Here's how mastery works:
+        </p>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card border-success h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">✓ Mastered Questions</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>A question is <strong>mastered</strong> when you:</p>
+                        <ul>
+                            <li>Answer it correctly at least once</li>
+                            <li>Even if you missed it in earlier rounds</li>
+                        </ul>
+                        <p class="mb-0 text-muted">
+                            Mastered questions won't appear in future rounds—they're complete!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card border-danger h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">✗ Missed Questions</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>A question is <strong>missed</strong> when you:</p>
+                        <ul>
+                            <li>Select the wrong answer</li>
+                            <li>Haven't answered it correctly yet in any round</li>
+                        </ul>
+                        <p class="mb-0 text-muted">
+                            Missed questions come back in the next round, giving you another chance to master them.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-success mt-3" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightbulb me-2" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"/>
+                </svg>
+                Tip: Focus on Missed Questions
+            </h5>
+            <p class="mb-0">
+                Each retry round only includes questions you missed in previous rounds. This means each round gets shorter 
+                as you master more material, helping you focus on what you still need to learn.
+            </p>
+        </div>
+    </section>
+
+    <!-- Progress Tracking Section -->
+    <section id="progress-tracking" class="mb-5">
+        <h2>Progress Tracking</h2>
+        <p>
+            Super Quiz provides real-time feedback on your progress throughout the session:
+        </p>
+        <h4>During Questions:</h4>
+        <ul>
+            <li><strong>Current Round:</strong> Shows which round you're on (Round 1, Round 2, etc.)</li>
+            <li><strong>Mastered Count:</strong> How many questions you've mastered out of the total</li>
+            <li><strong>Progress Bar:</strong> Visual percentage of mastered questions (green bar)</li>
+            <li><strong>Questions Left This Round:</strong> How many questions remain in the current round</li>
+        </ul>
+        <h4>Round Summary:</h4>
+        <p>After completing each round, you'll see:</p>
+        <ul>
+            <li><strong>Correct Answers:</strong> Number of questions you answered correctly in this round</li>
+            <li><strong>Missed Questions:</strong> Number of questions you answered incorrectly</li>
+            <li><strong>Accuracy Percentage:</strong> Your accuracy for the round</li>
+        </ul>
+        <h4>Completion Summary:</h4>
+        <p>When you finish the Super Quiz, you'll see:</p>
+        <ul>
+            <li><strong>Total Rounds:</strong> How many rounds it took to master all questions</li>
+            <li><strong>Total Time:</strong> How long the entire Super Quiz session took</li>
+            <li><strong>Overall Accuracy:</strong> Your overall accuracy across all rounds</li>
+            <li><strong>Round History:</strong> A table showing details for each round</li>
+        </ul>
+    </section>
+
+    <!-- Tips Section -->
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="card bg-light">
+            <div class="card-body">
+                <h4>Make the Most of Super Quiz:</h4>
+                <ul>
+                    <li>
+                        <strong>Set Aside Enough Time:</strong> Unlike the practice Quiz, Super Quiz requires you to finish. 
+                        Check the estimated time on the start page and make sure you have enough time to complete all rounds.
+                    </li>
+                    <li>
+                        <strong>Learn from Mistakes:</strong> When you get a question wrong, read the correct answer carefully. 
+                        You'll see that question again in the next round—use it as a learning opportunity!
+                    </li>
+                    <li>
+                        <strong>Don't Rush:</strong> There's no timer, so take your time to read each question and all answer choices carefully.
+                    </li>
+                    <li>
+                        <strong>Use for Exam Prep:</strong> Super Quiz is ideal before a test because it ensures you know <em>every</em> term, 
+                        not just most of them.
+                    </li>
+                    <li>
+                        <strong>Track Your Rounds:</strong> If it takes many rounds to master all questions, that's a sign you need more study time 
+                        with the material. Consider using Term Flashcards for additional review.
+                    </li>
+                    <li>
+                        <strong>Celebrate Progress:</strong> Watch the progress bar fill up as you master more questions. 
+                        Each correct answer brings you closer to 100% mastery!
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshooting" class="mb-5">
+        <h2>Troubleshooting</h2>
+        <div class="accordion" id="troubleshootingAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble1">
+                        I don't see the Super Quiz option on my home page
+                    </button>
+                </h2>
+                <div id="trouble1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        Make sure you have uploaded study materials that include terms and definitions. 
+                        <a asp-controller="Help" asp-action="StudyMaterials">Learn how to upload study materials →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble2">
+                        I get an error saying "insufficient content" when starting Super Quiz
+                    </button>
+                </h2>
+                <div id="trouble2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        Super Quiz requires at least <strong>4 terms and definitions</strong> to generate questions. 
+                        Add more terms to your study materials to enable Super Quiz.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble3">
+                        The questions seem too hard—can I practice differently?
+                    </button>
+                </h2>
+                <div id="trouble3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        If Super Quiz feels overwhelming, try these alternatives first:
+                        <ul class="mb-0">
+                            <li><strong>Term Flashcards:</strong> Review terms at your own pace without answering questions.</li>
+                            <li><strong>Quiz:</strong> Practice with instant feedback but no mastery requirement.</li>
+                        </ul>
+                        Return to Super Quiz once you're more comfortable with the material.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble4">
+                        Can I pause or stop a Super Quiz in progress?
+                    </button>
+                </h2>
+                <div id="trouble4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        Super Quiz sessions are not saved if you navigate away. If you need to stop, you'll have to start over from the beginning. 
+                        Make sure you have enough time before starting.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trouble5">
+                        The text or colors are hard to read
+                    </button>
+                </h2>
+                <div id="trouble5" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        Try changing your theme in <strong>Settings → Appearance</strong>. 
+                        Options like High Contrast mode or different color themes may improve readability. 
+                        <a asp-controller="Help" asp-action="Settings">Learn about theme settings →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Topics Section -->
+    <section id="related" class="mb-5">
+        <h2>Related Topics</h2>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Quiz</h5>
+                        <p class="card-text">Practice with multiple-choice questions without the mastery requirement.</p>
+                        <a asp-controller="Help" asp-action="Quiz" class="btn btn-sm btn-outline-primary">Learn about Quiz →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Graded Quiz</h5>
+                        <p class="card-text">Take a scored assessment with a fixed number of questions.</p>
+                        <a asp-controller="Help" asp-action="GradedQuiz" class="btn btn-sm btn-outline-primary">Learn about Graded Quiz →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Term Flashcards</h5>
+                        <p class="card-text">Study terms and definitions at your own pace with digital flashcards.</p>
+                        <a asp-controller="Help" asp-action="TermFlashcards" class="btn btn-sm btn-outline-primary">Learn about Flashcards →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Help Center -->
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Help Center
+        </a>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: var(--bs-warning);
+        color: var(--bs-dark);
+    }
+</style>

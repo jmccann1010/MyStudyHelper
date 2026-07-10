@@ -1,0 +1,165 @@
+@{
+    ViewData["Title"] = "Study Materials Help";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index">Help</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Study Materials</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-folder-open text-primary" viewBox="0 0 16 16">
+                <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Study Materials Help</h1>
+            <p class="text-muted mb-0">Learn how to upload and manage your custom study content</p>
+        </div>
+    </div>
+
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            Study Materials allow you to customize StudyHelper with your own content. Upload markdown files containing 
+            questions, terms, or equations to personalize quizzes, flashcards, and exercises to match your curriculum 
+            or study needs.
+        </p>
+        <div class="alert alert-info">
+            <strong>Note:</strong> If you don't upload custom materials, StudyHelper uses default content for all study features.
+        </div>
+    </section>
+
+    <section id="getting-started" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Navigate:</strong> Go to Settings → Study Materials</li>
+                    <li><strong>Choose Material Type:</strong> Select Questions, Terms, or Equations</li>
+                    <li><strong>Upload File:</strong> Click "Choose File" and select your markdown (.md) file</li>
+                    <li><strong>Submit:</strong> Click "Upload" to save your custom content</li>
+                    <li><strong>Verify:</strong> Your study features will now use your uploaded content</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="study-preferences" class="mb-5">
+        <div class="card border-info">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-sliders me-2" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+                    </svg>
+                    Study Preferences
+                </h3>
+            </div>
+            <div class="card-body">
+                <h5>Enable/Disable Equation-Based Features</h5>
+                <p>
+                    You can control which study features appear on your home page. If you're focusing on terms and definitions 
+                    and don't need equation practice, you can disable equation-based features:
+                </p>
+                <ul>
+                    <li><strong>Exercise:</strong> Accounting equation problem solving</li>
+                    <li><strong>Graded Exercises:</strong> Scored equation assessments</li>
+                    <li><strong>Equation Flashcards:</strong> Formula review and practice</li>
+                </ul>
+                <p class="mt-3"><strong>How to toggle equation features:</strong></p>
+                <ol>
+                    <li>Navigate to Settings → Study Materials</li>
+                    <li>Scroll to the "Study Preferences" section</li>
+                    <li>Use the toggle switch to enable or disable "Equation-Based Features"</li>
+                    <li>Click "Save Preferences" to apply your changes</li>
+                </ol>
+                <div class="alert alert-info mt-3">
+                    <strong>Note:</strong> Disabling equation features hides them from the home page, but your uploaded 
+                    equation files remain saved. You can re-enable these features anytime. Quiz, Graded Quiz, and Term 
+                    Flashcards remain visible regardless of this setting.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="file-formats" class="mb-5">
+        <h2>File Formats</h2>
+        <p>All study materials must be in markdown (.md) format with specific structures:</p>
+
+        <h4>Questions File</h4>
+        <p>Used by Quiz and Graded Quiz features.</p>
+        <pre class="bg-light p-3"><code>## Question 1
+What is the accounting equation?
+
+- Assets = Liabilities + Equity (correct)
+- Revenue - Expenses = Net Income
+- Assets + Liabilities = Equity
+- Revenue + Expenses = Profit
+
+Explanation: The fundamental accounting equation shows that assets are financed by liabilities and equity.</code></pre>
+
+        <h4>Terms File</h4>
+        <p>Used by Term Flashcards.</p>
+        <pre class="bg-light p-3"><code>## Asset
+A resource owned by a business that provides future economic benefits.
+
+## Liability
+An obligation or debt that a business owes to external parties.</code></pre>
+
+        <h4>Equations File</h4>
+        <p>Used by Exercise, Graded Exercises, and Equation Flashcards.</p>
+        <pre class="bg-light p-3"><code">## Net Income
+Net Income = Revenue - Expenses
+
+Variables:
+- Net Income: Profit or loss for a period
+- Revenue: Total income earned
+- Expenses: Total costs incurred</code></pre>
+    </section>
+
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="alert alert-success">
+            <strong>Start Small:</strong> Upload a file with 10-20 items first to test formatting before adding more content.
+        </div>
+        <div class="alert alert-success">
+            <strong>Check Formatting:</strong> Ensure your markdown follows the exact structure shown above—spacing and headings matter.
+        </div>
+        <div class="alert alert-success">
+            <strong>Mark Correct Answers:</strong> For questions, always add "(correct)" after the right answer choice.
+        </div>
+        <div class="alert alert-warning">
+            <strong>Important:</strong> Files must be UTF-8 encoded markdown (.md) files. Other formats will be rejected.
+        </div>
+    </section>
+
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header"><h3 class="mb-0">Related Topics</h3></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5>Quiz</h5>
+                        <p>Learn how custom questions are used in the Quiz feature.</p>
+                        <a asp-controller="Help" asp-action="Quiz" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h5>Exercise</h5>
+                        <p>Understand how custom equations power the Exercise feature.</p>
+                        <a asp-controller="Help" asp-action="Exercise" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">← Back to Help Overview</a>
+    </div>
+</div>

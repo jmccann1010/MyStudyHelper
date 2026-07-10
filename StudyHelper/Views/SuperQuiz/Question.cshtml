@@ -1,0 +1,72 @@
+@model SuperQuizQuestionViewModel
+@{
+    ViewData["Title"] = "Super Quiz - Question";
+}
+
+<link rel="stylesheet" href="~/css/quiz.css" />
+
+<div class="container mt-4">
+    <!-- Progress Bar -->
+    @if (Model.Progress != null)
+    {
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span><strong>Round @Model.Progress.CurrentRound</strong></span>
+                    <span>@Model.Progress.Mastered / @Model.Progress.TotalQuestions Mastered</span>
+                </div>
+                <div class="progress" style="height: 25px;">
+                    <div class="progress-bar bg-success" role="progressbar" 
+                         style="width: @Model.Progress.OverallProgress%"
+                         aria-valuenow="@Model.Progress.OverallProgress" aria-valuemin="0" aria-valuemax="100">
+                        @Model.Progress.OverallProgress.ToString("F1")%
+                    </div>
+                </div>
+                <div class="text-muted small mt-1">
+                    @Model.Progress.QuestionsLeftThisRound question@(Model.Progress.QuestionsLeftThisRound != 1 ? "s" : "") left this round
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Question Card -->
+    <div class="card quiz-card shadow-lg">
+        <div class="card-header quiz-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Super Quiz</h4>
+                <span class="badge bg-light text-dark">@Model.DirectionLabel</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="quiz-question-text mb-4">
+                @Html.Raw(Model.QuestionText)
+            </div>
+
+            <form method="post" asp-action="SubmitAnswer">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="sessionId" value="@Model.SessionId" />
+
+                <div class="quiz-answer-options">
+                    @for (int i = 0; i < Model.AnswerOptions.Count; i++)
+                    {
+                        var letter = ((char)('A' + i)).ToString();
+                        <label class="quiz-answer-option">
+                            <input type="radio" name="selectedAnswerIndex" value="@i" required />
+                            <span class="option-letter">@letter -</span>
+                            <span class="option-text">@Html.Raw(Model.AnswerOptions[i])</span>
+                        </label>
+                    }
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Submit Answer
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <small>@Model.Module - @Model.Topic</small>
+        </div>
+    </div>
+</div>

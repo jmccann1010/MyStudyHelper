@@ -1,0 +1,431 @@
+@{
+    ViewData["Title"] = "Exercise Help";
+}
+
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Help" asp-action="Index">Help</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Exercise</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header with Icon -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-calculator text-success" viewBox="0 0 16 16">
+                <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Exercise Help</h1>
+            <p class="text-muted mb-0">Learn how to practice solving accounting equations</p>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="card bg-light mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+                Table of Contents
+            </h5>
+        </div>
+        <div class="card-body">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="#overview">Overview</a>
+                <a class="nav-link" href="#getting-started">Getting Started</a>
+                <a class="nav-link" href="#solving-problems">Solving Problems</a>
+                <a class="nav-link" href="#validation">Answer Validation</a>
+                <a class="nav-link" href="#tips">Tips & Best Practices</a>
+                <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+                <a class="nav-link" href="#related">Related Topics</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            The Exercise feature provides unlimited practice solving accounting equations. Unlike quizzes, this mode 
+            focuses on calculations—you'll be given equations with known values and asked to solve for a specific variable. 
+            Instant feedback helps you learn the correct approach and improve your problem-solving skills.
+        </p>
+        <div class="alert alert-info" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle me-2" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+                Note
+            </h5>
+            <p class="mb-0">
+                Problems are generated from your uploaded equation file. If you haven't uploaded a custom file, 
+                default equations will be used. <a asp-controller="Help" asp-action="StudyMaterials">Learn more about study materials →</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                        <strong>Navigate to Exercise:</strong> From the home page, click the "Exercise" button.
+                        <p class="mb-0 text-muted">You'll see the exercise start page.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Start Practicing:</strong> Click "Start Exercise" to begin.
+                        <p class="mb-0 text-muted">The first problem will appear immediately.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Read the Problem:</strong> Review the equation and the given values.
+                        <p class="mb-0 text-muted">You'll see which variable you need to solve for.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Calculate the Answer:</strong> Solve the equation and enter your numeric answer.
+                        <p class="mb-0 text-muted">You can use decimals (e.g., 12.5) or whole numbers.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Submit and Continue:</strong> Click "Submit Answer" to see if you're correct.
+                        <p class="mb-0 text-muted">Instant feedback shows the correct answer and solution steps.</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solving Problems Section -->
+    <section id="solving-problems" class="mb-5">
+        <h2>Solving Problems</h2>
+        <p>
+            Each exercise problem presents an accounting equation with several known values and one unknown variable 
+            that you must calculate.
+        </p>
+        <h4>Problem Format:</h4>
+        <ul>
+            <li><strong>Equation:</strong> The accounting formula (e.g., Assets = Liabilities + Equity)</li>
+            <li><strong>Given Values:</strong> Known numbers for some variables</li>
+            <li><strong>Solve For:</strong> The variable you need to calculate</li>
+            <li><strong>Answer Input:</strong> Text box to enter your numeric answer</li>
+        </ul>
+        <div class="alert alert-success" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightbulb me-2" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"/>
+                </svg>
+                Tip
+            </h5>
+            <p class="mb-0">
+                Use pen and paper or a calculator to work through the problem. The goal is to practice your calculation 
+                skills, not to rush through problems.
+            </p>
+        </div>
+    </section>
+
+    <!-- Validation Section -->
+    <section id="validation" class="mb-5">
+        <h2>Answer Validation</h2>
+        <p>
+            After submitting your answer, the system validates it and provides immediate feedback with the solution.
+        </p>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Correct Answers</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>When your answer is correct, you'll see:</p>
+                        <ul>
+                            <li>✓ Confirmation message</li>
+                            <li>Your answer displayed</li>
+                            <li>Solution steps showing how to solve the equation</li>
+                            <li>"Next Problem" button to continue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Incorrect Answers</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>When your answer is incorrect, you'll see:</p>
+                        <ul>
+                            <li>✗ Notice that your answer was wrong</li>
+                            <li>The correct answer highlighted</li>
+                            <li>Detailed solution steps to understand the process</li>
+                            <li>"Next Problem" button to try another</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-warning" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-triangle me-2" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
+                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
+                </svg>
+                Important
+            </h5>
+            <p class="mb-0">
+                Answers must be numeric. Enter only numbers and decimal points (e.g., 42 or 12.5). Do not include 
+                currency symbols, commas, or units.
+            </p>
+        </div>
+    </section>
+
+    <!-- Tips & Best Practices Section -->
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Work Through the Math
+                </h5>
+                <p class="card-text">
+                    Don't guess—write out the equation, substitute the given values, and solve step by step. This builds 
+                    your calculation skills and helps you catch mistakes.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Read Solution Steps
+                </h5>
+                <p class="card-text">
+                    Whether you're right or wrong, always review the solution steps shown after each answer. This 
+                    reinforces the correct approach and helps you understand alternative methods.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Use a Calculator
+                </h5>
+                <p class="card-text">
+                    It's okay to use a calculator for complex calculations. The focus is on understanding the equation 
+                    structure and solving process, not on mental math.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Practice Regularly
+                </h5>
+                <p class="card-text">
+                    Consistent practice builds fluency. Try solving 5-10 problems daily to maintain and improve your 
+                    equation-solving skills.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshooting" class="mb-5">
+        <h2>Troubleshooting</h2>
+        <div class="accordion" id="troubleshootingAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: My answer is marked incorrect but seems right
+                    </button>
+                </h2>
+                <div id="problem1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> Check your answer format and rounding.</p>
+                        <ul>
+                            <li>Ensure you entered only numbers (no $, commas, or units)</li>
+                            <li>Check decimal placement (12.5 vs 125)</li>
+                            <li>Review the solution steps to see if you made a calculation error</li>
+                            <li>Some problems may require rounding to a specific decimal place</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Can't submit my answer
+                    </button>
+                </h2>
+                <div id="problem2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> Ensure the input field contains a valid number.</p>
+                        <ul>
+                            <li>Enter a numeric value (whole number or decimal)</li>
+                            <li>Don't leave the field empty</li>
+                            <li>Remove any non-numeric characters</li>
+                            <li>Refresh the page if the submit button is unresponsive</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Problems are too difficult
+                    </button>
+                </h2>
+                <div id="problem3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> Upload a custom equation file with easier problems.</p>
+                        <ul>
+                            <li>Navigate to <strong>Study Materials</strong></li>
+                            <li>Upload an equations file with simpler formulas and smaller numbers</li>
+                            <li>The Exercise feature will use your custom content</li>
+                            <li><a asp-controller="Help" asp-action="StudyMaterials">Learn how to format equation files →</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Same equations keep appearing
+                    </button>
+                </h2>
+                <div id="problem4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> The system randomizes problems, but a small equation set causes repeats.</p>
+                        <ul>
+                            <li>Add more equations to your custom study material file</li>
+                            <li>Aim for at least 15-20 different equations for variety</li>
+                            <li>Each equation can have multiple variables, increasing problem diversity</li>
+                            <li>Problems are generated by randomly selecting values for variables</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Topics Section -->
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="mb-0">Related Topics</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clipboard-check text-secondary me-2" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                    </svg>
+                                    Graded Exercises
+                                </h5>
+                                <p class="card-text">Ready for a scored assessment? Try Graded Exercises to track your performance.</p>
+                                <a asp-controller="Help" asp-action="GradedExercises" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-journal-text text-warning me-2" viewBox="0 0 16 16">
+                                        <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                                        <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                        <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                                    </svg>
+                                    Equation Flashcards
+                                </h5>
+                                <p class="card-text">Review accounting equations in flashcard format for quick memorization.</p>
+                                <a asp-controller="Help" asp-action="EquationFlashcards" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-folder-open text-primary me-2" viewBox="0 0 16 16">
+                                        <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z"/>
+                                    </svg>
+                                    Study Materials
+                                </h5>
+                                <p class="card-text">Learn how to upload and format custom equation files for exercises.</p>
+                                <a asp-controller="Help" asp-action="StudyMaterials" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-question-circle text-primary me-2" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                                    </svg>
+                                    Quiz
+                                </h5>
+                                <p class="card-text">Prefer multiple-choice questions? Try the Quiz feature for concept practice.</p>
+                                <a asp-controller="Help" asp-action="Quiz" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Help Overview -->
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Help Overview
+        </a>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>StudyHelper</RootNamespace>
+    <AssemblyName>StudyHelper</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove=".github\**" />
+    <Content Remove=".github\**" />
+    <EmbeddedResource Remove=".github\**" />
+    <None Remove=".github\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".github\agents\chat-logging-specialist.agent.agent.md" />
+    <None Include=".github\agents\chat-logging-specialist.agent.md" />
+    <None Include=".github\agents\my-agent.agent.md" />
+    <None Include=".github\copilot-instructions.md" />
+    <None Include=".github\design\architecture-summary.md" />
+    <None Include=".github\design\backend-design-latex-equations.md" />
+    <None Include=".github\design\backend-design.md" />
+    <None Include=".github\design\equation-flashcards-backend-design.md" />
+    <None Include=".github\design\equation-flashcards-design-summary.md" />
+    <None Include=".github\design\equation-flashcards-frontend-design.md" />
+    <None Include=".github\design\feature-4958-flashcards-backend-design.md" />
+    <None Include=".github\design\feature-4958-flashcards-frontend-design.md" />
+    <None Include=".github\design\feature-4979-backend-design.md" />
+    <None Include=".github\design\feature-4979-design-summary.md" />
+    <None Include=".github\design\feature-4979-frontend-design.md" />
+    <None Include=".github\design\feature-4979-implementation-handoff.md" />
+    <None Include=".github\design\feature-4995-backend-design.md" />
+    <None Include=".github\design\feature-4995-design-summary.md" />
+    <None Include=".github\design\feature-4995-frontend-design.md" />
+    <None Include=".github\design\feature-5001-backend-design.md" />
+    <None Include=".github\design\feature-5001-design-summary.md" />
+    <None Include=".github\design\feature-5001-frontend-design.md" />
+    <None Include=".github\design\feature-5001-frontend-implementation-summary.md" />
+    <None Include=".github\design\feature-5001-parser-integration-summary.md" />
+    <None Include=".github\design\feature-disable-equations-backend-design.md" />
+    <None Include=".github\design\feature-disable-equations-design-summary.md" />
+    <None Include=".github\design\feature-disable-equations-frontend-design.md" />
+    <None Include=".github\design\feature-disable-equations-spec.md" />
+    <None Include=".github\design\feature-graded-exercises-backend-design.md" />
+    <None Include=".github\design\feature-graded-exercises-design-summary.md" />
+    <None Include=".github\design\feature-graded-exercises-frontend-design.md" />
+    <None Include=".github\design\feature-graded-quiz-backend-design.md" />
+    <None Include=".github\design\feature-graded-quiz-frontend-design.md" />
+    <None Include=".github\design\feature-help-documentation-backend-design.md" />
+    <None Include=".github\design\feature-help-documentation-design-summary.md" />
+    <None Include=".github\design\feature-help-documentation-frontend-design.md" />
+    <None Include=".github\design\feature-quiz-bidirectional-questions-backend-design.md" />
+    <None Include=".github\design\feature-quiz-bidirectional-questions-design-summary.md" />
+    <None Include=".github\design\feature-quiz-bidirectional-questions-frontend-design.md" />
+    <None Include=".github\design\feature-quiz-bidirectional-questions-spec.md" />
+    <None Include=".github\design\feature-super-quiz-backend-design.md" />
+    <None Include=".github\design\feature-super-quiz-design-summary.md" />
+    <None Include=".github\design\feature-super-quiz-frontend-design.md" />
+    <None Include=".github\design\feature-super-quiz-question-count-backend-design.md" />
+    <None Include=".github\design\feature-super-quiz-question-count-design-summary.md" />
+    <None Include=".github\design\feature-super-quiz-question-count-frontend-design.md" />
+    <None Include=".github\design\feature-super-quiz-question-count-spec.md" />
+    <None Include=".github\design\feature-super-quiz-spec.md" />
+    <None Include=".github\design\flashcard-timer-zero-design-summary.md" />
+    <None Include=".github\design\flashcard-timer-zero-frontend-design.md" />
+    <None Include=".github\design\frontend-design-latex-equations.md" />
+    <None Include=".github\design\frontend-design.md" />
+    <None Include=".github\docs\equation-flashcards-quick-start.md" />
+    <None Include=".github\docs\EQUATION-FLASHCARDS-README.md" />
+    <None Include=".github\docs\exercises-feature-readme.md" />
+    <None Include=".github\docs\exercises-quick-start.md" />
+    <None Include=".github\docs\exercises-technical-docs.md" />
+    <None Include=".github\docs\exercises-user-guide.md" />
+    <None Include=".github\docs\flashcards-documentation-index.md" />
+    <None Include=".github\docs\flashcards-feature-readme.md" />
+    <None Include=".github\docs\flashcards-quick-start.md" />
+    <None Include=".github\docs\flashcards-technical-docs.md" />
+    <None Include=".github\docs\flashcards-user-guide.md" />
+    <None Include=".github\documentation\card-title-dark-theme-fix.md" />
+    <None Include=".github\documentation\disable-equations-quick-reference.md" />
+    <None Include=".github\documentation\help-pages-super-quiz-question-count-update.md" />
+    <None Include=".github\documentation\help-pages-update-summary.md" />
+    <None Include=".github\documentation\super-quiz-options-visual-examples.md" />
+    <None Include=".github\documentation\text-muted-dark-theme-fix.md" />
+    <None Include=".github\fixes\bug-fix-super-quiz-term-counting.md" />
+    <None Include=".github\implementation\backend-verification-report.md" />
+    <None Include=".github\implementation\feature-5001-backend-implementation.md" />
+    <None Include=".github\implementation\feature-super-quiz-question-count-backend-complete.md" />
+    <None Include=".github\implementation\feature-super-quiz-question-count-frontend-complete.md" />
+    <None Include=".github\implementation\feature-super-quiz-question-count-implementation-complete.md" />
+    <None Include=".github\implementation\flashcard-timer-zero-frontend-implementation.md" />
+    <None Include=".github\implementation\frontend-implementation-report.md" />
+    <None Include=".github\implementation\super-quiz-backend-implementation.md" />
+    <None Include=".github\implementation\super-quiz-complete-implementation.md" />
+    <None Include=".github\implementation\super-quiz-expanded-options-complete.md" />
+    <None Include=".github\implementation\super-quiz-frontend-implementation.md" />
+    <None Include=".github\logs\copilot-chat-log.md" />
+    <None Include=".github\planning\feature-accounting-exercises-equations.md" />
+    <None Include=".github\project-management\feature-4979-backlog.md" />
+    <None Include=".github\project-management\feature-graded-exercises-spec.md" />
+    <None Include=".github\project-management\feature-graded-quiz-backlog.md" />
+    <None Include=".github\project-management\feature-help-documentation-spec.md" />
+    <None Include=".github\reviews\code-review-expanded-options.md" />
+    <None Include=".github\reviews\code-review-findings.md" />
+    <None Include=".github\reviews\code-review-fixes-applied.md" />
+    <None Include=".github\reviews\code-review-fixes-implementation.md" />
+    <None Include=".github\reviews\code-review-fixes-report.md" />
+    <None Include=".github\reviews\code-review-recommendations-applied.md" />
+    <None Include=".github\reviews\code-review-super-quiz-question-count.md" />
+    <None Include=".github\reviews\flashcards-code-review-report.md" />
+    <None Include=".github\reviews\flashcards-qa-testing-report.md" />
+    <None Include=".github\reviews\flashcards-security-review-report.md" />
+    <None Include=".github\reviews\qa-validation-summary.md" />
+    <None Include=".github\reviews\security-fixes-report.md" />
+    <None Include=".github\reviews\security-review-report.md" />
+    <None Include=".github\testing\super-quiz-dynamic-options-test-scenarios.md" />
+    <None Include="wwwroot\js\equation-flashcard.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit.assert" Version="2.9.3" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App_Data\Equations.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="App_Data\TermsAndDefinitions.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="App_Data\users.dat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+	<Target Name="_RemovePublishDirBeforePublishing" BeforeTargets="BeforePublish">
+		<RemoveDir Directories="$(PublishDir)" Condition="'$(PublishDir)' != ''" />
+	</Target>
+	
+</Project>

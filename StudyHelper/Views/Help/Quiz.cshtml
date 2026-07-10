@@ -1,0 +1,416 @@
+@{
+    ViewData["Title"] = "Quiz Help";
+}
+
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Help" asp-action="Index">Help</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Quiz</li>
+        </ol>
+    </nav>
+
+    <!-- Page Header with Icon -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-question-circle text-primary" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Quiz Help</h1>
+            <p class="text-muted mb-0">Learn how to use the practice quiz feature</p>
+        </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="card bg-light mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+                Table of Contents
+            </h5>
+        </div>
+        <div class="card-body">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="#overview">Overview</a>
+                <a class="nav-link" href="#getting-started">Getting Started</a>
+                <a class="nav-link" href="#answering-questions">Answering Questions</a>
+                <a class="nav-link" href="#instant-feedback">Instant Feedback</a>
+                <a class="nav-link" href="#tips">Tips & Best Practices</a>
+                <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+                <a class="nav-link" href="#related">Related Topics</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            The Quiz feature provides an interactive practice mode where you can answer multiple-choice questions 
+            and receive instant feedback. Unlike the Graded Quiz, this mode focuses on learning rather than scoring—you 
+            can continue answering questions indefinitely, making it perfect for casual study sessions or warm-up practice.
+        </p>
+        <div class="alert alert-info" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle me-2" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+                Note
+            </h5>
+            <p class="mb-0">
+                Questions are generated from your uploaded study materials. If you haven't uploaded custom content, 
+                default questions will be used. <a asp-controller="Help" asp-action="StudyMaterials">Learn more about study materials →</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                        <strong>Navigate to Quiz:</strong> From the home page, click the "Quiz" button.
+                        <p class="mb-0 text-muted">You'll see the quiz setup page.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Start the Quiz:</strong> Click the "Start Quiz" button to begin.
+                        <p class="mb-0 text-muted">The first question will appear immediately.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Read the Question:</strong> Review the question text carefully.
+                        <p class="mb-0 text-muted">Questions are multiple-choice with 4 possible answers.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Select Your Answer:</strong> Click on your chosen answer button.
+                        <p class="mb-0 text-muted">Feedback will appear immediately after your selection.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Continue Practicing:</strong> Click "Next Question" to continue.
+                        <p class="mb-0 text-muted">There's no limit—keep practicing as long as you want!</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Answering Questions Section -->
+    <section id="answering-questions" class="mb-5">
+        <h2>Answering Questions</h2>
+        <p>
+            Each quiz question presents four possible answers. Only one answer is correct. After you select an answer, 
+            you'll immediately see whether you were right or wrong.
+        </p>
+        <h4>What Happens When You Answer:</h4>
+        <ul>
+            <li><strong>Correct Answer:</strong> A green success message confirms your choice and explains why it's correct.</li>
+            <li><strong>Incorrect Answer:</strong> A red error message shows the correct answer and provides an explanation.</li>
+            <li><strong>Next Question Button:</strong> Appears after every answer, allowing you to continue practicing.</li>
+        </ul>
+        <div class="alert alert-success" role="alert">
+            <h5 class="alert-heading">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightbulb me-2" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"/>
+                </svg>
+                Tip
+            </h5>
+            <p class="mb-0">
+                Take your time reading each question and all answer choices before selecting. Unlike the Graded Quiz, 
+                there's no timer or score pressure in practice mode.
+            </p>
+        </div>
+    </section>
+
+    <!-- Instant Feedback Section -->
+    <section id="instant-feedback" class="mb-5">
+        <h2>Instant Feedback</h2>
+        <p>
+            The Quiz feature provides immediate feedback after every answer, helping you learn as you practice:
+        </p>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Correct Answers</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>When you answer correctly, you'll see:</p>
+                        <ul>
+                            <li>✓ Confirmation that your answer was correct</li>
+                            <li>Explanation of why the answer is right</li>
+                            <li>Reinforcement of key concepts</li>
+                            <li>"Next Question" button to continue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">Incorrect Answers</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>When you answer incorrectly, you'll see:</p>
+                        <ul>
+                            <li>✗ Notice that your answer was incorrect</li>
+                            <li>The correct answer highlighted</li>
+                            <li>Explanation of why your answer was wrong</li>
+                            <li>Learning opportunity to improve understanding</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips & Best Practices Section -->
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Use Quiz for Warm-Up
+                </h5>
+                <p class="card-text">
+                    Start your study session with the Quiz feature to refresh your memory before diving into more 
+                    intensive study modes like Graded Quiz or Exercises.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Read Explanations Carefully
+                </h5>
+                <p class="card-text">
+                    Whether you answer correctly or incorrectly, always read the explanation provided. This reinforces 
+                    your understanding and helps you remember key concepts.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Practice Regularly
+                </h5>
+                <p class="card-text">
+                    Consistent practice with the Quiz feature helps build long-term retention. Try answering at least 
+                    5-10 questions daily to maintain your skills.
+                </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star text-warning me-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                    Don't Rush
+                </h5>
+                <p class="card-text">
+                    Since there's no timer or score tracking in practice mode, take your time to think through each 
+                    question. The goal is learning, not speed.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshooting" class="mb-5">
+        <h2>Troubleshooting</h2>
+        <div class="accordion" id="troubleshootingAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Questions are too easy or too hard
+                    </button>
+                </h2>
+                <div id="problem1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> Upload your own study materials to customize question difficulty.</p>
+                        <ul>
+                            <li>Navigate to <strong>Study Materials</strong> from the home page</li>
+                            <li>Upload a markdown file with questions at your desired difficulty level</li>
+                            <li>The Quiz will use your custom content instead of defaults</li>
+                            <li><a asp-controller="Help" asp-action="StudyMaterials">Learn how to format study materials →</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Same questions keep appearing
+                    </button>
+                </h2>
+                <div id="problem2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> The Quiz randomizes questions, but if your study material is small, you may see repeats.</p>
+                        <ul>
+                            <li>Add more questions to your study material file</li>
+                            <li>Ensure your markdown file contains at least 20-30 questions for variety</li>
+                            <li>Check that all questions are properly formatted</li>
+                            <li>Questions are selected randomly each time you click "Next Question"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Answer buttons not working
+                    </button>
+                </h2>
+                <div id="problem3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> Try these steps to resolve button issues:</p>
+                        <ul>
+                            <li>Refresh the page (F5 or Ctrl+R)</li>
+                            <li>Clear your browser cache and cookies</li>
+                            <li>Try a different browser (Chrome, Firefox, Edge, Safari)</li>
+                            <li>Ensure JavaScript is enabled in your browser settings</li>
+                            <li>Check your internet connection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problem4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle me-2 text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                        </svg>
+                        Problem: Can't find the Quiz feature
+                    </button>
+                </h2>
+                <div id="problem4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Solution:</strong> The Quiz feature is accessible from multiple locations:</p>
+                        <ul>
+                            <li>From the <strong>Home page</strong>, click the blue "Quiz" card</li>
+                            <li>You must be logged in to access study features</li>
+                            <li>If you're logged in and still can't see it, try logging out and back in</li>
+                            <li>Contact support if the issue persists</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Topics Section -->
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="mb-0">Related Topics</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-check text-danger me-2" viewBox="0 0 16 16">
+                                        <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                                    </svg>
+                                    Graded Quiz
+                                </h5>
+                                <p class="card-text">Ready for a scored assessment? Try the Graded Quiz for performance tracking and detailed results.</p>
+                                <a asp-controller="Help" asp-action="GradedQuiz" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-folder-open text-primary me-2" viewBox="0 0 16 16">
+                                        <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z"/>
+                                    </svg>
+                                    Study Materials
+                                </h5>
+                                <p class="card-text">Learn how to upload and manage custom questions for your Quiz practice sessions.</p>
+                                <a asp-controller="Help" asp-action="StudyMaterials" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-card-text text-info me-2" viewBox="0 0 16 16">
+                                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                        <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                                    </svg>
+                                    Term Flashcards
+                                </h5>
+                                <p class="card-text">Another great way to practice: use flashcards to memorize terms and definitions.</p>
+                                <a asp-controller="Help" asp-action="TermFlashcards" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calculator text-success me-2" viewBox="0 0 16 16">
+                                        <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                                        <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+                                    </svg>
+                                    Exercise
+                                </h5>
+                                <p class="card-text">Want to practice calculations? Try the Exercise feature for solving accounting equations.</p>
+                                <a asp-controller="Help" asp-action="Exercise" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Help Overview -->
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Help Overview
+        </a>
+    </div>
+</div>

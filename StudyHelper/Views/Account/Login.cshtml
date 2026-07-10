@@ -1,0 +1,105 @@
+@model StudyHelper.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    ViewData["IsAccountPage"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+
+<div class="account-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                <div class="card account-card">
+                    <div class="card-body">
+                        <h2 class="text-center">Login</h2>
+
+                        <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" 
+                              method="post" id="loginForm">
+
+                            @if (ViewData.ModelState.ErrorCount > 0 && !ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    <div asp-validation-summary="ModelOnly"></div>
+                                </div>
+                            }
+
+                            <div class="mb-3">
+                                <label asp-for="Username" class="form-label"></label>
+                                <input asp-for="Username" 
+                                       class="form-control" 
+                                       autocomplete="username" 
+                                       autofocus 
+                                       aria-required="true"
+                                       aria-describedby="usernameError" />
+                                <span id="usernameError" asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label"></label>
+                                <input asp-for="Password" 
+                                       class="form-control" 
+                                       autocomplete="current-password" 
+                                       aria-required="true"
+                                       aria-describedby="passwordError" />
+                                <span id="passwordError" asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input asp-for="RememberMe" class="form-check-input" type="checkbox" />
+                                <label asp-for="RememberMe" class="form-check-label"></label>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg" id="loginButton">
+                                    <span class="btn-text">Login</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <p class="mb-2">Don't have an account?</p>
+                            <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="btn btn-outline-primary">
+                                Register
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('loginForm');
+            const button = document.getElementById('loginButton');
+
+            if (form && button) {
+                form.addEventListener('submit', function(e) {
+                    // Add visual loading state
+                    button.disabled = true;
+
+                    // Add spinner
+                    const spinner = document.createElement('span');
+                    spinner.className = 'btn-spinner';
+                    button.insertBefore(spinner, button.firstChild);
+
+                    // Update button text
+                    const btnText = button.querySelector('.btn-text');
+                    if (btnText) {
+                        btnText.textContent = 'Logging in...';
+                    }
+                });
+            }
+        })();
+    </script>
+}

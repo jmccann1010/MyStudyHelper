@@ -1,0 +1,64 @@
+@model StudyHelper.ViewModels.QuizResultViewModel
+
+@{
+    ViewData["Title"] = "Quiz Result";
+    var alertClass = Model.IsCorrect ? "alert-success" : "alert-danger";
+    var iconSymbol = Model.IsCorrect ? "✓" : "✗";
+}
+
+<div class="quiz-container">
+    <div class="quiz-metadata mb-3">
+        <span class="badge bg-primary">@Model.Module</span>
+        <span class="badge bg-secondary">@Model.Topic</span>
+        <span class="badge bg-info quiz-direction-badge" title="Question Direction">
+            <i class="bi bi-arrow-left-right"></i> @Model.DirectionLabel
+        </span>
+    </div>
+
+    <div class="alert @alertClass quiz-feedback d-flex align-items-center" role="alert">
+        <span class="quiz-feedback-icon me-2">@iconSymbol</span>
+        <strong>@Model.FeedbackMessage</strong>
+    </div>
+
+    <div class="card quiz-result-card shadow-sm">
+        <div class="card-body">
+            <div class="quiz-result-section">
+                <h5 class="quiz-result-label">Your Answer:</h5>
+                <p class="quiz-result-text @(Model.IsCorrect ? "text-success" : "text-danger") fw-bold">
+                    @Model.UserAnswerText
+                </p>
+            </div>
+
+            <div class="quiz-result-section">
+                <h5 class="quiz-result-label">Correct Answer:</h5>
+                <p class="quiz-result-text text-success fw-bold">
+                    @Model.CorrectAnswerText
+                </p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Explanation))
+            {
+                <div class="quiz-result-section">
+                    <h5 class="quiz-result-label">Explanation:</h5>
+                    <p class="quiz-result-text">
+                        @Model.Explanation
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="quiz-navigation mt-4 text-center">
+        <a asp-controller="Quiz" asp-action="Question" class="btn btn-primary me-2">Try Another Question</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">← Back to Home</a>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/quiz-bidirectional.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/quiz.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,65 @@
+@model SuperQuizRoundSummaryViewModel
+@{
+    ViewData["Title"] = "Round Complete";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Round @Model.RoundSummary.RoundNumber Complete!</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center mb-4">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-success">@Model.RoundSummary.CorrectAnswers</h3>
+                                    <p class="mb-0">Correct</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-danger">@Model.RoundSummary.IncorrectAnswers</h3>
+                                    <p class="mb-0">Missed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="text-primary">@Model.RoundSummary.AccuracyPercent.ToString("F1")%</h3>
+                                    <p class="mb-0">Accuracy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Progress != null && Model.Progress.Remaining > 0)
+                    {
+                        <div class="alert alert-warning">
+                            <h5><i class="bi bi-arrow-repeat"></i> Let's try those again!</h5>
+                            <p class="mb-0">
+                                You have <strong>@Model.Progress.Remaining question@(Model.Progress.Remaining != 1 ? "s" : "")</strong> remaining to master.
+                                Don't worry—practice makes perfect!
+                            </p>
+                        </div>
+
+                        <form method="post" asp-action="ContinueNextRound">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="sessionId" value="@Model.SessionId" />
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-arrow-right-circle"></i> Continue to Round @(Model.RoundSummary.RoundNumber + 1)
+                                </button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

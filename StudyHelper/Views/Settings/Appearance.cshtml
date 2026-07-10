@@ -1,0 +1,96 @@
+@model StudyHelper.ViewModels.AppearanceViewModel
+@{
+    ViewData["Title"] = "Appearance Settings";
+}
+
+<div class="container appearance-container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Appearance Settings</h1>
+            <p class="lead">Customize the look and feel of StudyHelper.</p>
+        </div>
+    </div>
+
+    <div class="row theme-cards-grid">
+        @foreach (var theme in Model.AvailableThemes)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card theme-card" data-theme-id="@theme.Id">
+                    <div class="card-body">
+                        <h5 class="card-title">@theme.Name</h5>
+                        <p class="card-text text-muted">@theme.Description</p>
+
+                        <!-- Color Swatches -->
+                        <div class="color-swatches mb-3">
+                            @foreach (var color in theme.ColorSwatches)
+                            {
+                                <span class="color-swatch" 
+                                      style="background-color: @color" 
+                                      title="@color"
+                                      aria-label="Color swatch @color"></span>
+                            }
+                        </div>
+
+                        <!-- Font Sample -->
+                        <div class="font-sample mb-3" style="font-family: @theme.FontFamily">
+                            <p class="mb-1"><strong>AaBbCc 123</strong></p>
+                            <p class="small text-muted mb-0">@theme.FontFamily</p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="button" 
+                                    class="btn btn-outline-primary preview-theme-btn" 
+                                    data-theme-id="@theme.Id"
+                                    aria-label="Preview @theme.Name theme">
+                                Preview
+                            </button>
+                            <button type="button" 
+                                    class="btn btn-primary apply-theme-btn" 
+                                    data-theme-id="@theme.Id"
+                                    aria-label="Apply @theme.Name theme">
+                                Apply Theme
+                            </button>
+                        </div>
+
+                        <!-- Active Badge (shown via JavaScript) -->
+                        @if (theme.IsDefault)
+                        {
+                            <span class="badge bg-success mt-2 current-theme-badge d-none">
+                                Currently Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success mt-2 current-theme-badge d-none">
+                                Currently Active
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Toast Notification for Success Feedback -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="themeToast" class="toast align-items-center text-white bg-success border-0" 
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="themeToastMessage">
+                Theme applied successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/theme-selector.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/appearance.css" asp-append-version="true" />
+}

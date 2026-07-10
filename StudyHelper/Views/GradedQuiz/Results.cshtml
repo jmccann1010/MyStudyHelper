@@ -1,0 +1,156 @@
+@model GradedQuizResultViewModel
+
+@{
+    ViewData["Title"] = "Quiz Results";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <!-- Header -->
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0 text-center">Quiz Results</h4>
+        </div>
+
+        <!-- Score Summary -->
+        <div class="card-body text-center">
+
+            <!-- Performance Rating -->
+            <div class="mb-4">
+                <h2 class="display-4">@GetPerformanceEmoji(Model.PerformanceRating) @Model.PerformanceRating!</h2>
+                <h3 class="text-primary">You scored @Model.Percentage%</h3>
+                <p class="text-muted">@Model.CorrectCount out of @Model.TotalQuestions questions correct</p>
+            </div>
+
+            <!-- Score Cards -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card bg-success bg-opacity-10 border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-check text-success"></i> Correct
+                            </h5>
+                            <h2 class="text-success">@Model.CorrectCount</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-danger bg-opacity-10 border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-times text-danger"></i> Incorrect
+                            </h5>
+                            <h2 class="text-danger">@Model.IncorrectCount</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Question Review -->
+            <div class="text-start">
+                <h4 class="mb-4">Question Review</h4>
+
+                @for (int i = 0; i < Model.Questions.Count; i++)
+                {
+                    var question = Model.Questions[i];
+                    var userAnswerIndex = Model.UserAnswers.ContainsKey(i) ? Model.UserAnswers[i] : -1;
+                    var isCorrect = userAnswerIndex == question.CorrectAnswerIndex;
+
+                    <div class="card mb-3 border-@(isCorrect ? "success" : "danger")">
+                        <div class="card-header bg-@(isCorrect ? "success" : "danger") bg-opacity-10">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">
+                                        Q@(i + 1): @question.QuestionText
+                                    </h6>
+                                    <small class="badge bg-info quiz-direction-badge mt-1" title="Question Direction">
+                                        <i class="bi bi-arrow-left-right"></i> 
+                                        @(question.Direction == StudyHelper.Models.QuestionDirection.TermToDefinition 
+                                            ? "Term → Definition" 
+                                            : "Definition → Term")
+                                    </small>
+                                </div>
+                                <span class="badge bg-@(isCorrect ? "success" : "danger")">
+                                    @(isCorrect ? "✓ Correct" : "✗ Incorrect")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <p class="mb-1">
+                                    <strong>Your Answer:</strong> 
+                                    @if (userAnswerIndex >= 0 && userAnswerIndex < question.AnswerOptions.Count)
+                                    {
+                                        <span>@GetLetterForIndex(userAnswerIndex) - @question.AnswerOptions[userAnswerIndex]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Not answered</span>
+                                    }
+                                </p>
+                            </div>
+
+                            @if (!isCorrect)
+                            {
+                                <div class="mb-3">
+                                    <p class="mb-1">
+                                        <strong>Correct Answer:</strong> 
+                                        <span class="text-success">
+                                            @GetLetterForIndex(question.CorrectAnswerIndex) - @question.AnswerOptions[question.CorrectAnswerIndex]
+                                        </span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 justify-content-center flex-wrap">
+                <a href="/GradedQuiz/Setup" class="btn btn-primary btn-lg">
+                    <i class="fas fa-redo"></i> Retake Quiz
+                </a>
+                <a href="/" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz-bidirectional.css" asp-append-version="true" />
+}
+
+@functions {
+    private string GetPerformanceEmoji(string rating)
+    {
+        return rating switch
+        {
+            "Excellent" => "🎉",
+            "Good" => "👍",
+            "Fair" => "😐",
+            "Poor" => "😞",
+            "Needs Improvement" => "📚",
+            _ => "✓"
+        };
+    }
+
+    private string GetLetterForIndex(int index)
+    {
+        return index switch
+        {
+            0 => "A",
+            1 => "B",
+            2 => "C",
+            3 => "D",
+            _ => "?"
+        };
+    }
+}

@@ -1,0 +1,183 @@
+@model StudyHelper.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    ViewData["IsAccountPage"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+
+<div class="account-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                <div class="card account-card">
+                    <div class="card-body">
+                        <h2 class="text-center">Create Account</h2>
+
+                        <form asp-controller="Account" asp-action="Register" method="post" id="registerForm">
+
+                            @if (ViewData.ModelState.ErrorCount > 0 && !ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    <div asp-validation-summary="ModelOnly"></div>
+                                </div>
+                            }
+
+                            <div class="mb-3">
+                                <label asp-for="Username" class="form-label"></label>
+                                <input asp-for="Username" 
+                                       class="form-control" 
+                                       autocomplete="username" 
+                                       autofocus 
+                                       aria-required="true"
+                                       aria-describedby="usernameHelp usernameError" />
+                                <small id="usernameHelp" class="form-text">3-50 characters</small>
+                                <span id="usernameError" asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label"></label>
+                                <input asp-for="Password" 
+                                       class="form-control" 
+                                       autocomplete="new-password" 
+                                       aria-required="true"
+                                       aria-describedby="passwordHelp passwordStrength passwordError"
+                                       id="passwordInput" />
+                                <small id="passwordHelp" class="form-text">Minimum 8 characters</small>
+                                <div id="passwordStrength" class="password-strength d-none" role="status" aria-live="polite">
+                                    <div class="password-strength-bar"></div>
+                                </div>
+                                <small id="passwordStrengthText" class="password-strength-text d-none"></small>
+                                <span id="passwordError" asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label"></label>
+                                <input asp-for="ConfirmPassword" 
+                                       class="form-control" 
+                                       autocomplete="new-password" 
+                                       aria-required="true"
+                                       aria-describedby="confirmPasswordError"
+                                       id="confirmPasswordInput" />
+                                <span id="confirmPasswordError" asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg" id="registerButton">
+                                    <span class="btn-text">Create Account</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <p class="mb-1">Already have an account?</p>
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-link">
+                                Login here
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function() {
+            'use strict';
+
+            const passwordInput = document.getElementById('passwordInput');
+            const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+            const strengthContainer = document.getElementById('passwordStrength');
+            const strengthBar = strengthContainer?.querySelector('.password-strength-bar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            const form = document.getElementById('registerForm');
+            const button = document.getElementById('registerButton');
+
+            // Password strength calculation
+            function calculatePasswordStrength(password) {
+                if (!password || password.length === 0) {
+                    return { strength: 0, label: '', className: '' };
+                }
+
+                let strength = 0;
+
+                // Length check
+                if (password.length >= 8) strength += 1;
+                if (password.length >= 12) strength += 1;
+
+                // Character variety checks
+                if (/[a-z]/.test(password)) strength += 1;
+                if (/[A-Z]/.test(password)) strength += 1;
+                if (/[0-9]/.test(password)) strength += 1;
+                if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+
+                // Determine strength level
+                if (strength <= 2) {
+                    return { strength: 1, label: 'Weak', className: 'password-strength-weak' };
+                } else if (strength <= 4) {
+                    return { strength: 2, label: 'Medium', className: 'password-strength-medium' };
+                } else {
+                    return { strength: 3, label: 'Strong', className: 'password-strength-strong' };
+                }
+            }
+
+            // Update password strength indicator
+            function updatePasswordStrength() {
+                const password = passwordInput.value;
+                const result = calculatePasswordStrength(password);
+
+                if (password.length === 0) {
+                    strengthContainer.classList.add('d-none');
+                    strengthText.classList.add('d-none');
+                    return;
+                }
+
+                strengthContainer.classList.remove('d-none');
+                strengthText.classList.remove('d-none');
+
+                strengthBar.className = 'password-strength-bar ' + result.className;
+                strengthText.textContent = 'Password strength: ' + result.label;
+                strengthText.className = 'password-strength-text';
+
+                if (result.strength === 1) {
+                    strengthText.style.color = '#fc8181';
+                } else if (result.strength === 2) {
+                    strengthText.style.color = '#f6ad55';
+                } else {
+                    strengthText.style.color = '#68d391';
+                }
+            }
+
+            // Event listeners
+            if (passwordInput) {
+                passwordInput.addEventListener('input', updatePasswordStrength);
+            }
+
+            // Form submission with loading state
+            if (form && button) {
+                form.addEventListener('submit', function(e) {
+                    // Add visual loading state without preventing submission
+                    button.disabled = true;
+
+                    // Add spinner
+                    const spinner = document.createElement('span');
+                    spinner.className = 'btn-spinner';
+                    button.insertBefore(spinner, button.firstChild);
+
+                    // Update button text
+                    const btnText = button.querySelector('.btn-text');
+                    if (btnText) {
+                        btnText.textContent = 'Creating account...';
+                    }
+                });
+            }
+        })();
+    </script>
+}

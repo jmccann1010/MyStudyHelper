@@ -1,0 +1,110 @@
+@{
+    ViewData["Title"] = "Graded Exercises Help";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index">Help</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Graded Exercises</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-clipboard-check text-secondary" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Graded Exercises Help</h1>
+            <p class="text-muted mb-0">Learn how to use the scored equation assessment feature</p>
+        </div>
+    </div>
+
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            The Graded Exercises feature combines the equation-solving practice of the Exercise mode with formal scoring and 
+            performance tracking. You'll complete a set number of problems, receive a final score, and review detailed solutions 
+            for every problem.
+        </p>
+        <div class="alert alert-warning" role="alert">
+            <strong>Important:</strong> Once started, you must complete all problems in one session. Your answers are recorded 
+            and scored at the end.
+        </div>
+    </section>
+
+    <section id="getting-started" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Navigate:</strong> Click "Graded Exercises" from the home page.</li>
+                    <li><strong>Select Count:</strong> Choose the number of problems (1-50).</li>
+                    <li><strong>Start:</strong> Click "Start Exercise" to begin your assessment.</li>
+                    <li><strong>Solve Each Problem:</strong> Calculate and enter your numeric answer for each equation.</li>
+                    <li><strong>Complete:</strong> Finish all problems to see your results page.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="results" class="mb-5">
+        <h2>Understanding Your Results</h2>
+        <p>After completing all problems, you'll see:</p>
+        <ul>
+            <li><strong>Score Summary:</strong> Percentage, correct/incorrect counts, and performance rating</li>
+            <li><strong>Problem Review:</strong> Each problem with your answer, the correct answer, and solution steps</li>
+            <li><strong>Retake Option:</strong> Button to start a new graded exercise with different problems</li>
+        </ul>
+        <h4>Performance Ratings:</h4>
+        <ul>
+            <li><span class="badge bg-success">Excellent</span> - 90% or higher</li>
+            <li><span class="badge bg-info">Good</span> - 70-89%</li>
+            <li><span class="badge bg-warning text-dark">Fair</span> - 50-69%</li>
+            <li><span class="badge bg-danger">Needs Improvement</span> - Below 50%</li>
+        </ul>
+    </section>
+
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="alert alert-success">
+            <strong>Practice First:</strong> Use the regular Exercise feature to warm up before taking a graded assessment.
+        </div>
+        <div class="alert alert-success">
+            <strong>Double-Check Calculations:</strong> Since you can't go back, verify your math before submitting each answer.
+        </div>
+        <div class="alert alert-success">
+            <strong>Review Results Carefully:</strong> Study the solution steps for problems you missed to learn from mistakes.
+        </div>
+    </section>
+
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header"><h3 class="mb-0">Related Topics</h3></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5>Exercise (Practice Mode)</h5>
+                        <p>Practice solving equations without scoring pressure.</p>
+                        <a asp-controller="Help" asp-action="Exercise" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h5>Graded Quiz</h5>
+                        <p>Prefer multiple-choice assessments? Try the Graded Quiz.</p>
+                        <a asp-controller="Help" asp-action="GradedQuiz" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">← Back to Help Overview</a>
+    </div>
+</div>

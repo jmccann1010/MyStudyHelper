@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Equation Flashcards Help";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index">Help</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Equation Flashcards</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-journal-text text-warning" viewBox="0 0 16 16">
+                <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="mb-0">Equation Flashcards Help</h1>
+            <p class="text-muted mb-0">Learn how to use flashcards for memorizing accounting equations</p>
+        </div>
+    </div>
+
+    <section id="overview" class="mb-5">
+        <h2>Overview</h2>
+        <p>
+            Equation Flashcards help you memorize and understand accounting equations and formulas. Each card displays 
+            an equation or formula on the front and detailed information (variables, examples, applications) on the back.
+        </p>
+    </section>
+
+    <section id="getting-started" class="mb-5">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Navigate:</strong> Click "Equation Flashcards" from the home page.</li>
+                    <li><strong>View Equation:</strong> The front shows an accounting equation or formula.</li>
+                    <li><strong>Try to Recall:</strong> Think about what each variable represents and how to use the equation.</li>
+                    <li><strong>Flip Card:</strong> Click "Flip Card" to see the explanation, variables, and examples.</li>
+                    <li><strong>Continue:</strong> Click "Next Card" to move to the next equation.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="tips" class="mb-5">
+        <h2>Tips & Best Practices</h2>
+        <div class="alert alert-success">
+            <strong>Practice Application:</strong> Don't just memorize—understand when and how to apply each equation.
+        </div>
+        <div class="alert alert-success">
+            <strong>Combine with Exercises:</strong> After reviewing equation flashcards, practice solving problems in the Exercise feature.
+        </div>
+        <div class="alert alert-success">
+            <strong>Review Regularly:</strong> Revisit equations periodically to maintain fluency and recall.
+        </div>
+    </section>
+
+    <section id="related" class="mb-5">
+        <div class="card bg-light">
+            <div class="card-header"><h3 class="mb-0">Related Topics</h3></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5>Exercise</h5>
+                        <p>Practice solving equations with actual calculations.</p>
+                        <a asp-controller="Help" asp-action="Exercise" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h5>Term Flashcards</h5>
+                        <p>Memorize accounting terms and definitions.</p>
+                        <a asp-controller="Help" asp-action="TermFlashcards" class="btn btn-sm btn-outline-primary">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center mb-4">
+        <a asp-controller="Help" asp-action="Index" class="btn btn-outline-secondary">← Back to Help Overview</a>
+    </div>
+</div>

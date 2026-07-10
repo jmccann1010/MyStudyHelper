@@ -1,0 +1,245 @@
+@model SuperQuizStartViewModel
+@using StudyHelper.Models
+@{
+    ViewData["Title"] = "Super Quiz";
+    var availableOptions = Model.GetAvailableOptions();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/super-quiz.css" asp-append-version="true" />
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        <i class="bi bi-lightning-charge-fill"></i> Super Quiz
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Master all your study materials through comprehensive practice!</p>
+
+                    <div class="alert alert-info">
+                        <h5><i class="bi bi-info-circle"></i> How Super Quiz Works</h5>
+                        <ul class="mb-0">
+                            <li>Choose how many questions you want to practice</li>
+                            <li>Questions you miss will be asked again in the next round</li>
+                            <li>Continue until you've answered <strong>every question correctly</strong></li>
+                            <li>Track your progress with round-by-round statistics</li>
+                        </ul>
+                    </div>
+
+                    <form method="post" asp-action="Start" id="super-quiz-start-form">
+                        @Html.AntiForgeryToken()
+
+                        <div class="super-quiz-selection mb-4">
+                            <h5 class="mb-3"><i class="bi bi-ui-radios"></i> Select Number of Questions</h5>
+
+                            @if (availableOptions.Count > 15)
+                            {
+                                @* Large option list: Group by category with collapsible sections *@
+                                var fixedOptions = availableOptions.Where(o => o.OptionType == SuperQuizOptionType.Fixed).ToList();
+                                var halfOptions = availableOptions.Where(o => o.OptionType == SuperQuizOptionType.Half).ToList();
+                                var halfPlusOptions = availableOptions.Where(o => o.OptionType == SuperQuizOptionType.HalfPlus).ToList();
+                                var allOptions = availableOptions.Where(o => o.OptionType == SuperQuizOptionType.All).ToList();
+
+                                @if (fixedOptions.Any())
+                                {
+                                    <details open class="super-quiz-option-group mb-3">
+                                        <summary class="fw-bold text-primary mb-2">
+                                            <i class="bi bi-lightning-fill"></i> Fixed Increments (@fixedOptions.Count options)
+                                        </summary>
+                                        <div class="ps-3">
+                                             @foreach (var option in fixedOptions)
+                                            {
+                                                <div class="super-quiz-option" data-option="@option.OptionType.ToString().ToLower()">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" 
+                                                               type="radio" 
+                                                               name="questionCount" 
+                                                               id="option-@option.QuestionCount" 
+                                                               value="@option.QuestionCount" 
+                                                               @(option.IsDefault ? "checked" : "")
+                                                               data-count="@option.QuestionCount"
+                                                               aria-describedby="@(!string.IsNullOrEmpty(option.Description) ? $"desc-{option.QuestionCount}" : "")" />
+                                                        <label class="form-check-label" for="option-@option.QuestionCount">
+                                                            <strong>@option.Label</strong> 
+                                                            @if (!string.IsNullOrEmpty(option.Description))
+                                                            {
+                                                                <span class="text-muted" id="desc-@option.QuestionCount">@option.Description</span>
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </details>
+                                }
+
+                                @if (halfOptions.Any())
+                                {
+                                    <details open class="super-quiz-option-group mb-3">
+                                        <summary class="fw-bold text-warning mb-2">
+                                            <i class="bi bi-pie-chart-fill"></i> Half
+                                        </summary>
+                                        <div class="ps-3">
+                                            @foreach (var option in halfOptions)
+                                            {
+                                                <div class="super-quiz-option" data-option="@option.OptionType.ToString().ToLower()">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" 
+                                                               type="radio" 
+                                                               name="questionCount" 
+                                                               id="option-@option.QuestionCount" 
+                                                               value="@option.QuestionCount" 
+                                                               @(option.IsDefault ? "checked" : "")
+                                                               data-count="@option.QuestionCount"
+                                                               aria-describedby="@(!string.IsNullOrEmpty(option.Description) ? $"desc-{option.QuestionCount}" : "")" />
+                                                        <label class="form-check-label" for="option-@option.QuestionCount">
+                                                            <strong>@option.Label</strong> 
+                                                            @if (!string.IsNullOrEmpty(option.Description))
+                                                            {
+                                                                <span class="text-muted" id="desc-@option.QuestionCount">@option.Description</span>
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </details>
+                                }
+
+                                @if (halfPlusOptions.Any())
+                                {
+                                    <details class="super-quiz-option-group mb-3">
+                                        <summary class="fw-bold text-info mb-2">
+                                            <i class="bi bi-bar-chart-fill"></i> Half+ Extended (@halfPlusOptions.Count options)
+                                        </summary>
+                                        <div class="ps-3">
+                                            @foreach (var option in halfPlusOptions)
+                                            {
+                                                <div class="super-quiz-option" data-option="@option.OptionType.ToString().ToLower()">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" 
+                                                               type="radio" 
+                                                               name="questionCount" 
+                                                               id="option-@option.QuestionCount" 
+                                                               value="@option.QuestionCount" 
+                                                               @(option.IsDefault ? "checked" : "")
+                                                               data-count="@option.QuestionCount"
+                                                               aria-describedby="@(!string.IsNullOrEmpty(option.Description) ? $"desc-{option.QuestionCount}" : "")" />
+                                                        <label class="form-check-label" for="option-@option.QuestionCount">
+                                                            <strong>@option.Label</strong> 
+                                                            @if (!string.IsNullOrEmpty(option.Description))
+                                                            {
+                                                                <span class="text-muted" id="desc-@option.QuestionCount">@option.Description</span>
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </details>
+                                }
+
+                                @if (allOptions.Any())
+                                {
+                                    <details open class="super-quiz-option-group mb-3">
+                                        <summary class="fw-bold text-success mb-2">
+                                            <i class="bi bi-trophy-fill"></i> All
+                                        </summary>
+                                        <div class="ps-3">
+                                            @foreach (var option in allOptions)
+                                            {
+                                                <div class="super-quiz-option" data-option="@option.OptionType.ToString().ToLower()">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" 
+                                                               type="radio" 
+                                                               name="questionCount" 
+                                                               id="option-@option.QuestionCount" 
+                                                               value="@option.QuestionCount" 
+                                                               @(option.IsDefault ? "checked" : "")
+                                                               data-count="@option.QuestionCount"
+                                                               aria-describedby="@(!string.IsNullOrEmpty(option.Description) ? $"desc-{option.QuestionCount}" : "")" />
+                                                        <label class="form-check-label" for="option-@option.QuestionCount">
+                                                            <strong>@option.Label</strong> 
+                                                            @if (!string.IsNullOrEmpty(option.Description))
+                                                            {
+                                                                <span class="text-muted" id="desc-@option.QuestionCount">@option.Description</span>
+                                                            }
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </details>
+                                }
+                            }
+                            else
+                            {
+                                @* Small option list: Display all options without grouping *@
+                                @foreach (var option in availableOptions)
+                                {
+                                    <div class="super-quiz-option" data-option="@option.OptionType.ToString().ToLower()">
+                                        <div class="form-check">
+                                            <input class="form-check-input" 
+                                                   type="radio" 
+                                                   name="questionCount" 
+                                                   id="option-@option.QuestionCount" 
+                                                   value="@option.QuestionCount" 
+                                                   @(option.IsDefault ? "checked" : "")
+                                                   data-count="@option.QuestionCount"
+                                                   aria-describedby="@(!string.IsNullOrEmpty(option.Description) ? $"desc-{option.QuestionCount}" : "")" />
+                                            <label class="form-check-label" for="option-@option.QuestionCount">
+                                                <strong>@option.Label</strong> 
+                                                @if (!string.IsNullOrEmpty(option.Description))
+                                                {
+                                                    <span class="text-muted" id="desc-@option.QuestionCount">@option.Description</span>
+                                                }
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <div class="row text-center my-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="card bg-light super-quiz-preview">
+                                    <div class="card-body">
+                                        <h3 class="text-primary" id="preview-count">@Model.SelectedQuestionCount</h3>
+                                        <p class="mb-0 text-dark">Total Questions</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light super-quiz-preview">
+                                    <div class="card-body">
+                                        <h3 class="text-primary" id="preview-time">@Model.EstimatedTimeFormatted</h3>
+                                        <p class="mb-0 text-dark">Estimated Time</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-play-circle"></i> Start Super Quiz
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/super-quiz-start.js" asp-append-version="true"></script>
+}
+
