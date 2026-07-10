@@ -5,7 +5,8 @@ namespace StudyHelper.ViewModels;
 public class RegisterViewModel
 {
     [Required(ErrorMessage = "Username is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
+    [StringLength(16, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 16 characters")]
+    [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Username may only contain letters and numbers")]
     [Display(Name = "Username")]
     public required string Username { get; set; }
 

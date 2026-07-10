@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Security: never commit environment-specific secrets
+appsettings.Development.json
+appsettings.Production.json
+
 # User-specific files
 *.rsuser
 *.suo

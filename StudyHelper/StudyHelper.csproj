@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>StudyHelper</RootNamespace>
     <AssemblyName>StudyHelper</AssemblyName>
+    <UserSecretsId>da974e92-db9f-4057-80c1-0ec5356d04e5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

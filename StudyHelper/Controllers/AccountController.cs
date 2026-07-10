@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace StudyHelper.Controllers;
@@ -38,6 +39,7 @@ public class AccountController : Controller
     [AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [EnableRateLimiting("login")] // Max 5 attempts per IP per minute — brute-force protection
     public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
@@ -65,8 +67,9 @@ public class AccountController : Controller
         var authProperties = new AuthenticationProperties
         {
             IsPersistent = model.RememberMe,
+            // 7-day persistent window; reduced from 30 days to limit stolen-cookie exposure
             ExpiresUtc = model.RememberMe 
-                ? DateTimeOffset.UtcNow.AddDays(30) 
+                ? DateTimeOffset.UtcNow.AddDays(7) 
                 : DateTimeOffset.UtcNow.AddHours(1)
         };
 

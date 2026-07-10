@@ -1,6 +1,8 @@
 using StudyHelper.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,20 @@ builder.Services.AddControllersWithViews()
 
 // Add memory cache for performance
 builder.Services.AddMemoryCache();
+
+// Rate limiting: restrict login attempts to 5 per IP per minute to mitigate brute-force attacks
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("login", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 5;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 0;
+    });
+    // Return 429 Too Many Requests when the limit is exceeded
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 
 // Add authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -36,7 +52,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 // Register authentication services
-//builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>(); // US-005: re-enabled for users.dat encryption
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Register study materials services
@@ -85,7 +101,7 @@ app.Use(async (context, next) =>
     context.Response.Headers.Append("Content-Security-Policy",
         "default-src 'self'; " +
         "script-src 'self'; " +
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +  // Allow inline styles for Razor
+        "style-src 'self' https://cdn.jsdelivr.net; " +  // Inline styles must be moved to external .css files
         "img-src 'self' data:; " +
         "font-src 'self' https://cdn.jsdelivr.net; " +
         "connect-src 'self'; " +
@@ -112,6 +128,8 @@ app.UseHttpsRedirection();
 
 // Enable session middleware
 app.UseSession();
+
+app.UseRateLimiter();
 
 app.UseRouting();
 
