@@ -61,4 +61,36 @@ public interface IUserStudyMaterialService
     /// <exception cref="ArgumentException">Thrown if username is null or empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown if metadata cannot be saved.</exception>
     Task SetEquationsEnabledAsync(string username, bool enabled);
+
+    // -------------------------------------------------------------------------
+    // Course-aware overloads (US-005, US-006)
+    // When courseName is supplied, all file I/O targets App_Data/{username}/{courseName}/.
+    // The username-only overloads above remain for legacy/fallback use.
+    // -------------------------------------------------------------------------
+
+    /// <summary>Upload a TermsAndDefinitions.md file into a specific course directory.</summary>
+    Task<bool> UploadTermsAsync(string username, string courseName, IFormFile file);
+
+    /// <summary>Upload an Equations.md file into a specific course directory.</summary>
+    Task<bool> UploadEquationsAsync(string username, string courseName, IFormFile file);
+
+    /// <summary>Get metadata for all materials uploaded to a specific course.</summary>
+    Task<List<UserStudyMaterial>> GetUserMaterialsAsync(string username, string courseName);
+
+    /// <summary>Delete a material from a specific course directory.</summary>
+    Task<bool> DeleteUserMaterialAsync(string username, string courseName, StudyMaterialType materialType);
+
+    /// <summary>
+    /// Returns the effective file path for a material within a course:
+    ///   1. App_Data/{username}/{courseName}/{file}  (course upload)
+    ///   2. App_Data/StudyMaterials/{username}/{file} (legacy upload)
+    ///   3. App_Data/{file}                           (global default)
+    /// </summary>
+    Task<string> GetEffectiveFilePathAsync(string username, string courseName, StudyMaterialType materialType);
+
+    /// <summary>Returns true when a course-specific upload exists for the material type.</summary>
+    Task<bool> HasCustomMaterialAsync(string username, string courseName, StudyMaterialType materialType);
+
+    /// <summary>Returns the content of a course-specific material, or null when absent.</summary>
+    Task<string?> GetDecryptedContentAsync(string username, string courseName, StudyMaterialType materialType);
 }

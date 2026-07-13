@@ -8,10 +8,8 @@ namespace StudyHelper.Services;
 public interface ITermDefinitionParserService
 {
     /// <summary>
-    /// Parses the TermsAndDefinitions.md file and extracts all term/definition pairs.
-    /// Uses custom user-uploaded file if available, otherwise falls back to default.
+    /// Parses TermsAndDefinitions.md for a user, using the course-specific file when both
+    /// username and courseName are supplied, then falling back through legacy and global defaults.
     /// </summary>
-    /// <param name="username">Optional username to check for custom uploaded materials. If null, uses default file.</param>
-    /// <returns>A list of term definitions.</returns>
-    Task<List<TermDefinition>> ParseTermDefinitionsAsync(string? username = null);
+    Task<List<TermDefinition>> ParseTermDefinitionsAsync(string? username = null, string? courseName = null);
 }

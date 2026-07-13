@@ -493,4 +493,274 @@ public class UserStudyMaterialService : IUserStudyMaterialService
             throw new InvalidOperationException($"Failed to update equations setting for user {username}", ex);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Course-aware overloads (US-005, US-006)
+    // All file I/O targets App_Data/{username}/{courseName}/ instead of the
+    // legacy App_Data/StudyMaterials/{username}/ path.
+    // -------------------------------------------------------------------------
+
+    public Task<bool> UploadTermsAsync(string username, string courseName, IFormFile file)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+        ArgumentNullException.ThrowIfNull(file);
+        return UploadCourseMaterialAsync(username, courseName, file, StudyMaterialType.TermsAndDefinitions);
+    }
+
+    public Task<bool> UploadEquationsAsync(string username, string courseName, IFormFile file)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+        ArgumentNullException.ThrowIfNull(file);
+        return UploadCourseMaterialAsync(username, courseName, file, StudyMaterialType.Equations);
+    }
+
+    public async Task<List<UserStudyMaterial>> GetUserMaterialsAsync(string username, string courseName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+
+        try
+        {
+            var metadata = await LoadCourseMetadataAsync(username, courseName);
+            return metadata.Materials;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading materials metadata for {Username}/{CourseName}", username, courseName);
+            return [];
+        }
+    }
+
+    public async Task<bool> DeleteUserMaterialAsync(string username, string courseName, StudyMaterialType materialType)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+
+        try
+        {
+            var filePath = GetCourseFilePath(username, courseName, materialType);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                _logger.LogInformation("Deleted {MaterialType} for {Username}/{CourseName}", materialType, username, courseName);
+            }
+
+            var materials = await GetUserMaterialsAsync(username, courseName);
+            materials.RemoveAll(m => m.MaterialType == materialType);
+            await SaveCourseMetadataAsync(username, courseName, materials);
+
+            InvalidateCourseCache(username, courseName, materialType);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting {MaterialType} for {Username}/{CourseName}", materialType, username, courseName);
+            return false;
+        }
+    }
+
+    public async Task<string> GetEffectiveFilePathAsync(string username, string courseName, StudyMaterialType materialType)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+
+        // 1. Course-specific upload
+        var coursePath = GetCourseFilePath(username, courseName, materialType);
+        if (File.Exists(coursePath))
+        {
+            _logger.LogDebug("Using course file for {Username}/{CourseName}/{MaterialType}", username, courseName, materialType);
+            return coursePath;
+        }
+
+        // 2. Legacy upload (StudyMaterials folder) — migration window; read-only
+        var legacyPath = GetCustomFilePath(username, materialType);
+        if (File.Exists(legacyPath))
+        {
+            _logger.LogDebug("Falling back to legacy file for {Username}/{MaterialType}", username, materialType);
+            return legacyPath;
+        }
+
+        // 3. Global default
+        _logger.LogDebug("Using global default for {Username}/{MaterialType}", username, materialType);
+        return GetDefaultFilePath(materialType);
+    }
+
+    public Task<bool> HasCustomMaterialAsync(string username, string courseName, StudyMaterialType materialType)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+
+        return Task.FromResult(File.Exists(GetCourseFilePath(username, courseName, materialType)));
+    }
+
+    public async Task<string?> GetDecryptedContentAsync(string username, string courseName, StudyMaterialType materialType)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+        ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
+
+        var cacheKey = GetCourseCacheKey(username, courseName, materialType);
+
+        if (_cache.TryGetValue(cacheKey, out string? cached))
+            return cached;
+
+        var filePath = GetCourseFilePath(username, courseName, materialType);
+        if (!File.Exists(filePath))
+            return null;
+
+        try
+        {
+            var content = await File.ReadAllTextAsync(filePath);
+            _cache.Set(cacheKey, content, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1)));
+            return content;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error reading {MaterialType} for {Username}/{CourseName}", materialType, username, courseName);
+            return null;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Course path helpers
+    // -------------------------------------------------------------------------
+
+    private string GetCourseFolder(string username, string courseName)
+        => Path.Combine(_environment.ContentRootPath, "App_Data", username, courseName);
+
+    private string GetCourseFilePath(string username, string courseName, StudyMaterialType materialType)
+        => Path.Combine(GetCourseFolder(username, courseName), GetFileName(materialType));
+
+    private string GetCourseMetadataPath(string username, string courseName)
+        => Path.Combine(GetCourseFolder(username, courseName), "metadata.json");
+
+    private static string GetCourseCacheKey(string username, string courseName, StudyMaterialType materialType)
+        => $"{materialType}_{username}_{courseName}";
+
+    private void InvalidateCourseCache(string username, string courseName, StudyMaterialType materialType)
+        => _cache.Remove(GetCourseCacheKey(username, courseName, materialType));
+
+    // -------------------------------------------------------------------------
+    // Course-scoped upload / metadata helpers
+    // -------------------------------------------------------------------------
+
+    private async Task<bool> UploadCourseMaterialAsync(
+        string username, string courseName, IFormFile file, StudyMaterialType materialType)
+    {
+        try
+        {
+            if (file.Length > _maxFileSizeBytes)
+            {
+                _logger.LogWarning("File too large for {Username}/{CourseName}: {Size} bytes", username, courseName, file.Length);
+                return false;
+            }
+
+            if (file.Length == 0)
+            {
+                _logger.LogWarning("Empty file uploaded by {Username}/{CourseName}", username, courseName);
+                return false;
+            }
+
+            using var stream = file.OpenReadStream();
+            var validationResult = await _validationService.ValidateMarkdownFileAsync(stream, file.FileName);
+            if (!validationResult.IsValid)
+            {
+                _logger.LogWarning("File validation failed for {Username}/{CourseName}: {Errors}",
+                    username, courseName, string.Join(", ", validationResult.Errors));
+                return false;
+            }
+
+            stream.Position = 0;
+            using var reader = new StreamReader(stream);
+            var content = await reader.ReadToEndAsync();
+
+            var formatResult = materialType == StudyMaterialType.TermsAndDefinitions
+                ? await _validationService.ValidateTermsFormatAsync(content)
+                : await _validationService.ValidateEquationsFormatAsync(content);
+
+            if (!formatResult.IsValid)
+            {
+                _logger.LogWarning("{MaterialType} format validation failed for {Username}/{CourseName}: {Errors}",
+                    materialType, username, courseName, string.Join(", ", formatResult.Errors));
+                return false;
+            }
+
+            var securityResult = await _validationService.ScanForMaliciousContentAsync(content);
+            if (!securityResult.IsValid)
+            {
+                _logger.LogError("Security scan failed for {Username}/{CourseName}: {Errors}",
+                    username, courseName, string.Join(", ", securityResult.Errors));
+                return false;
+            }
+
+            var courseFolder = GetCourseFolder(username, courseName);
+            Directory.CreateDirectory(courseFolder);
+
+            var filePath = GetCourseFilePath(username, courseName, materialType);
+            await File.WriteAllTextAsync(filePath, content);
+
+            await SaveCourseUploadMetadataAsync(username, courseName, materialType, file, content);
+            InvalidateCourseCache(username, courseName, materialType);
+
+            _logger.LogInformation("{Username}/{CourseName} uploaded {MaterialType} ({Size} bytes)",
+                username, courseName, materialType, file.Length);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error uploading {MaterialType} for {Username}/{CourseName}", materialType, username, courseName);
+            return false;
+        }
+    }
+
+    private async Task SaveCourseUploadMetadataAsync(
+        string username, string courseName, StudyMaterialType materialType, IFormFile file, string content)
+    {
+        var materials = await GetUserMaterialsAsync(username, courseName);
+        materials.RemoveAll(m => m.MaterialType == materialType);
+        materials.Add(new UserStudyMaterial
+        {
+            Username       = username,
+            MaterialType   = materialType,
+            FileName       = file.FileName,
+            FileSizeBytes  = file.Length,
+            UploadedDate   = DateTime.UtcNow,
+            FilePath       = GetCourseFilePath(username, courseName, materialType),
+            FileHash       = ComputeHash(content)
+        });
+        await SaveCourseMetadataAsync(username, courseName, materials);
+    }
+
+    private async Task<UserStudyMaterialMetadata> LoadCourseMetadataAsync(string username, string courseName)
+    {
+        var metadataPath = GetCourseMetadataPath(username, courseName);
+
+        if (!File.Exists(metadataPath))
+            return new UserStudyMaterialMetadata { Username = username, Materials = [], EquationsEnabled = true };
+
+        try
+        {
+            var json = await File.ReadAllTextAsync(metadataPath);
+            return JsonSerializer.Deserialize<UserStudyMaterialMetadata>(json)
+                ?? new UserStudyMaterialMetadata { Username = username, Materials = [], EquationsEnabled = true };
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogError(ex, "Failed to deserialize course metadata for {Username}/{CourseName}", username, courseName);
+            return new UserStudyMaterialMetadata { Username = username, Materials = [], EquationsEnabled = true };
+        }
+    }
+
+    private async Task SaveCourseMetadataAsync(string username, string courseName, List<UserStudyMaterial> materials)
+    {
+        var existing = await LoadCourseMetadataAsync(username, courseName);
+        existing.Materials = materials;
+
+        var json = JsonSerializer.Serialize(existing, new JsonSerializerOptions { WriteIndented = true });
+        var metadataPath = GetCourseMetadataPath(username, courseName);
+        Directory.CreateDirectory(Path.GetDirectoryName(metadataPath)!);
+        await File.WriteAllTextAsync(metadataPath, json);
+    }
 }

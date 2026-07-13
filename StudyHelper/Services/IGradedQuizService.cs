@@ -15,7 +15,7 @@ public interface IGradedQuizService
     /// <returns>Quiz session ID for future references.</returns>
     /// <exception cref="ArgumentException">Thrown when questionCount is outside 1-50 range or username is null/empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when unable to generate questions.</exception>
-    Task<string> StartQuizAsync(int questionCount, string username);
+    Task<string> StartQuizAsync(int questionCount, string username, string? courseName = null);
 
     /// <summary>
     /// Submits an answer for the current question and advances quiz state.

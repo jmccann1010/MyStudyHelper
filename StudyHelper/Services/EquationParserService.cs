@@ -50,14 +50,15 @@ public partial class EquationParserService : IEquationParserService
     /// Parses Equations.md and extracts all parseable equations.
     /// Uses custom user-uploaded file if available, otherwise falls back to default.
     /// </summary>
-    public async Task<List<SubjectMatterEquation>> ParseEquationsAsync(string? username = null)
+    public async Task<List<SubjectMatterEquation>> ParseEquationsAsync(string? username = null, string? courseName = null)
     {
-        // Use per-user cache key if username provided
-        var cacheKey = string.IsNullOrWhiteSpace(username) 
-            ? $"{CacheKeyPrefix}default" 
-            : $"{CacheKeyPrefix}{username}";
+        // Cache key is unique per user+course combination
+        var cacheKey = (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(courseName))
+            ? $"{CacheKeyPrefix}{username}_{courseName}"
+            : string.IsNullOrWhiteSpace(username)
+                ? $"{CacheKeyPrefix}default"
+                : $"{CacheKeyPrefix}{username}";
 
-        // Check cache first
         if (_cache.TryGetValue(cacheKey, out List<SubjectMatterEquation>? cachedEquations) && cachedEquations != null)
         {
             _logger.LogDebug("Returning {Count} cached equations for cache key {CacheKey}", cachedEquations.Count, cacheKey);
@@ -72,17 +73,18 @@ public partial class EquationParserService : IEquationParserService
 
             if (!string.IsNullOrWhiteSpace(username))
             {
-                // Try to get user's custom file, or fall back to default
-                equationsFilePath = await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.Equations);
-                _logger.LogDebug("Using equations file for user {Username}: {Path}", username, equationsFilePath);
+                // Prefer course-aware path; fall back to legacy when no course is active
+                equationsFilePath = !string.IsNullOrWhiteSpace(courseName)
+                    ? await _studyMaterialService.GetEffectiveFilePathAsync(username, courseName, StudyMaterialType.Equations)
+                    : await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.Equations);
+
+                _logger.LogDebug("Using equations file for {Username}/{Course}: {Path}",
+                    username, courseName ?? "legacy", equationsFilePath);
             }
             else
             {
-                // Use default file path
-                var relativeFilePath = _configuration["ExerciseSettings:EquationsFilePath"] 
+                var relativeFilePath = _configuration["ExerciseSettings:EquationsFilePath"]
                     ?? "App_Data/Equations.md";
-
-                // Resolve and validate the full path to prevent path traversal
                 equationsFilePath = Path.GetFullPath(Path.Combine(_environment.ContentRootPath, relativeFilePath));
                 _logger.LogDebug("Using default equations file: {Path}", equationsFilePath);
             }

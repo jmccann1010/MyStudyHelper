@@ -28,20 +28,23 @@ public class TermDefinitionParserService : ITermDefinitionParserService
     /// Parses the TermsAndDefinitions.md file and extracts all term/definition pairs.
     /// Uses custom user-uploaded file if available, otherwise falls back to default.
     /// </summary>
-    public async Task<List<TermDefinition>> ParseTermDefinitionsAsync(string? username = null)
+    public async Task<List<TermDefinition>> ParseTermDefinitionsAsync(string? username = null, string? courseName = null)
     {
         string filePath;
 
         if (!string.IsNullOrWhiteSpace(username))
         {
-            // Try to get user's custom file, or fall back to default
-            filePath = await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.TermsAndDefinitions);
-            _logger.LogDebug("Using terms file for user {Username}: {Path}", username, filePath);
+            // Prefer course-aware path; fall back to legacy when no course is active
+            filePath = !string.IsNullOrWhiteSpace(courseName)
+                ? await _studyMaterialService.GetEffectiveFilePathAsync(username, courseName, StudyMaterialType.TermsAndDefinitions)
+                : await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.TermsAndDefinitions);
+
+            _logger.LogDebug("Using terms file for {Username}/{Course}: {Path}",
+                username, courseName ?? "legacy", filePath);
         }
         else
         {
-            // Use default file path
-            var relativePath = _configuration["TermDefinitionsPath"] 
+            var relativePath = _configuration["TermDefinitionsPath"]
                 ?? "App_Data/TermsAndDefinitions.md";
             filePath = Path.Combine(_environment.ContentRootPath, relativePath);
             _logger.LogDebug("Using default terms file: {Path}", filePath);

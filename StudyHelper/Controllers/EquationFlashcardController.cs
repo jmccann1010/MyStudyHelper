@@ -34,7 +34,8 @@ public class EquationFlashcardController : Controller
         {
             // Parse all equations using the current user's custom materials if available
             var username = User.Identity?.Name;
-            var equations = await _parserService.ParseEquationsAsync(username);
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var equations = await _parserService.ParseEquationsAsync(username, courseName);
 
             // Select random equation using thread-safe Random.Shared
             var randomEquation = equations[Random.Shared.Next(equations.Count)];

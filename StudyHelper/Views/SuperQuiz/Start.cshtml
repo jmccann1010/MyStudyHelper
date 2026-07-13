@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="~/css/super-quiz.css" asp-append-version="true" />
 }
 
+@* No-course gate *@
+@if (ViewData["NoCourseSelected"] is true)
+{
+    @await Html.PartialAsync("_NoCourseSelected")
+}
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">

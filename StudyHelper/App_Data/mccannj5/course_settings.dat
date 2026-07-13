@@ -1,0 +1,18 @@
+[
+  {
+    "Username": "mccannj5",
+    "CourseName": "ACCT-515",
+    "Instructor": "Dr. Nagle",
+    "CreatedDate": "2026-07-13T20:57:37.8037966Z",
+    "UpdatedDate": "2026-07-13T20:57:37.8037966Z",
+    "IsActive": true
+  },
+  {
+    "Username": "mccannj5",
+    "CourseName": "Course2",
+    "Instructor": "Dr. Test",
+    "CreatedDate": "2026-07-13T20:57:55.9548476Z",
+    "UpdatedDate": "2026-07-13T20:57:55.9548476Z",
+    "IsActive": false
+  }
+]

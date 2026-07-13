@@ -34,44 +34,55 @@ public class MarkdownParserService : IMarkdownParserService
     /// Uses custom user-uploaded file if available, otherwise falls back to default.
     /// Uses memory cache to avoid re-parsing on every request.
     /// </summary>
-    public async Task<List<MarkdownSection>> ParseMarkdownFilesAsync(string? username = null)
+    public async Task<List<MarkdownSection>> ParseMarkdownFilesAsync(string? username = null, string? courseName = null)
     {
-        // Use per-user cache key if username provided
-        var cacheKey = string.IsNullOrWhiteSpace(username) 
-            ? CacheKey 
-            : $"{CacheKey}_{username}";
+        // Build a cache key that is unique per user+course combination
+        var cacheKey = (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(courseName))
+            ? $"{CacheKey}_{username}_{courseName}"
+            : string.IsNullOrWhiteSpace(username)
+                ? CacheKey
+                : $"{CacheKey}_{username}";
 
         return await _cache.GetOrCreateAsync(cacheKey, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
-            _logger.LogInformation("Parsing markdown files (cache miss) for user: {Username}", username ?? "default");
+            _logger.LogInformation("Parsing markdown files (cache miss) for user: {Username}, course: {Course}",
+                username ?? "default", courseName ?? "none");
 
             var sections = new List<MarkdownSection>();
 
-            // Check if user has custom terms and definitions for quiz content
             if (!string.IsNullOrWhiteSpace(username))
             {
-                var hasCustomContent = await _userStudyMaterialService.HasCustomMaterialAsync(username, StudyMaterialType.TermsAndDefinitions);
-
-                if (hasCustomContent)
+                // Use the course-aware overload when a course is active; fall back to the
+                // username-only overload for legacy sessions
+                string filePath;
+                if (!string.IsNullOrWhiteSpace(courseName))
                 {
-                    var customFilePath = await _userStudyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.TermsAndDefinitions);
-                    _logger.LogInformation("Using custom terms and definitions for quiz content for user {Username}: {Path}", username, customFilePath);
+                    filePath = await _userStudyMaterialService.GetEffectiveFilePathAsync(
+                        username, courseName, StudyMaterialType.TermsAndDefinitions);
+                }
+                else
+                {
+                    filePath = await _userStudyMaterialService.GetEffectiveFilePathAsync(
+                        username, StudyMaterialType.TermsAndDefinitions);
+                }
 
-                    if (File.Exists(customFilePath))
+                _logger.LogInformation("Using terms file for user {Username}/{Course}: {Path}",
+                    username, courseName ?? "legacy", filePath);
+
+                if (File.Exists(filePath))
+                {
+                    var fileSections = await ParseFileAsync(filePath);
+                    sections.AddRange(fileSections);
+                    _logger.LogInformation("Parsed {Count} sections from terms file", fileSections.Count);
+
+                    if (sections.Count == 0)
                     {
-                        var fileSections = await ParseFileAsync(customFilePath);
-                        sections.AddRange(fileSections);
-                        _logger.LogInformation("Parsed {Count} sections from custom terms and definitions", fileSections.Count);
-
-                        if (sections.Count == 0)
-                        {
-                            _logger.LogError("No valid sections extracted from custom terms and definitions");
-                            throw new InvalidOperationException("No valid sections extracted from custom terms and definitions");
-                        }
-
-                        return sections;
+                        _logger.LogError("No valid sections extracted from terms file");
+                        throw new InvalidOperationException("No valid sections extracted from terms file");
                     }
+
+                    return sections;
                 }
             }
 

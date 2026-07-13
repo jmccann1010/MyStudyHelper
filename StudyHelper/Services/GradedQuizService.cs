@@ -28,7 +28,7 @@ public class GradedQuizService : IGradedQuizService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<string> StartQuizAsync(int questionCount, string username)
+    public async Task<string> StartQuizAsync(int questionCount, string username, string? courseName = null)
     {
         // Validate inputs
         if (questionCount < 1 || questionCount > 50)
@@ -45,10 +45,11 @@ public class GradedQuizService : IGradedQuizService
 
         try
         {
-            _logger.LogInformation("Starting graded quiz for user {Username} with {QuestionCount} questions", username, questionCount);
+            _logger.LogInformation("Starting graded quiz for user {Username}/{Course} with {QuestionCount} questions",
+                username, courseName ?? "no-course", questionCount);
 
-            // Parse markdown sections using user's custom materials if available
-            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username);
+            // Parse markdown sections using course-aware path when available
+            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username, courseName);
 
             // Generate questions
             var questions = new List<QuizQuestion>();

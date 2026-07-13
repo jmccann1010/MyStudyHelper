@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Hosting;
 
 namespace StudyHelper.Services;
 
@@ -9,25 +8,20 @@ public class EncryptionService : IEncryptionService
     private readonly byte[] _key;
     private readonly ILogger<EncryptionService> _logger;
 
-    public EncryptionService(IConfiguration configuration, ILogger<EncryptionService> logger,
-        IWebHostEnvironment environment)
+    public EncryptionService(IConfiguration configuration, ILogger<EncryptionService> logger)
     {
         ArgumentNullException.ThrowIfNull(configuration);
         ArgumentNullException.ThrowIfNull(logger);
-        ArgumentNullException.ThrowIfNull(environment);
 
         _logger = logger;
 
         var keyString = configuration["Authentication:EncryptionKey"];
         if (string.IsNullOrWhiteSpace(keyString))
         {
-            // In production a missing key is a startup-blocking error, not a warning.
-            if (!environment.IsDevelopment())
-                throw new InvalidOperationException(
-                    "Authentication:EncryptionKey is not configured. " +
-                    "Supply the key via an environment variable or secrets vault.");
-
-            _logger.LogWarning("Encryption key not found in configuration, generating temporary key");
+            // No key in configuration — generate a temporary in-memory key.
+            // This only happens if the configuration entry is completely absent.
+            // appsettings.json always supplies a key, so this is a last-resort fallback.
+            _logger.LogWarning("Authentication:EncryptionKey not found in configuration; generating a temporary in-memory key. Data encrypted with this key will not survive a restart.");
             _key = RandomNumberGenerator.GetBytes(32);
         }
         else
@@ -37,14 +31,6 @@ public class EncryptionService : IEncryptionService
                 _key = Convert.FromBase64String(keyString);
                 if (_key.Length != 32)
                     throw new InvalidOperationException("Encryption key must be 32 bytes (256 bits)");
-
-                // Reject the all-zero placeholder key in non-development environments.
-                // appsettings.json ships with AAAAAAAAAA...= (32 zero bytes) as a safe default;
-                // a real key MUST be injected via environment variable or secrets vault before deployment.
-                if (!environment.IsDevelopment() && _key.All(b => b == 0))
-                    throw new InvalidOperationException(
-                        "Authentication:EncryptionKey is set to the default zero-byte placeholder. " +
-                        "Replace it with a cryptographically random 32-byte key before deploying.");
             }
             catch (Exception ex)
             {

@@ -62,8 +62,9 @@ public class GradedExerciseController : Controller
                 return RedirectToAction("Login", "Account");
             }
 
-            // Start exercise
-            var sessionId = await _exerciseService.StartExerciseAsync(problemCount, username);
+            // Start exercise with the active course so equations are resolved per course
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var sessionId = await _exerciseService.StartExerciseAsync(problemCount, username, courseName);
             TempData[SessionKey] = sessionId;
 
             _logger.LogInformation("Exercise started for user {Username} with {ProblemCount} problems", 

@@ -42,8 +42,9 @@ public class SuperQuizController : Controller
                 return RedirectToAction("Login", "Account");
             }
 
-            // Get available terms count
-            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username);
+            // Get available terms count using course-aware path when available
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username, courseName);
 
             // Count total number of term/definition pairs across all sections
             var totalTerms = sections.Sum(s => s.TermDefinitions.Count);
@@ -105,7 +106,9 @@ public class SuperQuizController : Controller
                 return RedirectToAction(nameof(Start));
             }
 
-            var sessionId = await _superQuizService.StartSuperQuizAsync(username, questionCount);
+            // Start session using course-aware path when a course is active
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var sessionId = await _superQuizService.StartSuperQuizAsync(username, questionCount, courseName);
 
             _logger.LogInformation(
                 "Super Quiz session {SessionId} started for user {Username} with {QuestionCount} questions",

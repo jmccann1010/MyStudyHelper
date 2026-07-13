@@ -3,6 +3,12 @@
     ViewData["Title"] = "Exercise";
 }
 
+@* No-course gate *@
+@if (ViewData["NoCourseSelected"] is true)
+{
+    @await Html.PartialAsync("_NoCourseSelected")
+}
+
 @if (Model == null)
 {
     <div class="alert alert-danger" role="alert">

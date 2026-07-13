@@ -23,7 +23,8 @@ public interface ISuperQuizService
     /// </exception>
     Task<string> StartSuperQuizAsync(
         string username,
-        int questionCount = SuperQuizStartViewModel.AllQuestionsIndicator);
+        int questionCount = SuperQuizStartViewModel.AllQuestionsIndicator,
+        string? courseName = null);
 
     /// <summary>
     /// Gets the current question for the user to answer.

@@ -15,7 +15,7 @@ public interface IGradedExerciseService
     /// <returns>Exercise session ID for future references.</returns>
     /// <exception cref="ArgumentException">Thrown when problemCount is outside 1-50 range or username is null/empty.</exception>
     /// <exception cref="InvalidOperationException">Thrown when unable to generate problems (no equations, insufficient equations, etc.).</exception>
-    Task<string> StartExerciseAsync(int problemCount, string username);
+    Task<string> StartExerciseAsync(int problemCount, string username, string? courseName = null);
 
     /// <summary>
     /// Submits an answer for the current problem and advances exercise state.

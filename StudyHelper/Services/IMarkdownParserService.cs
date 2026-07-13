@@ -8,12 +8,9 @@ namespace StudyHelper.Services;
 public interface IMarkdownParserService
 {
     /// <summary>
-    /// Parses all markdown files in the InputDocuments directory and extracts structured sections.
-    /// Uses custom user-uploaded file if available, otherwise falls back to default.
+    /// Parses markdown files for a user, using the course-specific file when both
+    /// username and courseName are supplied, then falling back through legacy and
+    /// global defaults.
     /// </summary>
-    /// <param name="username">Optional username to check for custom uploaded materials.</param>
-    /// <returns>A list of parsed markdown sections containing headings, content, and bullet points.</returns>
-    /// <exception cref="FileNotFoundException">Thrown when the InputDocuments directory is not found.</exception>
-    /// <exception cref="InvalidOperationException">Thrown when no markdown files are found.</exception>
-    Task<List<MarkdownSection>> ParseMarkdownFilesAsync(string? username = null);
+    Task<List<MarkdownSection>> ParseMarkdownFilesAsync(string? username = null, string? courseName = null);
 }

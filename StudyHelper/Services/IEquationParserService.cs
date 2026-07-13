@@ -8,11 +8,9 @@ namespace StudyHelper.Services;
 public interface IEquationParserService
 {
     /// <summary>
-    /// Parses the Equations.md file and extracts all parseable equations.
-    /// Uses custom user-uploaded file if available, otherwise falls back to default.
-    /// Results are cached for performance.
+    /// Parses Equations.md for a user, using the course-specific file when both
+    /// username and courseName are supplied, then falling back through legacy and
+    /// global defaults.
     /// </summary>
-    /// <param name="username">Optional username to check for custom uploaded materials. If null, uses default file.</param>
-    /// <returns>A list of parsed equations.</returns>
-    Task<List<SubjectMatterEquation>> ParseEquationsAsync(string? username = null);
+    Task<List<SubjectMatterEquation>> ParseEquationsAsync(string? username = null, string? courseName = null);
 }

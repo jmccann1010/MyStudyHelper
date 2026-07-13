@@ -1,0 +1,24 @@
+{
+  "Username": "mccannj5",
+  "Materials": [
+    {
+      "Username": "mccannj5",
+      "MaterialType": 0,
+      "FileName": "TermsAndDefinitions - Course2.md",
+      "FileSizeBytes": 439,
+      "UploadedDate": "2026-07-13T22:00:00.3059747Z",
+      "FilePath": "C:\\work\\MyStudyHelper\\StudyHelper\\App_Data\\mccannj5\\Course2\\TermsAndDefinitions.md",
+      "FileHash": "3F99710C5C80EED9A883E0BD0F1ABC095BB6A7E4BFEB59376EC03D65108BEB42"
+    },
+    {
+      "Username": "mccannj5",
+      "MaterialType": 1,
+      "FileName": "Equations - Course2.md",
+      "FileSizeBytes": 494,
+      "UploadedDate": "2026-07-13T22:00:06.3667301Z",
+      "FilePath": "C:\\work\\MyStudyHelper\\StudyHelper\\App_Data\\mccannj5\\Course2\\Equations.md",
+      "FileHash": "8F1266311EE49E37C6F011A9831BA5FE486386FBBDB300906733CB43275BD2E4"
+    }
+  ],
+  "EquationsEnabled": true
+}

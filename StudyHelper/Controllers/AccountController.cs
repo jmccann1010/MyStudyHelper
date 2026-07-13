@@ -12,15 +12,21 @@ namespace StudyHelper.Controllers;
 public class AccountController : Controller
 {
     private readonly IUserService _userService;
+    private readonly ICourseService _courseService;
     private readonly ILogger<AccountController> _logger;
 
-    public AccountController(IUserService userService, ILogger<AccountController> logger)
+    public AccountController(
+        IUserService userService,
+        ICourseService courseService,
+        ILogger<AccountController> logger)
     {
         ArgumentNullException.ThrowIfNull(userService);
+        ArgumentNullException.ThrowIfNull(courseService);
         ArgumentNullException.ThrowIfNull(logger);
 
-        _userService = userService;
-        _logger = logger;
+        _userService   = userService;
+        _courseService = courseService;
+        _logger        = logger;
     }
 
     [AllowAnonymous]
@@ -79,6 +85,17 @@ public class AccountController : Controller
             authProperties);
 
         await _userService.UpdateLastLoginAsync(user.Username);
+
+        // Restore the previously active course into session so all course-specific
+        // features work immediately after login without requiring re-selection.
+        var activeCourse = await _courseService.GetActiveCourseAsync(user.Username);
+        if (activeCourse != null)
+        {
+            HttpContext.Session.SetString("ActiveCourseName",     activeCourse.CourseName);
+            HttpContext.Session.SetString("ActiveCourseNameSafe", activeCourse.CourseName);
+            _logger.LogInformation("Restored active course '{CourseName}' for user {Username}",
+                activeCourse.CourseName, user.Username);
+        }
 
         _logger.LogInformation("User {Username} logged in successfully", user.Username);
 

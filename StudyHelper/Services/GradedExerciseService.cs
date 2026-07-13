@@ -31,7 +31,7 @@ public class GradedExerciseService : IGradedExerciseService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<string> StartExerciseAsync(int problemCount, string username)
+    public async Task<string> StartExerciseAsync(int problemCount, string username, string? courseName = null)
     {
         // Validate inputs
         if (problemCount < 1 || problemCount > 50)
@@ -48,32 +48,32 @@ public class GradedExerciseService : IGradedExerciseService
 
         try
         {
-            _logger.LogInformation("Starting graded exercise for user {Username} with {ProblemCount} problems", 
-                username, problemCount);
+            _logger.LogInformation("Starting graded exercise for user {Username}/{Course} with {ProblemCount} problems",
+                username, courseName ?? "no-course", problemCount);
 
-            // Get user's equation file path
-            var equationFilePath = await _studyMaterialService.GetEffectiveFilePathAsync(
-                username, 
-                StudyMaterialType.Equations);
+            // Get user's equation file path using the course-aware overload when available
+            var equationFilePath = !string.IsNullOrWhiteSpace(courseName)
+                ? await _studyMaterialService.GetEffectiveFilePathAsync(username, courseName, StudyMaterialType.Equations)
+                : await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.Equations);
 
             if (string.IsNullOrEmpty(equationFilePath) || !File.Exists(equationFilePath))
             {
-                _logger.LogWarning("No equation file found for user {Username}", username);
+                _logger.LogWarning("No equation file found for user {Username}/{Course}", username, courseName ?? "no-course");
                 throw new InvalidOperationException("No equation file found. Please upload an equations file first.");
             }
 
-            // Parse equations from file
-            var equations = await _equationParserService.ParseEquationsAsync(username);
+            // Parse equations using course-aware path
+            var equations = await _equationParserService.ParseEquationsAsync(username, courseName);
 
             if (equations == null || equations.Count == 0)
             {
-                _logger.LogWarning("No equations parsed from file for user {Username}", username);
+                _logger.LogWarning("No equations parsed from file for user {Username}/{Course}", username, courseName ?? "no-course");
                 throw new InvalidOperationException("No valid equations found in your equations file.");
             }
 
             if (equations.Count < problemCount)
             {
-                _logger.LogWarning("Insufficient equations: {EquationCount} available, {ProblemCount} requested", 
+                _logger.LogWarning("Insufficient equations: {EquationCount} available, {ProblemCount} requested",
                     equations.Count, problemCount);
                 throw new InvalidOperationException(
                     $"Not enough equations. You have {equations.Count} equations but requested {problemCount} problems.");

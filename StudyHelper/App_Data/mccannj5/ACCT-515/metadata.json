@@ -1,0 +1,24 @@
+{
+  "Username": "mccannj5",
+  "Materials": [
+    {
+      "Username": "mccannj5",
+      "MaterialType": 0,
+      "FileName": "TermsAndDefinitions.md",
+      "FileSizeBytes": 47356,
+      "UploadedDate": "2026-07-13T21:54:30.272677Z",
+      "FilePath": "C:\\work\\MyStudyHelper\\StudyHelper\\App_Data\\mccannj5\\ACCT-515\\TermsAndDefinitions.md",
+      "FileHash": "7B68CC5BF85160DA873A7F2AB058069156A05DCBB3917B633A8932A25CCD0574"
+    },
+    {
+      "Username": "mccannj5",
+      "MaterialType": 1,
+      "FileName": "Equations.md",
+      "FileSizeBytes": 17993,
+      "UploadedDate": "2026-07-13T21:56:13.9321262Z",
+      "FilePath": "C:\\work\\MyStudyHelper\\StudyHelper\\App_Data\\mccannj5\\ACCT-515\\Equations.md",
+      "FileHash": "7B155F856A0E7D7C4882F6E59E3422B18002761B169551FF91593EBA56BFD513"
+    }
+  ],
+  "EquationsEnabled": true
+}

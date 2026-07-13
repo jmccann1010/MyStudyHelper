@@ -34,7 +34,8 @@ public class SuperQuizService : ISuperQuizService
     /// <inheritdoc/>
     public async Task<string> StartSuperQuizAsync(
         string username,
-        int questionCount = SuperQuizStartViewModel.AllQuestionsIndicator)
+        int questionCount = SuperQuizStartViewModel.AllQuestionsIndicator,
+        string? courseName = null)
     {
         if (string.IsNullOrEmpty(username))
         {
@@ -42,12 +43,11 @@ public class SuperQuizService : ISuperQuizService
         }
 
         _logger.LogInformation(
-            "Starting Super Quiz session for user {Username} with question count {QuestionCount}",
-            username,
-            questionCount);
+            "Starting Super Quiz session for user {Username}/{Course} with question count {QuestionCount}",
+            username, courseName ?? "no-course", questionCount);
 
-        // Parse markdown files
-        var sections = await _markdownParserService.ParseMarkdownFilesAsync(username);
+        // Parse markdown files using course-aware path when available
+        var sections = await _markdownParserService.ParseMarkdownFilesAsync(username, courseName);
 
         if (sections.Count == 0)
         {

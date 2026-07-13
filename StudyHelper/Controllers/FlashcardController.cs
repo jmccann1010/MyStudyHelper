@@ -34,7 +34,8 @@ public class FlashcardController : Controller
         {
             // Parse all terms using the current user's custom materials if available
             var username = User.Identity?.Name;
-            var terms = await _parserService.ParseTermDefinitionsAsync(username);
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var terms = await _parserService.ParseTermDefinitionsAsync(username, courseName);
 
             // Select random term using thread-safe Random.Shared
             var randomTerm = terms[Random.Shared.Next(terms.Count)];

@@ -39,7 +39,8 @@ public class ExerciseController : Controller
         {
             // Parse equations from Equations.md using the current user's custom materials if available
             var username = User.Identity?.Name;
-            var equations = await _equationParserService.ParseEquationsAsync(username);
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var equations = await _equationParserService.ParseEquationsAsync(username, courseName);
 
             if (equations.Count == 0)
             {

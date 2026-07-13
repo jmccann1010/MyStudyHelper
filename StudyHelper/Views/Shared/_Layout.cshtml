@@ -42,9 +42,16 @@
                                 </li>
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Settings" asp-action="CourseSettings">
+                                            <i class="bi bi-mortarboard-fill me-1"></i> Course Settings
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="StudyMaterials" asp-action="Manage">
-                                            <i class="bi bi-file-earmark-text"></i> Study Materials
+                                            <i class="bi bi-file-earmark-text me-1"></i> Study Materials
                                         </a>
                                     </li>
                                 }
@@ -85,6 +92,24 @@
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            @* Active course indicator — always visible to authenticated users *@
+                            var activeCourse = Context.Session.GetString("ActiveCourseName");
+                            <li class="nav-item d-flex align-items-center me-2">
+                                @if (!string.IsNullOrEmpty(activeCourse))
+                                {
+                                    <span class="badge bg-success text-white px-2 py-1" title="Active course">
+                                        <i class="bi bi-bookmark-check-fill me-1"></i>@activeCourse
+                                    </span>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Settings" asp-action="CourseSettings"
+                                       class="badge bg-warning text-dark text-decoration-none px-2 py-1"
+                                       title="No course selected — click to choose one">
+                                        <i class="bi bi-bookmark-x-fill me-1"></i>No course selected
+                                    </a>
+                                }
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" 
                                    id="userDropdown" role="button" 

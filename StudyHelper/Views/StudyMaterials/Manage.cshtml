@@ -10,6 +10,12 @@
                 <i class="bi bi-file-earmark-text"></i> Manage Study Materials
             </h1>
 
+            @* No-course gate: shown when no active course is in session *@
+            @if (ViewData["NoCourseSelected"] is true)
+            {
+                @await Html.PartialAsync("_NoCourseSelected")
+            }
+
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

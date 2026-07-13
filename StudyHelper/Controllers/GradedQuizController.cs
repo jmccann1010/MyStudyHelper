@@ -60,7 +60,8 @@ public class GradedQuizController : Controller
             }
 
             // Start quiz
-            var sessionId = await _quizService.StartQuizAsync(questionCount, username);
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var sessionId = await _quizService.StartQuizAsync(questionCount, username, courseName);
             TempData[SessionKey] = sessionId;
 
             _logger.LogInformation("Quiz started for user {Username} with {QuestionCount} questions", username, questionCount);

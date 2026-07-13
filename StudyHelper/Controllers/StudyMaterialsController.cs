@@ -8,6 +8,7 @@ namespace StudyHelper.Controllers;
 
 /// <summary>
 /// Controller for managing user study materials (upload, delete, manage).
+/// All file operations are scoped to the user's currently active course when one is set.
 /// </summary>
 [Authorize]
 public class StudyMaterialsController : Controller
@@ -27,8 +28,14 @@ public class StudyMaterialsController : Controller
     }
 
     /// <summary>
+    /// Returns the active course name from session, or null when no course is selected.
+    /// </summary>
+    private string? GetActiveCourse() => HttpContext.Session.GetString("ActiveCourseNameSafe");
+
+    /// <summary>
     /// GET: /StudyMaterials/Manage
     /// Display the study materials management page.
+    /// When a course is active, lists materials for that course; otherwise falls back to legacy list.
     /// </summary>
     [HttpGet]
     public async Task<IActionResult> Manage()
@@ -37,16 +44,25 @@ public class StudyMaterialsController : Controller
 
         try
         {
-            var materials = await _materialService.GetUserMaterialsAsync(username);
+            var courseName = GetActiveCourse();
+
+            // Use course-aware overload when a course is active
+            var materials = courseName != null
+                ? await _materialService.GetUserMaterialsAsync(username, courseName)
+                : await _materialService.GetUserMaterialsAsync(username);
+
             var equationsEnabled = await _materialService.GetEquationsEnabledAsync(username);
 
             var viewModel = new ManageStudyMaterialsViewModel
             {
-                UserMaterials = materials,
-                HasCustomTerms = materials.Any(m => m.MaterialType == StudyMaterialType.TermsAndDefinitions),
+                UserMaterials      = materials,
+                HasCustomTerms     = materials.Any(m => m.MaterialType == StudyMaterialType.TermsAndDefinitions),
                 HasCustomEquations = materials.Any(m => m.MaterialType == StudyMaterialType.Equations),
-                EquationsEnabled = equationsEnabled
+                EquationsEnabled   = equationsEnabled
             };
+
+            // Surface the active course name to the view via ViewData
+            ViewData["ActiveCourseName"] = courseName;
 
             return View(viewModel);
         }
@@ -60,7 +76,7 @@ public class StudyMaterialsController : Controller
 
     /// <summary>
     /// POST: /StudyMaterials/UploadTerms
-    /// Upload a custom TermsAndDefinitions.md file.
+    /// Upload a TermsAndDefinitions.md file into the active course directory.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -75,16 +91,23 @@ public class StudyMaterialsController : Controller
             return RedirectToAction(nameof(Manage));
         }
 
-        var success = await _materialService.UploadTermsAsync(username, file);
+        var courseName = GetActiveCourse();
+
+        // Route to course-aware overload when a course is active
+        var success = courseName != null
+            ? await _materialService.UploadTermsAsync(username, courseName, file)
+            : await _materialService.UploadTermsAsync(username, file);
 
         if (success)
         {
-            _logger.LogInformation("User {Username} successfully uploaded TermsAndDefinitions.md", username);
+            _logger.LogInformation("User {Username}/{Course} uploaded TermsAndDefinitions.md",
+                username, courseName ?? "legacy");
             TempData["SuccessMessage"] = "Terms and definitions uploaded successfully!";
         }
         else
         {
-            _logger.LogWarning("User {Username} failed to upload TermsAndDefinitions.md", username);
+            _logger.LogWarning("User {Username}/{Course} failed to upload TermsAndDefinitions.md",
+                username, courseName ?? "legacy");
             TempData["ErrorMessage"] = "Upload failed. Please ensure the file is a valid markdown file with plain text (ASCII) encoding.";
         }
 
@@ -93,7 +116,7 @@ public class StudyMaterialsController : Controller
 
     /// <summary>
     /// POST: /StudyMaterials/UploadEquations
-    /// Upload a custom Equations.md file.
+    /// Upload an Equations.md file into the active course directory.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -108,16 +131,22 @@ public class StudyMaterialsController : Controller
             return RedirectToAction(nameof(Manage));
         }
 
-        var success = await _materialService.UploadEquationsAsync(username, file);
+        var courseName = GetActiveCourse();
+
+        var success = courseName != null
+            ? await _materialService.UploadEquationsAsync(username, courseName, file)
+            : await _materialService.UploadEquationsAsync(username, file);
 
         if (success)
         {
-            _logger.LogInformation("User {Username} successfully uploaded Equations.md", username);
+            _logger.LogInformation("User {Username}/{Course} uploaded Equations.md",
+                username, courseName ?? "legacy");
             TempData["SuccessMessage"] = "Equations uploaded successfully!";
         }
         else
         {
-            _logger.LogWarning("User {Username} failed to upload Equations.md", username);
+            _logger.LogWarning("User {Username}/{Course} failed to upload Equations.md",
+                username, courseName ?? "legacy");
             TempData["ErrorMessage"] = "Upload failed. Please ensure the file is a valid markdown file with plain text (ASCII) encoding.";
         }
 
@@ -126,7 +155,7 @@ public class StudyMaterialsController : Controller
 
     /// <summary>
     /// POST: /StudyMaterials/Delete
-    /// Delete a user's uploaded study material.
+    /// Delete a study material from the active course directory.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -134,16 +163,22 @@ public class StudyMaterialsController : Controller
     {
         var username = User.Identity?.Name ?? throw new UnauthorizedAccessException("User not authenticated");
 
-        var success = await _materialService.DeleteUserMaterialAsync(username, materialType);
+        var courseName = GetActiveCourse();
+
+        var success = courseName != null
+            ? await _materialService.DeleteUserMaterialAsync(username, courseName, materialType)
+            : await _materialService.DeleteUserMaterialAsync(username, materialType);
 
         if (success)
         {
-            _logger.LogInformation("User {Username} deleted {MaterialType}", username, materialType);
+            _logger.LogInformation("User {Username}/{Course} deleted {MaterialType}",
+                username, courseName ?? "legacy", materialType);
             TempData["SuccessMessage"] = $"{materialType} deleted. Using default content.";
         }
         else
         {
-            _logger.LogWarning("User {Username} failed to delete {MaterialType}", username, materialType);
+            _logger.LogWarning("User {Username}/{Course} failed to delete {MaterialType}",
+                username, courseName ?? "legacy", materialType);
             TempData["ErrorMessage"] = "Delete failed.";
         }
 
@@ -152,7 +187,7 @@ public class StudyMaterialsController : Controller
 
     /// <summary>
     /// GET: /StudyMaterials/DownloadTemplate?type=terms|equations
-    /// Download a template file for study materials.
+    /// Download a template file for study materials (always served from the global default).
     /// </summary>
     [HttpGet]
     public IActionResult DownloadTemplate(string type)
@@ -162,15 +197,13 @@ public class StudyMaterialsController : Controller
 
         if (type == "terms")
         {
-            fileName = "TermsAndDefinitions_Template.md";
-            defaultPath = Path.Combine(_environment.ContentRootPath, 
-                "App_Data", "TermsAndDefinitions.md");
+            fileName    = "TermsAndDefinitions_Template.md";
+            defaultPath = Path.Combine(_environment.ContentRootPath, "App_Data", "TermsAndDefinitions.md");
         }
         else if (type == "equations")
         {
-            fileName = "Equations_Template.md";
-            defaultPath = Path.Combine(_environment.ContentRootPath, 
-                "App_Data", "Equations.md");
+            fileName    = "Equations_Template.md";
+            defaultPath = Path.Combine(_environment.ContentRootPath, "App_Data", "Equations.md");
         }
         else
         {

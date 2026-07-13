@@ -55,6 +55,9 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>(); // US-005: re-enabled for users.dat encryption
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Register course management service (multiple courses feature)
+builder.Services.AddScoped<ICourseService, CourseService>();
+
 // Register study materials services
 builder.Services.AddScoped<IFileValidationService, FileValidationService>();
 builder.Services.AddScoped<IUserStudyMaterialService, UserStudyMaterialService>();

@@ -4,6 +4,12 @@
     ViewData["Title"] = "Equation Flashcard";
 }
 
+@* No-course gate *@
+@if (ViewData["NoCourseSelected"] is true)
+{
+    @await Html.PartialAsync("_NoCourseSelected")
+}
+
 <div class="flashcard-container">
     @if (TempData["ErrorMessage"] != null)
     {

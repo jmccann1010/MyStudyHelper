@@ -1,4 +1,5 @@
 using StudyHelper.Models;
+using StudyHelper.Services;
 using StudyHelper.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace StudyHelper.Controllers;
 
 /// <summary>
-/// Handles application settings pages, including appearance customization.
+/// Handles application settings pages, including appearance customization and course management.
 /// </summary>
 [Authorize]
-public class SettingsController : Controller
+public class SettingsController(ICourseService courseService, ILogger<SettingsController> logger) : Controller
 {
     /// <summary>
     /// Displays the Appearance settings page with available themes.
@@ -24,6 +25,155 @@ public class SettingsController : Controller
         };
 
         return View(viewModel);
+    }
+
+    // -------------------------------------------------------------------------
+    // Course Settings (US-001 through US-004)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// GET: /Settings/CourseSettings
+    /// Displays all courses for the authenticated user.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> CourseSettings()
+    {
+        var username = User.Identity?.Name
+            ?? throw new UnauthorizedAccessException("User not authenticated");
+
+        var courses = await courseService.GetCoursesAsync(username);
+        var activeName = HttpContext.Session.GetString("ActiveCourseName");
+
+        var viewModel = new CourseSettingsViewModel
+        {
+            Courses          = courses,
+            ActiveCourseName = activeName,
+            AtMaxCapacity    = courses.Count >= 10,
+            AddCourse        = new AddCourseViewModel()
+        };
+
+        return View(viewModel);
+    }
+
+    /// <summary>
+    /// POST: /Settings/AddCourse
+    /// Validates and creates a new course for the authenticated user.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddCourse([Bind(Prefix = "AddCourse")] AddCourseViewModel model)
+    {
+        var username = User.Identity?.Name
+            ?? throw new UnauthorizedAccessException("User not authenticated");
+
+        // Re-build the view model for error re-display before any further processing
+        async Task<IActionResult> RedisplayWithErrors()
+        {
+            var courses = await courseService.GetCoursesAsync(username);
+            return View("CourseSettings", new CourseSettingsViewModel
+            {
+                Courses          = courses,
+                ActiveCourseName = HttpContext.Session.GetString("ActiveCourseName"),
+                AtMaxCapacity    = courses.Count >= 10,
+                AddCourse        = model
+            });
+        }
+
+        if (!ModelState.IsValid)
+            return await RedisplayWithErrors();
+
+        var success = await courseService.AddCourseAsync(username, model.CourseName, model.Instructor);
+
+        if (!success)
+        {
+            // AddCourseAsync returns false for duplicate name or max-course limit
+            var courses = await courseService.GetCoursesAsync(username);
+            if (courses.Count >= 10)
+                ModelState.AddModelError(string.Empty, "You have reached the maximum of 10 courses.");
+            else
+                ModelState.AddModelError(nameof(model.CourseName), "A course with that name already exists.");
+
+            return await RedisplayWithErrors();
+        }
+
+        // If this is the first course, it was auto-activated by CourseService — hydrate session
+        var activeCourse = await courseService.GetActiveCourseAsync(username);
+        if (activeCourse != null)
+        {
+            HttpContext.Session.SetString("ActiveCourseName",     activeCourse.CourseName);
+            HttpContext.Session.SetString("ActiveCourseNameSafe", activeCourse.CourseName);
+        }
+
+        logger.LogInformation("User {Username} created course '{CourseName}'", username, model.CourseName);
+        TempData["SuccessMessage"] = $"Course '{model.CourseName}' created successfully.";
+        return RedirectToAction(nameof(CourseSettings));
+    }
+
+    /// <summary>
+    /// POST: /Settings/SetActiveCourse
+    /// Marks the named course as the active course and persists the selection.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetActiveCourse(string courseName)
+    {
+        var username = User.Identity?.Name
+            ?? throw new UnauthorizedAccessException("User not authenticated");
+
+        if (string.IsNullOrWhiteSpace(courseName))
+        {
+            TempData["ErrorMessage"] = "Please select a valid course.";
+            return RedirectToAction(nameof(CourseSettings));
+        }
+
+        await courseService.SetActiveCourseAsync(username, courseName);
+
+        // Write session keys so all course-specific controllers can read them per-request
+        HttpContext.Session.SetString("ActiveCourseName",     courseName);
+        HttpContext.Session.SetString("ActiveCourseNameSafe", courseName); // already filesystem-safe
+
+        logger.LogInformation("User {Username} activated course '{CourseName}'", username, courseName);
+        TempData["SuccessMessage"] = $"'{courseName}' is now your active course.";
+        return RedirectToAction(nameof(CourseSettings));
+    }
+
+    /// <summary>
+    /// POST: /Settings/RemoveCourse
+    /// Deletes the named course and its directory after user confirmation.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveCourse(string courseName)
+    {
+        var username = User.Identity?.Name
+            ?? throw new UnauthorizedAccessException("User not authenticated");
+
+        if (string.IsNullOrWhiteSpace(courseName))
+        {
+            TempData["ErrorMessage"] = "Please select a valid course to remove.";
+            return RedirectToAction(nameof(CourseSettings));
+        }
+
+        var removed = await courseService.RemoveCourseAsync(username, courseName);
+
+        if (removed)
+        {
+            // Clear session if the removed course was the active one
+            if (HttpContext.Session.GetString("ActiveCourseName") == courseName)
+            {
+                HttpContext.Session.Remove("ActiveCourseName");
+                HttpContext.Session.Remove("ActiveCourseNameSafe");
+            }
+
+            logger.LogInformation("User {Username} removed course '{CourseName}'", username, courseName);
+            TempData["SuccessMessage"] = $"Course '{courseName}' has been removed.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = $"Course '{courseName}' was not found.";
+        }
+
+        return RedirectToAction(nameof(CourseSettings));
     }
 
     /// <summary>

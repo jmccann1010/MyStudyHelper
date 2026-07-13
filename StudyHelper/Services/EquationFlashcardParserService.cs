@@ -28,20 +28,23 @@ public class EquationFlashcardParserService : IEquationFlashcardParserService
     /// Parses the Equations.md file and extracts all equations for flashcard display.
     /// Uses custom user-uploaded file if available, otherwise falls back to default.
     /// </summary>
-    public async Task<List<EquationFlashcard>> ParseEquationsAsync(string? username = null)
+    public async Task<List<EquationFlashcard>> ParseEquationsAsync(string? username = null, string? courseName = null)
     {
         string filePath;
 
         if (!string.IsNullOrWhiteSpace(username))
         {
-            // Try to get user's custom file, or fall back to default
-            filePath = await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.Equations);
-            _logger.LogDebug("Using equations file for user {Username}: {Path}", username, filePath);
+            // Prefer course-aware path; fall back to legacy when no course is active
+            filePath = !string.IsNullOrWhiteSpace(courseName)
+                ? await _studyMaterialService.GetEffectiveFilePathAsync(username, courseName, StudyMaterialType.Equations)
+                : await _studyMaterialService.GetEffectiveFilePathAsync(username, StudyMaterialType.Equations);
+
+            _logger.LogDebug("Using equations file for {Username}/{Course}: {Path}",
+                username, courseName ?? "legacy", filePath);
         }
         else
         {
-            // Use default file path
-            var relativePath = _configuration["EquationsPath"] 
+            var relativePath = _configuration["EquationsPath"]
                 ?? Path.Combine("App_Data", "Equations.md");
             filePath = Path.Combine(_environment.ContentRootPath, relativePath);
             _logger.LogDebug("Using default equations file: {Path}", filePath);

@@ -1,0 +1,11 @@
+@* Rendered on any course-specific feature page when no active course is in session.
+   Show via: @await Html.PartialAsync("_NoCourseSelected") at the top of the view body. *@
+<div class="alert alert-warning d-flex align-items-center gap-3" role="alert">
+    <i class="bi bi-exclamation-triangle-fill fs-4 flex-shrink-0"></i>
+    <div>
+        <strong>No course selected.</strong>
+        Please go to <a asp-controller="Settings" asp-action="CourseSettings" class="alert-link">
+            Settings &rarr; Course Settings
+        </a> to select a course before continuing.
+    </div>
+</div>

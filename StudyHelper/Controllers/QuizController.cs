@@ -38,7 +38,8 @@ public class QuizController : Controller
         {
             // Parse markdown files using the current user's custom materials if available
             var username = User.Identity?.Name;
-            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username);
+            var courseName = HttpContext.Session.GetString("ActiveCourseNameSafe");
+            var sections = await _markdownParserService.ParseMarkdownFilesAsync(username, courseName);
 
             // Generate question
             var question = _questionGeneratorService.GenerateQuestion(sections);
