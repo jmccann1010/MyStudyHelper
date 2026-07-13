@@ -32,6 +32,11 @@ body {
 
 /* Flashcard Page Styles */
 
+/* Hides flashcard sections without using inline styles (required by CSP style-src 'self') */
+.flashcard-hidden {
+    display: none;
+}
+
 .flashcard-container {
     max-width: 800px;
     margin: 2rem auto;

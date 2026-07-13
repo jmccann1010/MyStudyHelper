@@ -32,7 +32,7 @@
 
         // Keyboard shortcut: Space bar to reveal answer
         document.addEventListener('keydown', function (e) {
-            if (e.code === 'Space' && answerSection.style.display === 'none') {
+            if (e.code === 'Space' && answerSection.classList.contains('flashcard-hidden')) {
                 e.preventDefault(); // Prevent page scroll
                 revealAnswer();
             }
@@ -74,17 +74,35 @@
             timerInterval = null;
         }
 
-        // Hide timer section immediately
-        timerSection.style.display = 'none';
+        // Hide timer section
+        timerSection.classList.add('flashcard-hidden');
 
-        // Show answer section with slide-in animation
-        answerSection.style.display = 'block';
+        // Show answer section
+        answerSection.classList.remove('flashcard-hidden');
 
-        // Hide "Show Answer" button (no longer needed)
-        showAnswerBtn.style.display = 'none';
+        // Hide "Show Answer" button
+        showAnswerBtn.classList.add('flashcard-hidden');
 
         // Announce to screen readers
         answerSection.setAttribute('aria-live', 'assertive');
+    }
+
+    /**
+     * Resets the card to its initial (answer hidden, timer running) state.
+     * Called when the browser restores the page from the back/forward cache.
+     */
+    function resetCard() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        // Restore element visibility to page-load defaults
+        if (timerSection)   timerSection.classList.remove('flashcard-hidden');
+        if (answerSection)  answerSection.classList.add('flashcard-hidden');
+        if (showAnswerBtn)  showAnswerBtn.classList.remove('flashcard-hidden');
+
+        startTimer();
     }
 
     // Initialize when DOM is ready
@@ -93,4 +111,12 @@
     } else {
         initializeFlashcard();
     }
+
+    // Reset the card when the browser restores it from the back/forward cache
+    // so the answer is not already visible on page restore.
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            resetCard();
+        }
+    });
 })();
