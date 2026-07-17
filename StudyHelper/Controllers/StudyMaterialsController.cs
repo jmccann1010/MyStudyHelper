@@ -3,6 +3,7 @@ using StudyHelper.Services;
 using StudyHelper.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 
 namespace StudyHelper.Controllers;
 
@@ -77,38 +78,63 @@ public class StudyMaterialsController : Controller
     /// <summary>
     /// POST: /StudyMaterials/UploadTerms
     /// Upload a TermsAndDefinitions.md file into the active course directory.
+    /// <summary>
+    /// POST: /StudyMaterials/UploadTerms
+    /// Validates and saves a TermsAndDefinitions.md file for the active course.
+    /// Returns a detailed success/warning/error message derived from the validation result.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadTerms(IFormFile file)
     {
-        var username = User.Identity?.Name ?? throw new UnauthorizedAccessException("User not authenticated");
+        var username = User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            _logger.LogWarning("UploadTerms called with no authenticated username.");
+            return Unauthorized();
+        }
 
         if (file == null || file.Length == 0)
         {
-            TempData["ErrorMessage"] = "Please select a file to upload";
+            TempData["ErrorMessage"] = "Please select a file to upload.";
             _logger.LogWarning("User {Username} attempted to upload empty terms file", username);
             return RedirectToAction(nameof(Manage));
         }
 
         var courseName = GetActiveCourse();
 
-        // Route to course-aware overload when a course is active
-        var success = courseName != null
+        var result = courseName != null
             ? await _materialService.UploadTermsAsync(username, courseName, file)
             : await _materialService.UploadTermsAsync(username, file);
 
-        if (success)
-        {
-            _logger.LogInformation("User {Username}/{Course} uploaded TermsAndDefinitions.md",
-                username, courseName ?? "legacy");
-            TempData["SuccessMessage"] = "Terms and definitions uploaded successfully!";
-        }
-        else
+        if (!result.IsValid)
         {
             _logger.LogWarning("User {Username}/{Course} failed to upload TermsAndDefinitions.md",
                 username, courseName ?? "legacy");
-            TempData["ErrorMessage"] = "Upload failed. Please ensure the file is a valid markdown file with plain text (ASCII) encoding.";
+            TempData["ErrorMessage"] = BuildErrorHtml(result.Errors);
+        }
+        else if (result.ParsedSectionCount == 0)
+        {
+            _logger.LogInformation("User {Username}/{Course} uploaded TermsAndDefinitions.md with zero sections",
+                username, courseName ?? "legacy");
+            TempData["WarningMessage"] =
+                "Upload accepted, but no sections (## headings) were found. " +
+                "Flashcards and quizzes may not work. Check your file format.";
+        }
+        else if (result.ParsedTermCount == 0)
+        {
+            _logger.LogInformation("User {Username}/{Course} uploaded TermsAndDefinitions.md with zero terms",
+                username, courseName ?? "legacy");
+            TempData["WarningMessage"] =
+                "Upload accepted, but no term-definition pairs were found. " +
+                "Ensure each entry is on its own line in the format \u2018Term: Definition\u2019 under a ## section heading.";
+        }
+        else
+        {
+            _logger.LogInformation("User {Username}/{Course} uploaded TermsAndDefinitions.md: {Sections} section(s), {Terms} term(s)",
+                username, courseName ?? "legacy", result.ParsedSectionCount, result.ParsedTermCount);
+            TempData["SuccessMessage"] =
+                $"Upload successful. Found {result.ParsedSectionCount} section(s) and {result.ParsedTermCount} term(s) and definition(s).";
         }
 
         return RedirectToAction(nameof(Manage));
@@ -116,38 +142,52 @@ public class StudyMaterialsController : Controller
 
     /// <summary>
     /// POST: /StudyMaterials/UploadEquations
-    /// Upload an Equations.md file into the active course directory.
+    /// Validates and saves an Equations.md file for the active course.
+    /// Returns a detailed success/warning/error message derived from the validation result.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadEquations(IFormFile file)
     {
-        var username = User.Identity?.Name ?? throw new UnauthorizedAccessException("User not authenticated");
+        var username = User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            _logger.LogWarning("UploadEquations called with no authenticated username.");
+            return Unauthorized();
+        }
 
         if (file == null || file.Length == 0)
         {
-            TempData["ErrorMessage"] = "Please select a file to upload";
+            TempData["ErrorMessage"] = "Please select a file to upload.";
             _logger.LogWarning("User {Username} attempted to upload empty equations file", username);
             return RedirectToAction(nameof(Manage));
         }
 
         var courseName = GetActiveCourse();
 
-        var success = courseName != null
+        var result = courseName != null
             ? await _materialService.UploadEquationsAsync(username, courseName, file)
             : await _materialService.UploadEquationsAsync(username, file);
 
-        if (success)
-        {
-            _logger.LogInformation("User {Username}/{Course} uploaded Equations.md",
-                username, courseName ?? "legacy");
-            TempData["SuccessMessage"] = "Equations uploaded successfully!";
-        }
-        else
+        if (!result.IsValid)
         {
             _logger.LogWarning("User {Username}/{Course} failed to upload Equations.md",
                 username, courseName ?? "legacy");
-            TempData["ErrorMessage"] = "Upload failed. Please ensure the file is a valid markdown file with plain text (ASCII) encoding.";
+            TempData["ErrorMessage"] = BuildErrorHtml(result.Errors);
+        }
+        else if (result.ParsedEquationCount == 0)
+        {
+            _logger.LogInformation("User {Username}/{Course} uploaded Equations.md with zero equations",
+                username, courseName ?? "legacy");
+            TempData["WarningMessage"] =
+                "Upload accepted, but no equations were found. Ensure each block has " +
+                "\u2018Equation Name:\u2019, \u2018Equation Summary:\u2019, and \u2018Equation: Left = Right\u2019.";
+        }
+        else
+        {
+            _logger.LogInformation("User {Username}/{Course} uploaded Equations.md: {Count} equation(s)",
+                username, courseName ?? "legacy", result.ParsedEquationCount);
+            TempData["SuccessMessage"] = $"Upload successful. Found {result.ParsedEquationCount} equation(s).";
         }
 
         return RedirectToAction(nameof(Manage));
@@ -161,7 +201,12 @@ public class StudyMaterialsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(StudyMaterialType materialType)
     {
-        var username = User.Identity?.Name ?? throw new UnauthorizedAccessException("User not authenticated");
+        var username = User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            _logger.LogWarning("Delete called with no authenticated username.");
+            return Unauthorized();
+        }
 
         var courseName = GetActiveCourse();
 
@@ -190,7 +235,7 @@ public class StudyMaterialsController : Controller
     /// Download a template file for study materials (always served from the global default).
     /// </summary>
     [HttpGet]
-    public IActionResult DownloadTemplate(string type)
+    public async Task<IActionResult> DownloadTemplate(string type)
     {
         string fileName;
         string defaultPath;
@@ -220,7 +265,7 @@ public class StudyMaterialsController : Controller
                 return RedirectToAction(nameof(Manage));
             }
 
-            var fileBytes = System.IO.File.ReadAllBytes(defaultPath);
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(defaultPath);
             _logger.LogInformation("User {Username} downloaded template: {Type}", User.Identity?.Name, type);
             return File(fileBytes, "text/markdown", fileName);
         }
@@ -230,6 +275,29 @@ public class StudyMaterialsController : Controller
             TempData["ErrorMessage"] = "Error downloading template. Please try again.";
             return RedirectToAction(nameof(Manage));
         }
+    }
+
+    /// <summary>
+    /// Builds an HTML-safe error list for display in the ErrorMessage banner.
+    /// Caps the displayed list at 10 items and appends a truncation notice when needed.
+    /// All error text is HTML-encoded to prevent injection.
+    /// </summary>
+    private static string BuildErrorHtml(List<string> errors)
+    {
+        const int MaxDisplayed = 10;
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append("Upload failed. The following format errors were found:<ul>");
+
+        var displayed = errors.Take(MaxDisplayed);
+        foreach (var error in displayed)
+            sb.Append($"<li>{HtmlEncoder.Default.Encode(error)}</li>");
+
+        if (errors.Count > MaxDisplayed)
+            sb.Append($"<li>...and {errors.Count - MaxDisplayed} more error(s). Please review the full file.</li>");
+
+        sb.Append("</ul>");
+        return sb.ToString();
     }
 
     /// <summary>

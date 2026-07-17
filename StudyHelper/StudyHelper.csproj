@@ -24,6 +24,7 @@
     <None Include=".github\design\architecture-summary.md" />
     <None Include=".github\design\backend-design-latex-equations.md" />
     <None Include=".github\design\backend-design.md" />
+    <None Include=".github\design\backend-validating-study-material.md" />
     <None Include=".github\design\equation-flashcards-backend-design.md" />
     <None Include=".github\design\equation-flashcards-design-summary.md" />
     <None Include=".github\design\equation-flashcards-frontend-design.md" />
@@ -69,6 +70,7 @@
     <None Include=".github\design\flashcard-timer-zero-frontend-design.md" />
     <None Include=".github\design\frontend-design-latex-equations.md" />
     <None Include=".github\design\frontend-design.md" />
+    <None Include=".github\design\frontend-validating-study-material.md" />
     <None Include=".github\docs\equation-flashcards-quick-start.md" />
     <None Include=".github\docs\EQUATION-FLASHCARDS-README.md" />
     <None Include=".github\docs\exercises-feature-readme.md" />
@@ -118,6 +120,7 @@
     <None Include=".github\reviews\security-fixes-report.md" />
     <None Include=".github\reviews\security-review-report.md" />
     <None Include=".github\testing\super-quiz-dynamic-options-test-scenarios.md" />
+    <None Include=".github\user-stories.md" />
     <None Include="wwwroot\js\equation-flashcard.js" />
   </ItemGroup>
 

@@ -7,6 +7,7 @@ using Moq;
 using StudyHelper.Controllers;
 using StudyHelper.Models;
 using StudyHelper.Services;
+using StudyHelper.Tests.Helpers;
 using StudyHelper.ViewModels;
 using System.Security.Claims;
 
@@ -29,15 +30,15 @@ public class StudyMaterialsControllerPreferencesTests
             _mockEnvironment.Object
         );
 
-        // Setup controller context with authenticated user
+        // Setup controller context with authenticated user and a working session
         var claims = new List<Claim> { new Claim(ClaimTypes.Name, "testuser") };
         var identity = new ClaimsIdentity(claims, "TestAuth");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
-        _controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext { User = claimsPrincipal }
-        };
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        httpContext.Session = new FakeSession(); // prevents InvalidOperationException from GetActiveCourse()
+
+        _controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
         // Setup TempData
         _controller.TempData = new TempDataDictionary(

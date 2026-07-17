@@ -110,28 +110,28 @@ public class FileValidationServiceTests
     [Fact]
     public async Task ValidateTermsFormatAsync_WhenNoExpectedTermsThenAddsWarning()
     {
-        // Arrange
+        // Arrange — plain paragraph with no ## headings and no Term: Definition pairs
         const string content = "Plain paragraph\nAnother line";
 
         // Act
         var result = await _service.ValidateTermsFormatAsync(content);
 
-        // Assert
+        // Assert — file is accepted (no errors) but warnings are raised for missing sections/terms
         Assert.True(result.IsValid);
-        Assert.Contains(result.Warnings, warning => warning.Contains("No terms found", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains(result.Warnings, w => w.Contains("No section headings", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
     public async Task ValidateEquationsFormatAsync_WhenNoLatexMarkersThenAddsWarning()
     {
-        // Arrange
+        // Arrange — plain line with no Equation Name/Summary/Equation blocks
         const string content = "Revenue = Assets - Liabilities";
 
         // Act
         var result = await _service.ValidateEquationsFormatAsync(content);
 
-        // Assert
+        // Assert — file is accepted (no errors) but a warning is raised for zero equations found
         Assert.True(result.IsValid);
-        Assert.Contains(result.Warnings, warning => warning.Contains("No LaTeX equations found", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains(result.Warnings, w => w.Contains("No equations were found", StringComparison.OrdinalIgnoreCase));
     }
 }

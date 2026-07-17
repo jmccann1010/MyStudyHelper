@@ -9,13 +9,15 @@ public interface IUserStudyMaterialService
 {
     /// <summary>
     /// Upload a TermsAndDefinitions.md file for a user.
+    /// Returns a <see cref="FileValidationResult"/> containing counts and any errors.
     /// </summary>
-    Task<bool> UploadTermsAsync(string username, IFormFile file);
+    Task<FileValidationResult> UploadTermsAsync(string username, IFormFile file);
 
     /// <summary>
     /// Upload an Equations.md file for a user.
+    /// Returns a <see cref="FileValidationResult"/> containing counts and any errors.
     /// </summary>
-    Task<bool> UploadEquationsAsync(string username, IFormFile file);
+    Task<FileValidationResult> UploadEquationsAsync(string username, IFormFile file);
 
     /// <summary>
     /// Get metadata for all user-uploaded materials.
@@ -69,10 +71,10 @@ public interface IUserStudyMaterialService
     // -------------------------------------------------------------------------
 
     /// <summary>Upload a TermsAndDefinitions.md file into a specific course directory.</summary>
-    Task<bool> UploadTermsAsync(string username, string courseName, IFormFile file);
+    Task<FileValidationResult> UploadTermsAsync(string username, string courseName, IFormFile file);
 
     /// <summary>Upload an Equations.md file into a specific course directory.</summary>
-    Task<bool> UploadEquationsAsync(string username, string courseName, IFormFile file);
+    Task<FileValidationResult> UploadEquationsAsync(string username, string courseName, IFormFile file);
 
     /// <summary>Get metadata for all materials uploaded to a specific course.</summary>
     Task<List<UserStudyMaterial>> GetUserMaterialsAsync(string username, string courseName);

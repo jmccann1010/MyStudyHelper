@@ -39,7 +39,7 @@ public class UserStudyMaterialService : IUserStudyMaterialService
         _storageFolderName = _configuration.GetValue<string>("StudyMaterials:StorageFolder", DefaultStudyMaterialsFolder) ?? DefaultStudyMaterialsFolder;
     }
 
-    public async Task<bool> UploadTermsAsync(string username, IFormFile file)
+    public async Task<FileValidationResult> UploadTermsAsync(string username, IFormFile file)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentNullException.ThrowIfNull(file);
@@ -47,7 +47,7 @@ public class UserStudyMaterialService : IUserStudyMaterialService
         return await UploadMaterialAsync(username, file, StudyMaterialType.TermsAndDefinitions);
     }
 
-    public async Task<bool> UploadEquationsAsync(string username, IFormFile file)
+    public async Task<FileValidationResult> UploadEquationsAsync(string username, IFormFile file)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentNullException.ThrowIfNull(file);
@@ -55,75 +55,67 @@ public class UserStudyMaterialService : IUserStudyMaterialService
         return await UploadMaterialAsync(username, file, StudyMaterialType.Equations);
     }
 
-    private async Task<bool> UploadMaterialAsync(string username, IFormFile file, StudyMaterialType materialType)
+    private async Task<FileValidationResult> UploadMaterialAsync(string username, IFormFile file, StudyMaterialType materialType)
     {
         try
         {
             // 1. Validate file size
             if (file.Length > _maxFileSizeBytes)
             {
-                _logger.LogWarning("File too large for user {Username}: {Size} bytes (max: {MaxSize})", 
+                _logger.LogWarning("File too large for user {Username}: {Size} bytes (max: {MaxSize})",
                     username, file.Length, _maxFileSizeBytes);
-                return false;
+                return new FileValidationResult { IsValid = false, Errors = ["File exceeds the maximum allowed size."] };
             }
 
             if (file.Length == 0)
             {
                 _logger.LogWarning("Empty file uploaded by user {Username}", username);
-                return false;
+                return new FileValidationResult { IsValid = false, Errors = ["File is empty."] };
             }
 
-            // 2. Validate file content
+            // 2. Validate markdown structure (extension + readability)
             using var stream = file.OpenReadStream();
-            var validationResult = await _validationService.ValidateMarkdownFileAsync(stream, file.FileName);
-            if (!validationResult.IsValid)
+            var markdownResult = await _validationService.ValidateMarkdownFileAsync(stream, file.FileName);
+            if (!markdownResult.IsValid)
             {
-                _logger.LogWarning("File validation failed for user {Username}: {Errors}", 
-                    username, string.Join(", ", validationResult.Errors));
-                return false;
+                _logger.LogWarning("File validation failed for user {Username}: {Errors}",
+                    username, string.Join(", ", markdownResult.Errors));
+                return markdownResult;
             }
 
-            // 3. Read content and validate format
+            // 3. Read full content
             stream.Position = 0;
             using var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
 
-            // Validate plain text/ASCII encoding
-            //var plainTextResult = await _validationService.ValidatePlainTextAsync(content);
-            //if (!plainTextResult.IsValid)
-            //{
-            //    _logger.LogWarning("Plain text validation failed for user {Username}: {Errors}",
-            //        username, string.Join(", ", plainTextResult.Errors));
-            //    return false;
-            //}
+            // ValidatePlainTextAsync is intentionally disabled — see design doc.
 
+            // 4. Format validation (populates counts; errors cause rejection)
             var formatResult = materialType == StudyMaterialType.TermsAndDefinitions
                 ? await _validationService.ValidateTermsFormatAsync(content)
                 : await _validationService.ValidateEquationsFormatAsync(content);
 
             if (!formatResult.IsValid)
             {
-                _logger.LogWarning("{MaterialType} format validation failed for user {Username}: {Errors}", 
+                _logger.LogWarning("{MaterialType} format validation failed for user {Username}: {Errors}",
                     materialType, username, string.Join(", ", formatResult.Errors));
-                return false;
+                return formatResult;
             }
 
-            // Log warnings but don't fail
             if (formatResult.Warnings.Count > 0)
-            {
                 _logger.LogInformation("{MaterialType} format warnings for user {Username}: {Warnings}",
                     materialType, username, string.Join(", ", formatResult.Warnings));
-            }
 
+            // 5. Security scan
             var securityResult = await _validationService.ScanForMaliciousContentAsync(content);
             if (!securityResult.IsValid)
             {
-                _logger.LogError("Security scan failed for user {Username}: {Errors}", 
+                _logger.LogError("Security scan failed for user {Username}: {Errors}",
                     username, string.Join(", ", securityResult.Errors));
-                return false;
+                return securityResult;
             }
 
-            // 4. Save as plain text
+            // 6. Save as plain text
             var userFolder = GetUserFolder(username);
             Directory.CreateDirectory(userFolder);
 
@@ -131,20 +123,23 @@ public class UserStudyMaterialService : IUserStudyMaterialService
             var filePath = Path.Combine(userFolder, fileName);
             await File.WriteAllTextAsync(filePath, content);
 
-            // 5. Update metadata
+            // 7. Update metadata
             await SaveMetadataAsync(username, materialType, file, content);
 
-            // 6. Invalidate cache
+            // 8. Invalidate cache
             InvalidateCache(username, materialType);
 
-            _logger.LogInformation("User {Username} uploaded {MaterialType} ({Size} bytes)", 
+            _logger.LogInformation("User {Username} uploaded {MaterialType} ({Size} bytes)",
                 username, materialType, file.Length);
-            return true;
+
+            // Return formatResult so counts (ParsedSectionCount, ParsedTermCount,
+            // ParsedEquationCount) are available to the controller.
+            return formatResult;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error uploading {MaterialType} for user {Username}", materialType, username);
-            return false;
+            return new FileValidationResult { IsValid = false, Errors = ["An unexpected error occurred during upload."] };
         }
     }
 
@@ -313,13 +308,15 @@ public class UserStudyMaterialService : IUserStudyMaterialService
 
     private string GetUserFolder(string username)
     {
-        var safeUsername = Path.GetFileNameWithoutExtension(username);
-        return Path.Combine(
+        var safeUsername = SanitizePathSegment(username);
+        var folder = Path.GetFullPath(Path.Combine(
             _environment.ContentRootPath,
             "App_Data",
             _storageFolderName,
             safeUsername
-        );
+        ));
+        AssertUnderRoot(folder);
+        return folder;
     }
 
     private string GetCustomFilePath(string username, StudyMaterialType materialType)
@@ -500,7 +497,7 @@ public class UserStudyMaterialService : IUserStudyMaterialService
     // legacy App_Data/StudyMaterials/{username}/ path.
     // -------------------------------------------------------------------------
 
-    public Task<bool> UploadTermsAsync(string username, string courseName, IFormFile file)
+    public Task<FileValidationResult> UploadTermsAsync(string username, string courseName, IFormFile file)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
@@ -508,7 +505,7 @@ public class UserStudyMaterialService : IUserStudyMaterialService
         return UploadCourseMaterialAsync(username, courseName, file, StudyMaterialType.TermsAndDefinitions);
     }
 
-    public Task<bool> UploadEquationsAsync(string username, string courseName, IFormFile file)
+    public Task<FileValidationResult> UploadEquationsAsync(string username, string courseName, IFormFile file)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username);
         ArgumentException.ThrowIfNullOrWhiteSpace(courseName);
@@ -628,7 +625,18 @@ public class UserStudyMaterialService : IUserStudyMaterialService
     // -------------------------------------------------------------------------
 
     private string GetCourseFolder(string username, string courseName)
-        => Path.Combine(_environment.ContentRootPath, "App_Data", username, courseName);
+    {
+        var safeUsername   = SanitizePathSegment(username);
+        var safeCourseName = SanitizePathSegment(courseName);
+        var folder = Path.GetFullPath(Path.Combine(
+            _environment.ContentRootPath,
+            "App_Data",
+            safeUsername,
+            safeCourseName
+        ));
+        AssertUnderRoot(folder);
+        return folder;
+    }
 
     private string GetCourseFilePath(string username, string courseName, StudyMaterialType materialType)
         => Path.Combine(GetCourseFolder(username, courseName), GetFileName(materialType));
@@ -646,7 +654,7 @@ public class UserStudyMaterialService : IUserStudyMaterialService
     // Course-scoped upload / metadata helpers
     // -------------------------------------------------------------------------
 
-    private async Task<bool> UploadCourseMaterialAsync(
+    private async Task<FileValidationResult> UploadCourseMaterialAsync(
         string username, string courseName, IFormFile file, StudyMaterialType materialType)
     {
         try
@@ -654,22 +662,22 @@ public class UserStudyMaterialService : IUserStudyMaterialService
             if (file.Length > _maxFileSizeBytes)
             {
                 _logger.LogWarning("File too large for {Username}/{CourseName}: {Size} bytes", username, courseName, file.Length);
-                return false;
+                return new FileValidationResult { IsValid = false, Errors = ["File exceeds the maximum allowed size."] };
             }
 
             if (file.Length == 0)
             {
                 _logger.LogWarning("Empty file uploaded by {Username}/{CourseName}", username, courseName);
-                return false;
+                return new FileValidationResult { IsValid = false, Errors = ["File is empty."] };
             }
 
             using var stream = file.OpenReadStream();
-            var validationResult = await _validationService.ValidateMarkdownFileAsync(stream, file.FileName);
-            if (!validationResult.IsValid)
+            var markdownResult = await _validationService.ValidateMarkdownFileAsync(stream, file.FileName);
+            if (!markdownResult.IsValid)
             {
                 _logger.LogWarning("File validation failed for {Username}/{CourseName}: {Errors}",
-                    username, courseName, string.Join(", ", validationResult.Errors));
-                return false;
+                    username, courseName, string.Join(", ", markdownResult.Errors));
+                return markdownResult;
             }
 
             stream.Position = 0;
@@ -684,15 +692,19 @@ public class UserStudyMaterialService : IUserStudyMaterialService
             {
                 _logger.LogWarning("{MaterialType} format validation failed for {Username}/{CourseName}: {Errors}",
                     materialType, username, courseName, string.Join(", ", formatResult.Errors));
-                return false;
+                return formatResult;
             }
+
+            if (formatResult.Warnings.Count > 0)
+                _logger.LogInformation("{MaterialType} format warnings for {Username}/{CourseName}: {Warnings}",
+                    materialType, username, courseName, string.Join(", ", formatResult.Warnings));
 
             var securityResult = await _validationService.ScanForMaliciousContentAsync(content);
             if (!securityResult.IsValid)
             {
                 _logger.LogError("Security scan failed for {Username}/{CourseName}: {Errors}",
                     username, courseName, string.Join(", ", securityResult.Errors));
-                return false;
+                return securityResult;
             }
 
             var courseFolder = GetCourseFolder(username, courseName);
@@ -706,12 +718,14 @@ public class UserStudyMaterialService : IUserStudyMaterialService
 
             _logger.LogInformation("{Username}/{CourseName} uploaded {MaterialType} ({Size} bytes)",
                 username, courseName, materialType, file.Length);
-            return true;
+
+            // Return formatResult so counts are available to the controller.
+            return formatResult;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error uploading {MaterialType} for {Username}/{CourseName}", materialType, username, courseName);
-            return false;
+            return new FileValidationResult { IsValid = false, Errors = ["An unexpected error occurred during upload."] };
         }
     }
 
@@ -762,5 +776,56 @@ public class UserStudyMaterialService : IUserStudyMaterialService
         var metadataPath = GetCourseMetadataPath(username, courseName);
         Directory.CreateDirectory(Path.GetDirectoryName(metadataPath)!);
         await File.WriteAllTextAsync(metadataPath, json);
+    }
+
+    // -------------------------------------------------------------------------
+    // Path-safety helpers
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Strips any directory-traversal characters from a single path segment
+    /// (username or course name) so it cannot escape the App_Data root.
+    /// Replaces path separators, null bytes, and leading dots/spaces; rejects
+    /// empty results with an ArgumentException.
+    /// </summary>
+    private static string SanitizePathSegment(string segment)
+    {
+        // Remove directory-separator characters, null bytes, and colon (Windows drive letters)
+        var safe = segment
+            .Replace("/",  string.Empty)
+            .Replace("\\", string.Empty)
+            .Replace("\0", string.Empty)
+            .Replace(":",  string.Empty)
+            .Trim();
+
+        // Collapse any remaining leading dots to prevent ".." after trim
+        safe = safe.TrimStart('.');
+
+        if (string.IsNullOrWhiteSpace(safe))
+            throw new ArgumentException(
+                $"Path segment '{segment}' is invalid or resolves to an empty value after sanitization.",
+                nameof(segment));
+
+        return safe;
+    }
+
+    /// <summary>
+    /// Throws <see cref="InvalidOperationException"/> if <paramref name="resolvedPath"/>
+    /// does not start with the expected App_Data root, preventing any residual
+    /// traversal that slipped past <see cref="SanitizePathSegment"/>.
+    /// </summary>
+    private void AssertUnderRoot(string resolvedPath)
+    {
+        var appDataRoot = Path.GetFullPath(
+            Path.Combine(_environment.ContentRootPath, "App_Data"));
+
+        if (!resolvedPath.StartsWith(appDataRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            _logger.LogError(
+                "Path traversal attempt blocked. Resolved path '{Path}' is outside App_Data root '{Root}'.",
+                resolvedPath, appDataRoot);
+            throw new InvalidOperationException(
+                "Resolved path is outside the permitted storage root.");
+        }
     }
 }

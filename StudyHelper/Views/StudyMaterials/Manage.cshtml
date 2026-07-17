@@ -24,10 +24,20 @@
                 </div>
             }
 
+            @* Warning banner: upload accepted but zero counts detected (e.g. no sections or no terms found) *@
+            @if (TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> @Html.Raw(TempData["WarningMessage"])
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @* Html.Raw is intentional: the controller builds a sanitised <ul> list from internal error strings only *@
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ErrorMessage"]
+                    <i class="bi bi-exclamation-triangle-fill"></i> @Html.Raw(TempData["ErrorMessage"])
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
